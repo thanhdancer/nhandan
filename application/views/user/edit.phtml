@@ -1,0 +1,91 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: list.phtml  10/29/14 1:28 PM lion $
+ */
+ 
+ ?>
+
+
+ <h2><?php echo $pageTitle ?></h2>
+ <br />
+
+ <div class="panel panel-primary">
+     <div class="panel-heading">
+        <div class="panel-title">
+            <strong><?php echo $USER->username; ?> </strong>( <?php echo $USER->firstname . " " . $USER->lastname; ?> )
+        </div>
+     </div>
+     <div class="panel-body">
+         <form role="form" class="validate" method="post">
+             <!-- Username -->
+             <div class="form-group">
+                 <label for="username" class="control-label">Username</label>
+                 <input type="text" class="form-control" disabled="disabled" id="username" placeholder="Username" value="<?php echo $USER->username ?>" />
+             </div>
+
+             <!-- Password -->
+             <div class="form-group">
+                 <label for="password" class="control-label">Password</label>
+                 <input type="password" class="form-control" name="password" id="password" placeholder="Password" />
+             </div>
+
+             <!-- User group -->
+             <div class="form-group">
+                 <label for="usergroup" class="control-label">Usergroup</label>
+                 <select class="form-control" name="usergroup">
+                     <?php foreach($groups as $group): ?>
+                         <?='<option value="'. $group->usergroupid .'">'. $group->usergroupname .'</option>'?>
+                     <?php endforeach;?>
+                 </select>
+             </div>
+
+             <!-- Email -->
+             <div class="form-group">
+                 <label for="email" class="control-label">Email</label>
+                 <input type="text" class="form-control" name="email" id="email" data-validate="required,email" placeholder="Ex: smith@example.com" value="<?=$USER->email?>" />
+             </div>
+
+             <!-- First name -->
+             <div class="form-group">
+                 <label for="firstname" class="control-label">First name</label>
+                 <input type="text" class="form-control" name="firstname" id="firstname" value="<?php echo $USER->firstname; ?>" placeholder="First name" />
+             </div>
+
+             <!-- Last name -->
+             <div class="form-group">
+                 <label for="lastname" class="control-label">Last name</label>
+                 <input type="text" class="form-control" name="lastname" id="lastname" value="<?php echo $USER->lastname; ?>" placeholder="Last name" />
+             </div>
+
+             <!-- Facebook -->
+             <div class="form-group">
+                 <label for="facebook" class="control-label">Facebook</label>
+                 <input type="text" class="form-control" name="facebook" data-validate="url" id="facebook" placeholder="Facebook link" value="<?=$USER->facebook?>" />
+             </div>
+
+             <!-- Avatar -->
+             <div class="form-group">
+                 <label for="avatar" class="control-label">Avatar</label>
+                 <input type="text" class="form-control" name="avatar" data-validate="url" id="avatar" value="<?php echo $USER->avatarpath; ?>" placeholder="Image link" />
+                 <img src="<?php echo $USER->avatarpath; ?>" width="100" />
+             </div>
+
+             <div class="form-group">
+                 <button type="submit" class="btn btn-default">Save</button>
+             </div>
+         </form>
+     </div>
+ </div>

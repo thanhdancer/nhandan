@@ -1,0 +1,64 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: index.phtml  11/2/14 2:49 AM lion $
+ */
+
+ ?>
+
+<h2><?php echo $pageTitle  ?></h2>
+<br />
+
+<form role="form" action="<?=site_url('/setting/update')?>" method="post" class="form-horizontal form-groups validate">
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Config
+        </div>
+        <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+            <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a>
+        </div>
+    </div>
+    <div class="panel-body">
+
+            <!-- Site title -->
+            <div class="form-group">
+                <label for="siteTitle" class="col-sm-3 control-label">Site title</label>
+
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="siteTitle" id="siteTitle" value="<?=$cfg['siteTitle']?>" />
+                </div>
+            </div>
+
+            <!-- Logo link -->
+            <div class="form-group">
+                <label for="logo" class="col-sm-3 control-label">Logo</label>
+
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="logo" id="logo" value="<?=$cfg['logo']?>" />
+                </div>
+            </div>
+
+
+    </div>
+</div>
+<!-- Button group -->
+<div class="form-group default-padding">
+    <button type="submit" class="btn btn-success">Save changes</button>
+    <button type="reset" class="btn">Reset previous</button>
+</div>
+</form>
+ 

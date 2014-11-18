@@ -1,0 +1,78 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: list.phtml  10/29/14 9:08 PM lion $
+ */
+ 
+ ?>
+
+<h2><?php echo $pageTitle ?></h2>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Avatar</th>
+                    <th>Roles</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $i = 0; foreach($users as $user): $i++; ?>
+                    <tr>
+                        <td><?=$i?></td>
+                        <td><?=$user->username?></td>
+                        <td><?=$user->firstname?></td>
+                        <td><?=$user->lastname?></td>
+                        <td><img class="img-rounded img-circle" style="max-height: 50px; max-width: 50px" src="<?=$user->avatarpath?>"</td>
+                        <td><?=$user->groupname?></td>
+                        <td>
+
+                            <select onchange="action(this);" class="selectboxit" data-first-option="false" data-id="<?=$user->userid?>">
+                                <option>Action</option>
+                                <option value="1">Edit user</option>
+                                <option value="2">Delete user</option>
+                            </select>
+
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function action(element){
+        var act = $(element).val();
+
+        switch(parseInt(act)){
+            case 1: // edit
+                window.location =  '<?=site_url('/user/edit/')?>/' + $(element).attr('data-id');
+                break;
+            case 2:
+                if(confirm("Are you sure to delete this user?")){
+                    window.location =  '<?=site_url('/user/delete/')?>/' + $(element).attr('data-id');
+                }
+                break;
+        }
+
+    }
+</script>

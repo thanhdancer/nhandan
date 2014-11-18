@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <!-- Default header -->
+    <?=$this->load->view('includes/_header.phtml', $title, TRUE)?>
+    <!-- / Default header -->
+
+    <!-- Additional header -->
+    <?php echo isset($_additionHeader) ? $_additionHeader : ''; ?>
+    <!-- / Additional header -->
+</head>
+<body class="page-body" data-url="<?php echo base_url();?>" >
+    <div class="page-container">
+        <?=$this->load->view('includes/_sidebar.phtml', '', TRUE)?>
+        <div class="main-content">
+            <ol class="breadcrumb bc-2">
+            <?php
+            foreach($breadcrumb as $list):
+                ?>
+                <li>
+                    <a href="<?php echo $list['link']; ?>">
+                        <i class="entypo-<?php echo isset($list['icon']) ? $list['icon'] : '';?>"></i>
+                        <span><?php echo $list['name']?></span>
+                    </a>
+                </li>
+            <?php
+            endforeach;
+            ?>
+            </ol>
+            <?php echo $_mainModule; ?>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <?=$this->load->view('includes/_footer.phtml', '', TRUE)?>
+    <!--/ Footer-->
+    <!-- Addition Footer -->
+    <?php echo isset($_additionFooter) ? $_additionFooter : ''; ?>
+    <!-- /Addition Footer -->
+</body>
+</html>

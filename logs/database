@@ -1,0 +1,99 @@
+
+CREATE TABLE IF NOT EXISTS `thnd_log` (
+  `logid` int(11) NOT NULL AUTO_INCREMENT,
+  `modulename` varchar(30) NOT NULL,
+  `action` varchar(30) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `description` text ,
+  PRIMARY KEY (`logid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_config` (
+  `configid` int(11) NOT NULL AUTO_INCREMENT,
+  `modulename` varchar(30) NOT NULL,
+  `configname` varchar(30) NOT NULL,
+  `configvalue` varchar(30) NOT NULL,
+  `title` text,
+  `description` text ,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`configid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_project` (
+  `projectid` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryid` int(11) NOT NULL,
+  `projectname` varchar(30) NOT NULL,
+  `title` text NOT NULL,
+  `imgthumb` text ,
+  `sapo` text ,
+  `content` text NOT NULL ,
+  `deadline` text NOT NULL ,
+  `goal` DOUBLE DEFAULT 0 ,
+  `location` text,
+  `status` int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`projectid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_project_backers` (
+  `backerid` int(11) NOT NULL AUTO_INCREMENT,
+  `projectid` int(11) NOT NULL,
+  `backername` varchar(30) NOT NULL,
+  `backertime` text NOT NULL,
+  `amount` DOUBLE NOT NULL DEFAULT 0,
+  `image` TEXT,
+  `status` int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`backerid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_project_category` (
+  `categoryid` int(11) NOT NULL AUTO_INCREMENT,
+  `parentid` int(11) NOT NULL,
+  `categoryname` varchar(30) NOT NULL,
+  `status` int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`categoryid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_user` (
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `password` text NOT NULL,
+  `usergroup` int(11) NOT NULL,
+  `email` text NOT NULL,
+  `facebook` TEXT,
+  `firstname` text,
+  `lastname` text,
+  `avatarpath` text,
+  `status` int(1) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_usergroup` (
+  `usergroupid` int(11) NOT NULL AUTO_INCREMENT,
+  `usergroupname` varchar(30) NOT NULL,
+  `description` text NULL,
+  `status` int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`usergroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

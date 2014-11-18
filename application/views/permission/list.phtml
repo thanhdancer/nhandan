@@ -1,0 +1,172 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: list.phtml  10/30/14 12:47 AM lion $
+ */
+ 
+ ?>
+<h2><?php echo $pageTitle ?></h2>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Group name</th>
+                <th>Number of users</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i = 0; foreach($groups as $group): $i++; ?>
+                <tr>
+                    <td><?=$i?></td>
+                    <td><?=$group->usergroupname?></td>
+                    <td><?=$group->numusers?></td>
+                    <td><?=$group->description?></td>
+                    <td><?=$group->status == 1 ? "Enabled": "Disabled"?></td>
+                    <td>
+                        <a href="#" data-id="<?=$group->usergroupid?>" onclick="return edit(this);"><i class="entypo-pencil"></i></a>
+                        <a href="#" onclick="return removegroup(<?=$group->usergroupid?>);"><i class="entypo-cancel-circled"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>#</td>
+                    <td><input type="text" class="form-control" name="usergroupname" id="usergroupname" placeholder="[New] Group name" /></td>
+                    <td></td>
+                    <td><input type="text" class="form-control" name="description" id="description" placeholder="[New] Description" /></td>
+                    <td>
+                        <div class="make-switch switch-small" data-on="primary"  data-off="primary">
+                            <input type="checkbox" checked id="status" name="status" />
+                        </div>
+                    </td>
+                    <td><a href="#" onclick="return add()"><i class="entypo-plus-circled"></i></a> </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    /*
+    *   Function remove group
+    */
+    function removegroup(groupid){
+        if(confirm("Are you sure to delete this group (and all user in group)?")){
+            $.ajax({
+                type: "POST",
+                url: "<?=site_url('/permission/delete/')?>",
+                data: {
+                    usergroupid : groupid
+                }
+            }).done(function(){
+                window.location = '';
+            });
+        }
+        return false;
+    }
+
+    /*
+    *   Function cancel update
+    */
+
+    function cancel(element){
+        var groupid = $(element).attr('data-id');
+        var parent = $(element).parents();
+        var ele = $(parent[1]).children();
+
+        $(ele[1]).text($('#usergroupname_' + groupid).val());
+        $(ele[3]).text($('#description_' + groupid).val());
+        $(ele[4]).text($('#status_' + groupid).attr('checked') == 'checked' ? 'Enabled' : 'Disabled');
+        $(ele[5]).html('<a href="#" data-id="'+ groupid + '" onclick="return edit(this);"><i class="entypo-pencil"></i></a>\
+                        <a href="#" onclick="return removegroup('+ groupid + ');"><i class="entypo-cancel-circled"></i></a>'); // action
+    }
+
+    /*
+    *   Function start update
+    */
+
+    function edit(element){
+        var groupid = $(element).attr('data-id');
+
+        var parent = $(element).parents();
+        var ele = $(parent[1]).children();
+
+        $(ele[1]).html('<input type="text" value="' + $(ele[1]).text() + '" class="form-control" id="usergroupname_' + groupid + '" placeholder="Group name" />'); // group name
+        $(ele[3]).html('<input type="text" value="' + $(ele[3]).text() + '" class="form-control" id="description_' + groupid + '" placeholder="Description" />'); // description
+        $(ele[4]).html('<div class="make-switch switch-small" data-on="primary"  data-off="primary">\
+                            <input class="changeswitch" type="checkbox" '+ ($(ele[4]).text() == 'Enabled' ? 'checked' : '') +' id="status_' + groupid + '" />\
+                        </div>'); // status
+        $(ele[5]).html('<a href="#" data-id="' + groupid +'" onclick="return update(this);"><i class="entypo-check"></i></a>\
+                        <a href="#" data-id="' + groupid +'" onclick="return cancel(this);"><i class="entypo-cancel"></i></a>'); // action
+        $($('#status_' + groupid).parents()[0]).bootstrapSwitch();
+        return false;
+    }
+
+    /*
+    *   Function add new group
+    */
+
+    function add(element){
+        var group_name = $('#usergroupname').val();
+        var group_des = $('#description').val();
+        var status = $($('#status').parents()[0]).bootstrapSwitch('status') == true ? 'on' : 'off';
+
+
+        $.ajax({
+            type: 'POST',
+            url: '<?=site_url('/permission/add/')?>',
+            data: {
+                usergroupname : group_name,
+                description :   group_des,
+                status      : status
+            }
+        }).done(function(){
+           window.location = '';
+        });
+
+        return false
+    }
+
+    function update(element){
+        var group_id = $(element).attr('data-id');
+        var group_name = $('#usergroupname_' + group_id).val();
+        var group_des = $('#description_' + group_id).val();
+        var status = $($('#status_' + group_id).parents()[0]).bootstrapSwitch('status') == true ? 'on' : 'off';
+
+        $.ajax({
+            type: 'POST',
+            url: '<?=site_url('/permission/update/')?>',
+            data: {
+                usergroupname : group_name,
+                description :   group_des,
+                status      : status,
+                usergroupid : group_id
+            }
+        }).done(function(){
+            window.location = '';
+        });
+
+        return false
+    }
+</script>
