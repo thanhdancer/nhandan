@@ -63,7 +63,8 @@ class Project extends CI_Controller{
     public function adminConfig(){
 
         $data = array();
-
+        print_r($this->config);
+        die();
         $data['pageTitle'] = "Config module <strong>Project</strong>";
 
 
