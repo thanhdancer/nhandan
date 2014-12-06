@@ -16,7 +16,7 @@
  * @version		$Id: permission_model.php  10/30/14 12:55 AM lion $
  */
 
-class Modules_model extends CI_Model{
+class Route_model extends CI_Model{
 
     public function __construct(){
         parent::__construct();

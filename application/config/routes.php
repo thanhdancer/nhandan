@@ -44,6 +44,7 @@ $route['404_override'] = '';
 
 /* Added by Thanh Dancer */
 $route['admin'] = "admin/admin";
+//$route['admin/category/add/(:any)'] = "admin/category/add"
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

@@ -1,0 +1,116 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: add.phtml  12/6/14 12:16 PM lion $
+ */
+ 
+ ?>
+ <h2><?=$pageTitle?></h2>
+<br />
+<div class="row">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Category info
+            </div>
+        </div>
+        <div class="panel-body">
+            <form role="form" class="form-horizontal form-groups-bordered validate" novalidate="novalidate" method="post">
+                <!-- Module-->
+
+
+                        <div class="form-group">
+                            <!-- Category name -->
+                            <div class="col-md-6">
+                                    <label for="categoryname" class="col-sm-3 control-label">Category name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="categoryname" data-validate="required" id="categoryname" class="form-control" placeholder="Category name" value="<?=(isset($category->name)? $category->name : '')?>" />
+                                    </div>
+                            </div>
+
+                            <!-- Module -->
+                            <div class="col-md-6">
+
+                                    <label for="module" class="col-sm-3 control-label">Module</label>
+                                    <div class="col-sm-9">
+                                        <select id="module" name="module" class="form-control">
+                                            <?php
+                                            foreach($this->config->config['adminController'] as $module => $moduleTitle):
+                                                ?>
+                                                <option <?=($modulename == $module) ? 'selected' : ''?> value="<?=$module?>"><?=$moduleTitle?></option>
+                                            <?php
+                                            endforeach;
+                                            ?>
+                                        </select>
+                                    </div>
+
+                            </div>
+                        </div>
+
+                <div class="form-group">
+                    <!-- Parent -->
+                    <div class="col-md-6">
+                        <label for="parent" class="col-sm-3 control-label">Parent</label>
+                        <div class="col-sm-9">
+                            <select id="parent" name="parent" class="form-control">
+                                <option value="0">Root</option>
+                                <?php
+                                foreach($parents['items'] as $parent ):
+                                ?>
+                                <option <?=(isset($category->parent) && $category->parent == $parent->categoryid )? 'selected' : ''?> value="<?=$parent['categoryid']?>"><?=str_repeat('---', $parent['depth']+1) . ' '.  $parent['name']?></option>
+                                <?php
+                                endforeach;
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+
+                        <label for="status" class="col-sm-3 control-label">Status</label>
+                        <div class="col-sm-9">
+                            <select id="status" name="status" class="form-control">
+                                <option value="1">Enabled</option>
+                                <option <?=(isset($category->status) && $category->status == 0 )? 'selected' : ''?> value="0">Disabled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="reset" class="btn btn-primary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+       $("select#module").change(function(){
+          window.location = "<?=site_url('admin/category/add/');?>/" + this.value;
+       });
+    });
+</script>

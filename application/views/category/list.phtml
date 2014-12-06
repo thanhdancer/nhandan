@@ -1,0 +1,105 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: list.phtml  12/6/14 12:07 PM lion $
+ */
+ 
+ ?>
+<h2><?= $pageTitle ?></h2>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label for="module" class="label-control">Module name</label>
+
+                <select id="module" name="module" class="selectboxit">
+                    <?php
+                    foreach($this->config->config['adminController'] as $modules => $modulename):
+                    ?>
+                    <option <?=($modules==$module) ? 'selected' : ''?> value="<?=$modules?>"><?=$modulename?></option>
+                    <?php
+                    endforeach;
+                    ?>
+                </select>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Category name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $i = 0;
+            foreach($categories['items'] as $category):
+                $i++
+            ?>
+                <tr>
+                    <td><?=$i?></td>
+                    <td><?=str_repeat('---', $category['depth']) . ' '.  $category['name']?></td>
+                    <td><?=$category['status'] == 1 ? '<div class="label label-success">Enabled</div>':'<div class="label label-secondary">Disabled</div>'?></td>
+                    <td>
+                        <select onchange="action(this);" class="selectboxit" data-first-option="false" data-id="<?=$category['categoryid']?>">
+                            <option>Action</option>
+                            <option value="1">Edit category</option>
+                            <option value="2">Delete category</option>
+                        </select>
+                    </td>
+                </tr>
+
+            <?php
+            endforeach;
+            ?>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+ <script>
+     $(document).ready(function(){
+
+
+
+         $("#module").change(function(){
+             window.location = "<?=site_url('admin/category/index');?>/" + this.value;
+         });
+     });
+
+     function action(element){
+         var act = $(element).val();
+
+         switch(parseInt(act)){
+             case 1: // edit
+                 window.location =  '<?=site_url('admin/category/edit/') . '/' . $module?>/' + $(element).attr('data-id');
+                 break;
+             case 2:
+                 if(confirm("If you delete this category. All it's children will be deleted too. Are you sure to do that?")){
+                     window.location =  '<?=site_url('admin/category/delete/'). '/' .  $module?>/' + $(element).attr('data-id');
+                 }
+                 break;
+         }
+
+     }
+ </script>

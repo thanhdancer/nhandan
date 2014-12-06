@@ -366,9 +366,32 @@ $config['proxy_ips'] = '';
 $config['adminMenu'] = array(
 
     /**
-     * Module Project
+     * Module categories
      */
 
+    'category' => array(
+        'title' => 'Category',
+        'route' => 'admin/category',
+        'icon' => 'entypo-flow-tree',
+        'permission' => '*',
+        'sub' => array(
+            'list' => array(
+                'title' => 'List all categories',
+                'icon'  => 'entypo-menu',
+                'route' => 'admin/category'
+            ),
+            'add' => array(
+                'title' => 'Add new cateogry',
+                'icon' => 'entypo-plus-squared',
+                'route' => 'admin/category/add'
+            ),
+
+        )
+    ),
+
+    /**
+     * Module Project
+     */
     'project' => array(
         'title' => 'Project',
         'route' => 'admin/project',
@@ -440,12 +463,8 @@ $config['adminMenu'] = array(
 );
 
 $config['adminController'] = array(
-    'admin',
-    'modules',
-    'permission',
-    'project',
-    'setting',
-    'user',
+    'news'    => "News",
+    'project' => "Project"
 );
 
 /* End of file config.php */

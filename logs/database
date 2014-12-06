@@ -109,3 +109,16 @@ CREATE TABLE IF NOT EXISTS `thnd_modules` (
   `modified_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`moduleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_category` (
+  `categoryid` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `module` text NOT NULL,
+  `parentid` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`categoryid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

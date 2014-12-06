@@ -26,6 +26,7 @@
             <thead>
             <tr>
                 <th>#</th>
+                <th>Group ID</th>
                 <th>Group name</th>
                 <th>Number of users</th>
                 <th>Description</th>
@@ -37,6 +38,7 @@
             <?php $i = 0; foreach($groups as $group): $i++; ?>
                 <tr>
                     <td><?=$i?></td>
+                    <td><?=$group->usergroupid?></td>
                     <td><?=$group->usergroupname?></td>
                     <td><?=$group->numusers?></td>
                     <td><?=$group->description?></td>
@@ -51,6 +53,7 @@
             <tfoot>
                 <tr>
                     <td>#</td>
+                    <td></td>
                     <td><input type="text" class="form-control" name="usergroupname" id="usergroupname" placeholder="[New] Group name" /></td>
                     <td></td>
                     <td><input type="text" class="form-control" name="description" id="description" placeholder="[New] Description" /></td>

@@ -11,7 +11,7 @@ if (! defined('BASEPATH')){
     exit("You cannot access this file directly.");
 }
 
-class Modules extends CI_Controller {
+class Route extends CI_Controller {
     private $_user;
     private $data;
 
@@ -45,12 +45,12 @@ class Modules extends CI_Controller {
             )
         );
 
-        $this->load->model('modules/Modules_model', 'mModel');
+        $this->load->model('route/Route_model', 'rModel');
     }
 
     public function index(){
-        $this->data['pageTitle'] = "Modules list";
-        $this->data['modules'] = $this->mModel->getAll();
+        $this->data['pageTitle'] = "Route list";
+        $this->data['modules'] = $this->rModel->getAll();
 
         $this->data['_additionFooter'] = '
             <link rel="stylesheet" href="' . base_url() .'assets/js/zurb-responsive-tables/responsive-tables.css">
@@ -60,7 +60,7 @@ class Modules extends CI_Controller {
             <script src="' . base_url() . 'assets/js/bootstrap-switch.min.js"></script>
         ';
 
-        $this->data['_mainModule'] = $this->load->view('modules/list.phtml', $this->data, TRUE);
+        $this->data['_mainModule'] = $this->load->view('route/list.phtml', $this->data, TRUE);
 
         if($this->session->flashdata('message')){
             $this->data['_additionFooter'] .= '

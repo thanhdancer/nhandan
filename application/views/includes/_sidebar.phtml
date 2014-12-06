@@ -96,7 +96,7 @@
                     <?php
                     foreach($sub1['sub'] as $sub2):
                     ?>
-                    <li <?php echo (('admin/' . $this->uri->segment(2) . '/' . $this->uri->segment(3)) == $sub2['route'] || ('admin/' . $this->uri->segment(2) ) == $sub2['route']) ? 'class="active"' : ''; ?>>
+                    <li <?php echo (('admin/' . $this->uri->segment(2) . '/' . $this->uri->segment(3)) == $sub2['route']); ?>>
                         <a href="<?=site_url($sub2['route'])?>">
                             <i class="<?=$sub2['icon']?>"></i>
                             <span><?=$sub2['title']?></span>
