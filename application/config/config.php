@@ -357,6 +357,96 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+/*
+|--------------------------------------------------------------------------
+| Menu tree
+|--------------------------------------------------------------------------
+*/
+
+$config['adminMenu'] = array(
+
+    /**
+     * Module Project
+     */
+
+    'project' => array(
+        'title' => 'Project',
+        'route' => 'admin/project',
+        'icon' => 'entypo-globe',
+        'permission' => '*',
+        'sub' => array(
+            'list' => array(
+                'title' => 'List projects',
+                'icon' => '',
+                'route' => 'admin/project/list'
+            ),
+            'add' => array(
+                'title' => 'Add project',
+                'icon'  => '',
+                'route' => 'admin/project/add'
+            ),
+            'config' => array(
+                'title' => 'Config',
+                'icon'  => '',
+                'route' => 'admin/project/config'
+            )
+        )
+    ),
+
+    /**
+     * Module Core
+     */
+    'core' => array(
+        'title' => 'Administrator',
+        'route' => 'admin',
+        'icon' => 'entypo-cog',
+        'permission' => '*',
+        'sub' => array(
+            'user' => array(
+                'title' => 'User',
+                'icon' => 'entypo-user',
+                'route' => 'admin/user',
+                'permission' => '*',
+                'sub' => array(
+                    'list' => array(
+                        'title' => 'List users',
+                        'icon'  => '',
+                        'permission' => '*',
+                        'route' => 'admin/user/display'
+                    ),
+                    'add' => array(
+                        'title' => 'Add user',
+                        'icon'  => '',
+                        'permission' => '*',
+                        'route' => 'admin/user/add'
+                    )
+                )
+            ),
+            'permission' => array(
+                'title' => 'Permission',
+                'icon' => 'entypo-lock',
+                'route' => 'admin/permission',
+                'permission' => '*'
+            ),
+            'setting' => array(
+                'title' => 'Setting',
+                'icon' => 'entypo-tools',
+                'route' => 'admin/setting',
+                'permission' => '*'
+            )
+        )
+    ),
+
+);
+
+$config['adminController'] = array(
+    'admin',
+    'modules',
+    'permission',
+    'project',
+    'setting',
+    'user',
+);
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

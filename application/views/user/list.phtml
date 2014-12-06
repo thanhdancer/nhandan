@@ -65,11 +65,11 @@
 
         switch(parseInt(act)){
             case 1: // edit
-                window.location =  '<?=site_url('/user/edit/')?>/' + $(element).attr('data-id');
+                window.location =  '<?=site_url('admin/user/edit/')?>/' + $(element).attr('data-id');
                 break;
             case 2:
                 if(confirm("Are you sure to delete this user?")){
-                    window.location =  '<?=site_url('/user/delete/')?>/' + $(element).attr('data-id');
+                    window.location =  '<?=site_url('admin/user/delete/')?>/' + $(element).attr('data-id');
                 }
                 break;
         }

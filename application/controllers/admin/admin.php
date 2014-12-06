@@ -33,7 +33,7 @@ class Admin extends CI_Controller{
 
         $logged = $this->session->userdata('userid');
         if ( !$logged ){
-            redirect('/user/login');
+            redirect('admin/user/login');
         }
 
         $this->data = array();
@@ -58,6 +58,9 @@ class Admin extends CI_Controller{
 
         $this->data['_mainModule'] = $this->load->view('admin/index.phtml', $data, TRUE);
         $this->load->view('includes/_adminTemplate.phtml', $this->data);
+
+
+
     }
 }
 

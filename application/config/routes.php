@@ -43,7 +43,7 @@ $route['404_override'] = '';
 
 
 /* Added by Thanh Dancer */
-$route['admincp'] = "admin";
+$route['admin'] = "admin/admin";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

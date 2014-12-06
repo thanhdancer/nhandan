@@ -97,3 +97,15 @@ CREATE TABLE IF NOT EXISTS `thnd_usergroup` (
   `modified_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`usergroupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_modules` (
+  `moduleid` int(11) NOT NULL AUTO_INCREMENT,
+  `modulename` varchar(30) NOT NULL,
+  `moduleroute` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`moduleid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

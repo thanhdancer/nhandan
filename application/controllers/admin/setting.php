@@ -32,7 +32,7 @@ class Setting extends CI_Controller{
 
         $this->_user = $this->session->all_userdata();
         if(!isset($this->_user['userid'])){
-            redirect('/user/login');
+            redirect('admin/user/login');
         }
 
         $this->data = array();
@@ -111,7 +111,7 @@ class Setting extends CI_Controller{
             'message'   => 'Update setting successful'
         ));
 
-        redirect('/setting/index');
+        redirect('admin/setting/index');
     }
 
 }

@@ -31,7 +31,7 @@ class Project extends CI_Controller{
 
         $this->_user = $this->session->all_userdata();
         if(!isset($this->_user['userid']) && substr($this->router->fetch_method(),0,5) == 'admin' ){
-            redirect('/user/login');
+            redirect('admin/user/login');
         }
 
         $this->data = array();

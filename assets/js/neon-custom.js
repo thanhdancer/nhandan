@@ -1594,14 +1594,17 @@ function setup_sidebar_menu()
 
 	});
 	
-	// Open the submenus with "opened" class
-	public_vars.$mainMenu.find('.'+submenu_options.submenu_opened_class+' > ul').addClass('visible');
+	
 	
 	// Well, somebody may forgot to add "active" for all inhertiance, but we are going to help you (just in case) - we do this job for you for free :P!
 	if(public_vars.$mainMenu.hasClass('auto-inherit-active-class'))
 	{
 		menu_set_active_class_to_parents( public_vars.$mainMenu.find('.active') );
+		
 	}
+
+	// Open the submenus with "opened" class
+	public_vars.$mainMenu.find('.'+submenu_options.submenu_opened_class+' > ul').addClass('visible');
 	
 	// Search Input
 	var $search_input = public_vars.$mainMenu.find('#search input[type="text"]'),
@@ -1704,6 +1707,7 @@ function menu_set_active_class_to_parents($active_element)
 		var $parent = $active_element.parent().parent();
 		
 		$parent.addClass('active');
+		$parent.addClass('opened');
 		
 		if(! $parent.hasClass('root-level'))
 			menu_set_active_class_to_parents($parent)

@@ -36,7 +36,7 @@ class Permission extends CI_Controller{
 
         $this->_user = $this->session->all_userdata();
         if(!isset($this->_user['userid'])){
-            redirect('/user/login');
+            redirect('admin/user/login');
         }
 
         $this->data = array();

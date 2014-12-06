@@ -34,7 +34,7 @@
 
 
 
-<ul id="main-menu" class="">
+<ul id="main-menu" class="auto-inherit-active-class">
 <!-- add class "multiple-expanded" to allow multiple submenus to open -->
 <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 
@@ -49,86 +49,76 @@
     </form>
 </li>
 -->
+    <!-- Default menu -->
     <li>
-        <a href="<?php echo site_url('/user/edit/' . $this->session->userdata('userid')); ?>">
+        <a href="<?php echo site_url('admin/user/edit/' . $this->session->userdata('userid')); ?>">
             <img class="img-circle" width="30" src="<?php echo ($this->session->userdata('avatar') != '') ? $this->session->userdata('avatar') : base_url() . '/assets/images/default-avatar.png'; ?>" />
             <span><strong><?php echo $this->session->userdata('firstname') . " " . $this->session->userdata('lastname'); ?></strong></span>
         </a>
         <ul>
             <li>
-                <a href="<?php echo site_url('/user/edit/' . $this->session->userdata('userid')); ?>">
+                <a href="<?php echo site_url('admin/user/edit/' . $this->session->userdata('userid')); ?>">
                     <span>Edit info</span>
                 </a>
             </li>
             <li>
-                <a href="<?php echo site_url('/user/logout/'); ?>">
+                <a href="<?php echo site_url('admin/user/logout/'); ?>">
                     <span>Logout</span>
                 </a>
             </li>
         </ul>
     </li>
-    <li>
-        <a href="<?=site_url('/project/')?>">
-            <i class="entypo-globe"></i>
-            <span>Project</span>
-        </a>
-        <ul>
-            <li>
-                <a href="<?=site_url('/project/adminMain')?>">
-                    <span>List projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="<?=site_url('/project/adminAdd')?>">
-                    <span>Add project</span>
-                </a>
-            </li>
-            <li>
-                <a href="<?=site_url('/project/adminConfig')?>">
-                    <span>Config</span>
-                </a>
-            </li>
 
-        </ul>
-    </li>
+    <!--/ Default menu -->
+
+    <!-- Addition menus -->
+    <?php
+
+    foreach($this->config->config['adminMenu'] as $menus):
+    ?>
     <li>
-        <a href="<?php echo site_url('/')?>">
-            <i class="entypo-cog"></i>
-            <span>Administrator</span>
+        <a href="<?=site_url($menus['route'])?>">
+            <i class="<?=$menus['icon']?>"></i>
+            <span><?=$menus['title']?></span>
         </a>
+        <?php if(isset($menus['sub']) && is_array($menus['sub'])):?>
         <ul>
-            <li>
-                <a href="<?php echo site_url('/user/'); ?>">
-                    <i class="entypo-user"></i>
-                    <span>User</span>
+            <?php
+            foreach($menus['sub'] as $sub1):
+            ?>
+            <li <?php echo (('admin/' . $this->uri->segment(2) . '/' . $this->uri->segment(3)) == $sub1['route'] || ('admin/' . $this->uri->segment(2) ) == $sub1['route']) ? 'class="active"' : ''; ?>>
+                <a href="<?=site_url($sub1['route'])?>">
+                    <i class="<?=$sub1['icon']?>"></i>
+                    <span><?=$sub1['title']?></span>
                 </a>
+                <?php if(isset($sub1['sub']) && is_array($sub1['sub'])):?>
                 <ul>
-                    <li>
-                        <a href="<?php echo site_url('/user/display'); ?>">
-                            <span>List users</span>
+                    <?php
+                    foreach($sub1['sub'] as $sub2):
+                    ?>
+                    <li <?php echo (('admin/' . $this->uri->segment(2) . '/' . $this->uri->segment(3)) == $sub2['route'] || ('admin/' . $this->uri->segment(2) ) == $sub2['route']) ? 'class="active"' : ''; ?>>
+                        <a href="<?=site_url($sub2['route'])?>">
+                            <i class="<?=$sub2['icon']?>"></i>
+                            <span><?=$sub2['title']?></span>
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo site_url('/user/add'); ?>">
-                            <span>Add user</span>
-                        </a>
-                    </li>
+                    <?php
+                    endforeach;
+                    ?>
                 </ul>
+                <?php endif; ?>
             </li>
-            <li>
-                <a href="<?php echo site_url('/permission/'); ?>">
-                    <i class="entypo-lock"></i>
-                    <span>Permission</span>
-                </a>
-            </li>
-            <li>
-                <a href="<?php echo site_url('/setting/'); ?>">
-                    <i class="entypo-tools"></i>
-                    <span>Setting</span>
-                </a>
-            </li>
+            <?php
+            endforeach;
+            ?>
         </ul>
+        <?php endif; ?>
     </li>
+    <?php
+    endforeach;
+    ?>
+    <!--/ Addition menus -->
+
 
 </ul>
 

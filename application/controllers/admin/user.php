@@ -36,7 +36,7 @@ class User extends CI_Controller{
 
         $this->_user = $this->session->all_userdata();
         if (!isset($this->_user['userid']) &&  $this->router->fetch_method() != 'login' ){
-           redirect('/user/login');
+           redirect('admin/user/login');
         }
 
         $this->load->Model('User_model');
@@ -48,7 +48,7 @@ class User extends CI_Controller{
      *  Index
      */
     public function index(){
-        redirect('/user/display');
+        redirect('admin/user/display');
     }
 
     /**
@@ -122,7 +122,7 @@ class User extends CI_Controller{
             'lastname' => '',
             'avatar' => ''
         ));
-        redirect('/user/login');
+        redirect('admin/user/login');
     }
 
     /**
@@ -166,7 +166,7 @@ class User extends CI_Controller{
                     'message'   => 'Update ' . $post['username'] . ' user successful'
                 ));
             }
-            redirect('/user/display');
+            redirect('admin/user/display');
 
         }
 
@@ -307,7 +307,7 @@ class User extends CI_Controller{
                     'type'      => 'success',
                     'message'   => 'Add user <strong>'. $post['username'] .'</strong> successful'
                 ));
-                redirect('/user/display');
+                redirect('admin/user/display');
             }
             $data['_additionFooter'] = '
                 <script type="text/javascript">
@@ -335,7 +335,7 @@ class User extends CI_Controller{
                 'message'   => 'Deleted <strong>'. $affected_rows .'</strong> user(s) successful'
             ));
         }
-        redirect('/user/display/');
+        redirect('admin/user/display/');
     }
 }
 

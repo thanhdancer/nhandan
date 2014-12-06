@@ -26,24 +26,22 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Group name</th>
-                <th>Number of users</th>
-                <th>Description</th>
+                <th>Module name</th>
+                <th>Route</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            <?php $i = 0; foreach($groups as $group): $i++; ?>
+            <?php $i = 0; foreach($modules as $module): $i++; ?>
                 <tr>
                     <td><?=$i?></td>
-                    <td><?=$group->usergroupname?></td>
-                    <td><?=$group->numusers?></td>
-                    <td><?=$group->description?></td>
-                    <td><?=$group->status == 1 ? "Enabled": "Disabled"?></td>
+                    <td><?=$module->modulename?></td>
+                    <td><?=$module->moduleroute?></td>
+                    <td><?=$module->status == 1 ? "Enabled" : "Disabled"?></td>
                     <td>
-                        <a href="#" data-id="<?=$group->usergroupid?>" onclick="return edit(this);"><i class="entypo-pencil"></i></a>
-                        <a href="#" onclick="return removegroup(<?=$group->usergroupid?>);"><i class="entypo-cancel-circled"></i></a>
+                        <a href="#" data-id="<?=$module->moduleid?>" onclick="return edit(this);"><i class="entypo-pencil"></i></a>
+                        <a href="#" onclick="return removegroup(<?=$module->moduleid?>);"><i class="entypo-cancel-circled"></i></a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -51,9 +49,8 @@
             <tfoot>
                 <tr>
                     <td>#</td>
-                    <td><input type="text" class="form-control" name="usergroupname" id="usergroupname" placeholder="[New] Group name" /></td>
-                    <td></td>
-                    <td><input type="text" class="form-control" name="description" id="description" placeholder="[New] Description" /></td>
+                    <td><input type="text" class="form-control" name="modulename" id="modulename" placeholder="[New] Module name" /></td>
+                    <td><input type="text" class="form-control" name="moduleroute" id="moduleroute" placeholder="[New] Route" /></td>
                     <td>
                         <div class="make-switch switch-small" data-on="primary"  data-off="primary">
                             <input type="checkbox" checked id="status" name="status" />
