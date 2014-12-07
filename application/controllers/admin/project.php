@@ -138,18 +138,32 @@ class Project extends CI_Controller{
             }
 
             $this->load->library('upload', $this->uploadConfig);
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|htmlspecialchars');
+            $this->form_validation->set_rules('title', "Title", 'htmlspecialchars');
+            $this->form_validation->set_rules('sapo', "Sapo", 'htmlspecialchars');
+            $this->form_validation->set_rules('location', "Location", 'htmlspecialchars');
+            $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
+
+            if($this->form_validation->run() == FALSE){
+                $this->form_validation->set_error_delimiters('', '<br />');
+
+                $error[] = str_replace("\n", '',validation_errors());
+
+            }
 
             $post['projectname'] = $this->input->post('projectname');
             $post['title'] = $this->input->post('title');
             $post['sapo'] = $this->input->post('sapo');
-            $post['content'] = $this->input->post('projectcontent');
+            $post['content'] = $this->input->post('projectcontent', false);
             $post['deadline'] = $this->input->post('deadline');
             $post['goal'] = $this->input->post('goal');
             $post['location'] = $this->input->post('location');
-            $post['status'] = $this->input->post('stauts');
+            $post['status'] = $this->input->post('status');
             $post['userid'] = $this->_user['userid'];
 
-            print_r($post);die();
+
             // check required field
             if(trim($post['projectname']) == '' || trim($post['deadline']) == '' || trim($post['goal']) == '' || trim($post['location']) == ''){
                 $error[] = "Required field(s) need fill.";
@@ -228,6 +242,21 @@ class Project extends CI_Controller{
             }
 
             $this->load->library('upload', $this->uploadConfig);
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|htmlspecialchars');
+            $this->form_validation->set_rules('title', "Title", 'htmlspecialchars');
+            $this->form_validation->set_rules('sapo', "Sapo", 'htmlspecialchars');
+            $this->form_validation->set_rules('location', "Location", 'htmlspecialchars');
+            $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
+
+            if($this->form_validation->run() == FALSE){
+                $this->form_validation->set_error_delimiters('', '<br />');
+
+                $error[] = str_replace("\n", '',validation_errors());
+
+            }
+
 
             $post['projectname'] = $this->input->post('projectname');
             $post['title'] = $this->input->post('title');
@@ -236,7 +265,7 @@ class Project extends CI_Controller{
             $post['deadline'] = $this->input->post('deadline');
             $post['goal'] = $this->input->post('goal');
             $post['location'] = $this->input->post('location');
-            $post['status'] = $this->input->post('stauts');
+            $post['status'] = $this->input->post('status');
             $post['userid'] = $this->_user['userid'];
             $post['projectid'] = $this->input->post('projectid');
 

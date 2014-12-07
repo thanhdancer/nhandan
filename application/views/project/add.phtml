@@ -30,33 +30,33 @@
         <form enctype="multipart/form-data" role="form" method="post" class="validate">
             <div class="form-group">
                 <label class="control-label">Project name</label>
-                <input type="text" data-validate="required" class="form-control" name="projectname" placeholder="Project name" />
+                <input type="text" value="<?=set_value('projectname')?>" data-validate="required" class="form-control" name="projectname" placeholder="Project name" />
             </div>
 
             <div class="form-group">
                 <label class="control-label">Title</label>
-                <input type="text" class="form-control" name="title" placeholder="Title" />
+                <input type="text" value="<?=set_value('title')?>" class="form-control" name="title" placeholder="Title" />
             </div>
 
             <div class="row form-group">
                 <div class="col-md-4">
                     <label class="control-label">Goal</label>
-                    <input id="goal" type="text" data-validate="required" class="form-control" name="goal" placeholder="Goal (VND)" />
+                    <input id="goal" type="text" value="<?=set_value('goal')?>" data-validate="required" class="form-control" name="goal" placeholder="Goal (VND)" />
                 </div>
                 <div class="col-md-4">
                     <label class="control-label">Deadline</label>
-                    <input data-mask="date" class="form-control" data-validate="required" name="deadline" placeholder="dd/mm/yyyy" />
+                    <input data-mask="date" value="<?=set_value('date')?>" class="form-control" data-validate="required" name="deadline" placeholder="dd/mm/yyyy" />
                 </div>
                 <div class="col-md-4">
                     <label class="control-label">Location</label>
-                    <input type="text" class="form-control" data-validate="required" name="location" placeholder="Project location" />
+                    <input type="text" value="<?=set_value('location')?>" class="form-control" data-validate="required" name="location" placeholder="Project location" />
                 </div>
             </div>
 
             <div class="row form-group">
                 <div class="col-md-9">
                     <label class="control-label">Sapo</label>
-                    <textarea style="height: 150px" name="sapo" class="form-control"></textarea>
+                    <textarea style="height: 150px" name="sapo" class="form-control"><?=set_value('sapo')?></textarea>
                 </div>
                 <div class="col-md-3">
 
@@ -81,7 +81,7 @@
 
 
             <div class="form-group">
-                <textarea data-validate="required" name="projectcontent" id="content" rows="20" class="form-control"></textarea>
+                <textarea data-validate="required" name="projectcontent" id="content" rows="20" class="form-control"><?=set_value('projectcontent')?></textarea>
             </div>
 
             <div class="form-group">
