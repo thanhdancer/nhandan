@@ -158,8 +158,13 @@ class Category extends CI_Controller {
         $this->data['category'] = $category;
 
         $this->data['parents']   = $this->cModel->getTreeByModuleExceptId($category->module, $categoryid);
-        $this->data['pageTitle'] = "Edit category " . $category->name;
-        $this->data['title'] .=  "Edit category " . '"' . $category->name . '"';
+        $this->data['pageTitle'] = "Edit category &quot;" . $category->name . "&quot;";
+        $this->data['title'] .=  "Edit category " . '&quot;' . $category->name . '&quot;';
+        $this->data['breadcrumb'][] = array(
+            'name'      =>  'Edit <strong>&quot;' . $category->name . '&quot;</strong>',
+            'link'      =>  ''
+        );
+
         $this->data['_mainModule'] = $this->load->view('category/edit.phtml', $this->data, TRUE);
 
         if($this->input->post()){

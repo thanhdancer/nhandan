@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `thnd_config` (
 CREATE TABLE IF NOT EXISTS `thnd_project` (
   `projectid` int(11) NOT NULL AUTO_INCREMENT,
   `categoryid` int(11) NOT NULL,
-  `projectname` varchar(30) NOT NULL,
+  `projectname` text NOT NULL,
   `title` text NOT NULL,
   `imgthumb` text ,
   `sapo` text ,

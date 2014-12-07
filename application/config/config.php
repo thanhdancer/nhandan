@@ -400,17 +400,17 @@ $config['adminMenu'] = array(
         'sub' => array(
             'list' => array(
                 'title' => 'List projects',
-                'icon' => '',
-                'route' => 'admin/project/list'
+                'icon' => 'entypo-menu',
+                'route' => 'admin/project/'
             ),
             'add' => array(
                 'title' => 'Add project',
-                'icon'  => '',
-                'route' => 'admin/project/add'
+                'icon'  => 'entypo-plus-squared',
+                'route' => 'admin/project/newproject'
             ),
             'config' => array(
                 'title' => 'Config',
-                'icon'  => '',
+                'icon'  => 'entypo-cog',
                 'route' => 'admin/project/config'
             )
         )
