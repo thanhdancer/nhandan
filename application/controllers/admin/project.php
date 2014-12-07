@@ -142,13 +142,14 @@ class Project extends CI_Controller{
             $post['projectname'] = $this->input->post('projectname');
             $post['title'] = $this->input->post('title');
             $post['sapo'] = $this->input->post('sapo');
-            $post['content'] = $this->input->post('projectcontent', false);
+            $post['content'] = $this->input->post('projectcontent');
             $post['deadline'] = $this->input->post('deadline');
             $post['goal'] = $this->input->post('goal');
             $post['location'] = $this->input->post('location');
             $post['status'] = $this->input->post('stauts');
             $post['userid'] = $this->_user['userid'];
 
+            print_r($post);die();
             // check required field
             if(trim($post['projectname']) == '' || trim($post['deadline']) == '' || trim($post['goal']) == '' || trim($post['location']) == ''){
                 $error[] = "Required field(s) need fill.";
