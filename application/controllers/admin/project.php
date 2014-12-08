@@ -52,7 +52,7 @@ class Project extends CI_Controller{
             ),
             array(
                 'name'      =>  'Project',
-                'link'      =>  site_url('/project/adminMain')
+                'link'      =>  site_url('admin/project/')
             )
         );
 
@@ -140,10 +140,10 @@ class Project extends CI_Controller{
             $this->load->library('upload', $this->uploadConfig);
             $this->load->library('form_validation');
 
-            $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|htmlspecialchars');
-            $this->form_validation->set_rules('title', "Title", 'htmlspecialchars');
-            $this->form_validation->set_rules('sapo', "Sapo", 'htmlspecialchars');
-            $this->form_validation->set_rules('location', "Location", 'htmlspecialchars');
+            $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
+            $this->form_validation->set_rules('title', "Title", 'prep_for_form');
+            $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
+            $this->form_validation->set_rules('location', "Location", 'prep_for_form');
             $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
 
             if($this->form_validation->run() == FALSE){
@@ -220,8 +220,11 @@ class Project extends CI_Controller{
             'link'  =>  ""
         );
 
-        $this->data['project'] = $this->pModel->find($projectid)[0];
+        $this->data['project'] = $this->pModel->find($projectid);
 
+        if(!$this->data['project']){
+            show_404();
+        }
 
         $this->data['_additionFooter'] = '
             <script src="' . base_url() . 'assets/js/tinymce/tinymce.min.js"></script>
@@ -244,10 +247,10 @@ class Project extends CI_Controller{
             $this->load->library('upload', $this->uploadConfig);
             $this->load->library('form_validation');
 
-            $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|htmlspecialchars');
-            $this->form_validation->set_rules('title', "Title", 'htmlspecialchars');
-            $this->form_validation->set_rules('sapo', "Sapo", 'htmlspecialchars');
-            $this->form_validation->set_rules('location', "Location", 'htmlspecialchars');
+            $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
+            $this->form_validation->set_rules('title', "Title", 'prep_for_form');
+            $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
+            $this->form_validation->set_rules('location', "Location", 'prep_for_form');
             $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
 
             if($this->form_validation->run() == FALSE){
@@ -315,6 +318,16 @@ class Project extends CI_Controller{
         }
 
         $this->data['_mainModule'] = $this->load->view('project/edit.phtml', $this->data, TRUE);
+        if($this->session->flashdata('message')){
+            $this->data['_additionFooter'] .= '
+                <script type="text/javascript">
+                    jQuery(document).ready(function($){
+                        toastr.' . $this->session->flashdata('type') . '(\'' . $this->session->flashdata('message') . '\')
+                    });
+                </script>
+            ';
+        }
+
         $this->load->view('includes/_adminTemplate.phtml', $this->data);
     }
 
@@ -331,6 +344,116 @@ class Project extends CI_Controller{
             ));
         }
         redirect('admin/project/index/');
+    }
+
+    /**
+     * @param int $projectid
+     */
+    public function view($projectid = 0){
+        $this->data['pageTitle'] = "Project review";
+
+        $this->data['breadcrumb'][] = array(
+            'name'  =>  'View project',
+            'link'  =>  'admin/view/' . $projectid
+        );
+
+        $this->data['project'] = $this->pModel->find($projectid);
+
+        if(!$this->data['project']){
+            show_404();
+        }
+
+        $this->data['_mainModule'] = $this->load->view('project/view.phtml', $this->data, TRUE);
+        $this->load->view('includes/_adminTemplate.phtml', $this->data);
+
+    }
+
+
+    /**
+     * @param int $status
+     * @param int $projectid
+     */
+    public function status($status = 1, $projectid = 0){
+
+        if(!in_array($status, array(0,1,2))){
+            $this->session->set_flashdata(array(
+                'type'      =>  'error',
+                'message'   =>  'Wrong status state.'
+            ));
+
+        }else{
+            $this->pModel->changeStatus($status, $projectid);
+            $this->session->set_flashdata(array(
+                'type'      =>  'success',
+                'message'   =>  'Status updated.'
+            ));
+        }
+
+
+        redirect('admin/project/view/' . $projectid );
+    }
+
+    /******************* Backer **********************************/
+    /**
+     * @param int $projectid
+     */
+    public function backers($projectid = 0){
+
+        $this->data['project'] = $this->pModel->find($projectid);
+        $this->data['backers'] = $this->pModel->listBackers($projectid);
+
+        if(!$this->data['project']){
+            show_404();
+        }
+
+        $this->data['pageTitle'] = "Backers of project \"" . $this->data['project']->projectname . "\"";
+        $this->data['breadcrumb'][] = array(
+            'name'  =>  'Backers',
+            'link'  =>  ""
+        );
+
+        $this->data['_additionFooter'] = '
+            <link rel="stylesheet" href="' . base_url() .'assets/js/zurb-responsive-tables/responsive-tables.css">
+            <link rel="stylesheet" href="' . base_url() . 'assets/js/selectboxit/jquery.selectBoxIt.css">
+            <script src="' . base_url() . 'assets/js/zurb-responsive-tables/responsive-tables.js"></script>
+            <script src="' . base_url() . 'assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
+            <script src="' . base_url() . 'assets/js/bootstrap-switch.min.js"></script>
+
+        ';
+
+        $this->data['_mainModule'] = $this->load->view('project/backerlist.phtml', $this->data, TRUE);
+
+        if($this->session->flashdata('message')){
+            $this->data['_additionFooter'] .= '
+                <script type="text/javascript">
+                    jQuery(document).ready(function($){
+                        toastr.' . $this->session->flashdata('type') . '(\'' . $this->session->flashdata('message') . '\')
+                    });
+                </script>
+            ';
+        }
+
+        $this->load->view('includes/_adminTemplate.phtml', $this->data);
+    }
+
+    /**
+     *  Delete a backer
+     */
+    public function deletebacker(){
+        if($this->input->post()){
+            $this->load->model('project/Backer_model', 'bModel');
+            $this->bModel->delete($this->input->post('backerid'));
+        }
+    }
+
+    /**
+     * Update backer status
+     */
+    public function updateBackerStatus(){
+        if($this->input->post()){
+            $this->load->model('project/Backer_model', 'bModel');
+            $this->bModel->updateStatus($this->input->post('backerid'), $this->input->post('status'));
+        }
     }
 
     public function config(){

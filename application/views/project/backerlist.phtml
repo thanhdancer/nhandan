@@ -1,0 +1,111 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: backerlist.phtml  12/8/14 11:42 AM lion $
+ */
+ 
+ ?>
+ <h2><?=$pageTitle?></h2>
+<br/>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Backer name</th>
+                <th>Image</th>
+                <th>Donate time</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i = 0; foreach($backers as $backer): $i++; ?>
+                <tr>
+                    <td><?=$i?></td>
+                    <td><?=$backer->backername?></td>
+                    <td><?=$backer->image?></td>
+                    <td><?=date('d/m/Y - H:m',$backer->backertime)?></td>
+                    <td><?=$backer->amount?></td>
+                    <td><div class="make-switch switch-small" data-on="primary"  data-off="primary">
+                            <input class="backerstatus" data-id="<?=$backer->backerid?>" type="checkbox" <?=$backer->status== 1 ? 'checked': ''?> id="status" name="status" />
+                        </div>
+                        <!--<?=$backer->status== 1 ? '<span class="label label-success">Enabled</span>': '<span class="label label-warning">Pending</span>'?>--></td>
+                    <td>
+
+                        <a href="#" onclick="return removebacker(<?=$backer->backerid?>);"><i class="entypo-cancel-circled"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <!--<tfoot>
+            <tr>
+                <td>#</td>
+                <td></td>
+                <td><input type="text" class="form-control" name="usergroupname" id="usergroupname" placeholder="[New] Group name" /></td>
+                <td></td>
+                <td><input type="text" class="form-control" name="description" id="description" placeholder="[New] Description" /></td>
+                <td>
+                    <div class="make-switch switch-small" data-on="primary"  data-off="primary">
+                        <input type="checkbox" checked id="status" name="status" />
+                    </div>
+                </td>
+                <td><a href="#" onclick="return add()"><i class="entypo-plus-circled"></i></a> </td>
+            </tr>
+            </tfoot>-->
+        </table>
+    </div>
+</div>
+
+<script>
+
+    /*
+     *   Function remove group
+     */
+    function removebacker(backerid){
+        if(confirm("Are you sure to delete this backer?")){
+            $.ajax({
+                type: "POST",
+                url: "<?=site_url('admin/project/deletebacker/')?>",
+                data: {
+                    backerid : backerid
+                }
+            }).done(function(){
+                window.location = '';
+            });
+        }
+        return false;
+    }
+
+    $(document).ready(function(){
+       /*
+        Update status
+         */
+
+        $('.backerstatus').change(function(){
+            $.ajax({
+                type: "POST",
+                url: "<?=site_url('admin/project/updateBackerStatus/')?>",
+                data: {
+                    backerid    :   $(this).attr('data-id'),
+                    status      :   $(this).is(':checked') == true ? "1" : "0"
+                }
+            })
+        })
+    });
+
+</script>

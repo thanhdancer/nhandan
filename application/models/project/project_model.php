@@ -33,14 +33,16 @@ class Project_model extends CI_Model{
      * @return mixed
      */
     public function getAll($sort = 'created_date', $page = 0, $limit = 100){
-        $sql = "SELECT `p`.*, count(`b`.`backerid`) as `numbacker`, sum(`b`.`amount`) as `total`
-                FROM `" . $this->db->dbprefix('project') . "` as `p`
-                LEFT JOIN `" . $this->db->dbprefix('project_backers') . "` AS `b`
-                ON `p`.`projectid` = `b`.`projectid`
-
-                GROUP BY `p`.`projectid`
-
-                ";
+        $sql = "SELECT COUNT(  `b`.`backerid` ) AS  `numbacker` , SUM(  `b`.`amount` ) + 0 AS  `total` ,  `p`.*
+                FROM  `" . $this->db->dbprefix('project') . "` AS  `p`
+                LEFT JOIN (
+                SELECT  `projectid` ,  `backerid` ,  `amount`
+                FROM  `" . $this->db->dbprefix('project_backers') . "`
+                WHERE `status` = 1
+                ) AS  `b` ON  `p`.`projectid` =  `b`.`projectid`
+                GROUP BY  `p`.`projectid`
+                ORDER BY ?
+                LIMIT ? , ?";
 
         $result = $this->db->query($sql, array(
             $sort,
@@ -51,20 +53,51 @@ class Project_model extends CI_Model{
         return $result->result();
     }
 
+    public function listBackers($projectid = 0){
+        $this->db->select('*');
+        $this->db->from($this->db->dbprefix('project_backers'));
+        $this->db->where(array('projectid' => $projectid));
+        $result = $this->db->get();
+        return $result->result();
+    }
+
     /**
      * @param int $projectid
      *
      * @return mixed
      */
     public function find($projectid = 0){
-        $sql = "SELECT *
-                FROM `" . $this->db->dbprefix('project') . "`
-                WHERE `projectid` = ?";
+        $sql = "SELECT COUNT(  `b`.`backerid` ) AS  `numbacker` , SUM(  `b`.`amount` ) + 0 AS  `total` ,  `p`.*
+                FROM  `" . $this->db->dbprefix('project') . "` AS  `p`
+                LEFT JOIN (
+                SELECT  `projectid` ,  `backerid` ,  `amount`
+                FROM  `" . $this->db->dbprefix('project_backers') . "`
+                WHERE `status` = 1
+                ) AS  `b` ON  `p`.`projectid` =  `b`.`projectid`
+                WHERE `p`.`projectid` = ?
+                GROUP BY  `p`.`projectid`
+
+                ";
         $result = $this->db->query($sql, array(
             $projectid
         ));
 
-        return $result->result();
+        return $result->row();
+    }
+
+    /**
+     * @param $status
+     * @param $projectid
+     */
+    public function changeStatus($status, $projectid){
+        $data = array(
+            'status'        => $status,
+            'modified_date' => time(),
+            'modified_user' =>  $this->session->userdata['userid']
+        );
+
+        $this->db->where('projectid', $projectid);
+        $this->db->update($this->db->dbprefix('project'), $data);
     }
 
     /**

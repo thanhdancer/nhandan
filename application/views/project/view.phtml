@@ -1,0 +1,73 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: view.phtml  12/8/14 9:42 AM lion $
+ */
+ 
+ ?>
+ <h2><?=$pageTitle?></h2>
+<br />
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            <?=$project->projectname . ($project->status == 0 ? ' <span class="label label-danger"> (Disabled)</span>' : '') ?>
+        </div>
+        <div class="panel-options">
+            <a class="edit" href="<?=site_url('admin/project/edit/') . '/' . $project->projectid?>"><i class="entypo-pencil"></i>Edit</a>
+            <?php
+            if($project->status == 2):
+            ?>
+            <a class="disable" href="<?=site_url('admin/project/status/0') . '/' . $project->projectid?>"><i class="entypo-pause"></i>Disable</a>
+            <?php
+            else:
+            ?>
+            <a class="enable" href="<?=site_url('admin/project/status/2') . '/' . $project->projectid?>"><i class="entypo-play"></i>Enable</a>
+            <?php
+            endif;
+            ?>
+            <a class="delete" href="<?=site_url('admin/project/delete/') . '/' . $project->projectid?>"><i class="entypo-cancel-circled"></i>Delete</a>
+        </div>
+    </div>
+    <div class="panel-body">
+        <h4>Deadline: <?=date('d/m/Y', $project->deadline) . ' ( ' . ($project->deadline > time() ? floor(($project->deadline - time()) / 86400)  . ' day(s) left)' : '<span class="text-danger">Out of date</span> )')?></h4>
+        <h4>Total backers: <?=$project->numbacker + 0?> <a href="<?=site_url('admin/project/backers/' . $project->projectid)?>"><span class="label label-primary">View</span></a></h4>
+        <h4>Goal: <?=number_format($project->total + 0, 0, ',', '.') . ' / ' . number_format($project->goal, 0, ',', '.') . ' (' . round(( $project->total * 100 ) / $project->goal, 2) . '%)' ?></h4>
+        <h4>
+            <div class="progress progress-bar-danger">
+                <div class="progress-bar progress-bar-success" style="width: <?= (100* $project->total) /$project->goal ?>%" role="progressbar" aria-valuenow="<?=$project->total?>" aria-valuemin="0" aria-valuemax="<?=$project->goal?>">
+                    <?= round((100* $project->total) /$project->goal , 2) ?>%
+                </div>
+            </div>
+        </h4>
+        <hr/>
+        <h2><?=$project->projectname?></h2>
+        <h4><?=$project->sapo?></h4>
+        <div><?=$project->content?></div>
+
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.delete').click(function(){
+            if(confirm("Are you sure to delete this project?")){
+                return true;
+            }
+            return false;
+        })
+    });
+</script>

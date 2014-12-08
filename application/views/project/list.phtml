@@ -38,19 +38,21 @@
         <tr>
             <td><?=$project->projectname?></td>
             <td><img src="<?=base_url() . $project->imgthumb?>" alt="<?=$project->projectname?>" style="max-width: 100px; max-height: 100px"/></td>
-            <td><?=$project->numbacker?></td>
+            <td><a href="<?=site_url('admin/project/backers/' . $project->projectid)?>"><?=$project->numbacker?></a></td>
             <td>
                 <div class="progress progress-bar-danger">
                     <div class="progress-bar progress-bar-success" style="width: <?= (100* $project->total) /$project->goal ?>%" role="progressbar" aria-valuenow="<?=$project->total?>" aria-valuemin="0" aria-valuemax="<?=$project->goal?>">
                         <?= round((100* $project->total) /$project->goal , 2) ?>%
                     </div>
                 </div>
-                <?=$project->total . ' / ' . $project->goal?>
+                <?=number_format($project->total + 0, 0, ',', '.') . ' / ' . number_format($project->goal, 0, ',', '.')?>
             </td>
             <td><?=$project->deadline?></td>
             <td><?=$project->location?></td>
             <td>
-                <a class="edit" href="<?=site_url('admin/project/edit/') . '/' . $project->projectid?>"><i style="font-size: 15px" class="entypo-pencil"></i></a><a href="<?=site_url('admin/project/delete/') . '/' . $project->projectid?>" class="delete"><i style="font-size: 15px" class="entypo-cancel-circled"></i></a>
+                <a class="view" title="View <?=$project->projectname?>" href="<?=site_url('admin/project/view/') . '/' . $project->projectid?>"><i style="font-size: 20px" class="entypo-search"></i></a>-
+                <a class="edit" title="Edit <?=$project->projectname?>" href="<?=site_url('admin/project/edit/') . '/' . $project->projectid?>"><i style="font-size: 20px" class="entypo-pencil"></i></a>-
+                <a title="Delete <?=$project->projectname?>" href="<?=site_url('admin/project/delete/') . '/' . $project->projectid?>" class="delete"><i style="font-size: 20px" class="entypo-cancel-circled"></i></a>
             </td>
         </tr>
         <?php

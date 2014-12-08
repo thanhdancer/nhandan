@@ -98,10 +98,10 @@
         var parent = $(element).parents();
         var ele = $(parent[1]).children();
 
-        $(ele[1]).text($('#usergroupname_' + groupid).val());
-        $(ele[3]).text($('#description_' + groupid).val());
-        $(ele[4]).text($('#status_' + groupid).attr('checked') == 'checked' ? 'Enabled' : 'Disabled');
-        $(ele[5]).html('<a href="#" data-id="'+ groupid + '" onclick="return edit(this);"><i class="entypo-pencil"></i></a>\
+        $(ele[2]).text($('#usergroupname_' + groupid).val());
+        $(ele[4]).text($('#description_' + groupid).val());
+        $(ele[5]).text($('#status_' + groupid).attr('checked') == 'checked' ? 'Enabled' : 'Disabled');
+        $(ele[6]).html('<a href="#" data-id="'+ groupid + '" onclick="return edit(this);"><i class="entypo-pencil"></i></a>\
                         <a href="#" onclick="return removegroup('+ groupid + ');"><i class="entypo-cancel-circled"></i></a>'); // action
     }
 
@@ -115,12 +115,12 @@
         var parent = $(element).parents();
         var ele = $(parent[1]).children();
 
-        $(ele[1]).html('<input type="text" value="' + $(ele[1]).text() + '" class="form-control" id="usergroupname_' + groupid + '" placeholder="Group name" />'); // group name
-        $(ele[3]).html('<input type="text" value="' + $(ele[3]).text() + '" class="form-control" id="description_' + groupid + '" placeholder="Description" />'); // description
-        $(ele[4]).html('<div class="make-switch switch-small" data-on="primary"  data-off="primary">\
-                            <input class="changeswitch" type="checkbox" '+ ($(ele[4]).text() == 'Enabled' ? 'checked' : '') +' id="status_' + groupid + '" />\
+        $(ele[2]).html('<input type="text" value="' + $(ele[2]).text() + '" class="form-control" id="usergroupname_' + groupid + '" placeholder="Group name" />'); // group name
+        $(ele[4]).html('<input type="text" value="' + $(ele[4]).text() + '" class="form-control" id="description_' + groupid + '" placeholder="Description" />'); // description
+        $(ele[5]).html('<div class="make-switch switch-small" data-on="primary"  data-off="primary">\
+                            <input class="changeswitch" type="checkbox" '+ ($(ele[5]).text() == 'Enabled' ? 'checked' : '') +' id="status_' + groupid + '" />\
                         </div>'); // status
-        $(ele[5]).html('<a href="#" data-id="' + groupid +'" onclick="return update(this);"><i class="entypo-check"></i></a>\
+        $(ele[6]).html('<a href="#" data-id="' + groupid +'" onclick="return update(this);"><i class="entypo-check"></i></a>\
                         <a href="#" data-id="' + groupid +'" onclick="return cancel(this);"><i class="entypo-cancel"></i></a>'); // action
         $($('#status_' + groupid).parents()[0]).bootstrapSwitch();
         return false;

@@ -118,7 +118,14 @@
 
         });
 
-        $("#goal").inputmask("999.999.999.999 VND", 'decimal', { alias: "currency" });
+        $("#goal").inputmask('decimal', {
+            alias: "currency",
+            radixPoint: '.',
+            groupSeparator: ',',
+            autoGroup:  true,
+            rightAlign: true,
+            postfix : 'VND'
+        });
     });
 
 </script>
