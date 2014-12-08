@@ -44,6 +44,7 @@
                     <td><?=$group->description?></td>
                     <td><?=$group->status == 1 ? "Enabled": "Disabled"?></td>
                     <td>
+                        <a href="<?=site_url('admin/permission/view/'.$group->usergroupid)?>" ><i class="entypo-search"></i></a>
                         <a href="#" data-id="<?=$group->usergroupid?>" onclick="return edit(this);"><i class="entypo-pencil"></i></a>
                         <a href="#" onclick="return removegroup(<?=$group->usergroupid?>);"><i class="entypo-cancel-circled"></i></a>
                     </td>
@@ -103,6 +104,7 @@
         $(ele[5]).text($('#status_' + groupid).attr('checked') == 'checked' ? 'Enabled' : 'Disabled');
         $(ele[6]).html('<a href="#" data-id="'+ groupid + '" onclick="return edit(this);"><i class="entypo-pencil"></i></a>\
                         <a href="#" onclick="return removegroup('+ groupid + ');"><i class="entypo-cancel-circled"></i></a>'); // action
+        window.location = '';
     }
 
     /*

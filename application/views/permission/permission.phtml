@@ -1,0 +1,168 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		vv0lll - vv0lll.nogroup@gmail.com
+ * @since			1.0
+ * @version		$Id: permission.phtml  Dec 8, 2014 6:10:55 PMZ lion $
+ */
+ 
+ ?>
+ 
+ <h2><?php echo $pageTitle?></h2>
+ <br />
+ 
+ 
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Route name</th>
+                <th>Route link</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php $i = 0; foreach($routes as $route): $i++; ?>
+                <tr>
+                    <td><?=$i?></td>
+                    <td><?=$route->name?></td>
+                    <td><?=$route->route?></td>
+                    <td><?=$route->status == 1 ? "Enabled": "Disabled"?></td>
+                    <td>
+                        <a href="#" data-id="<?=$route->permissionid?>" onclick="return edit(this);"><i class="entypo-pencil"></i></a>
+                        <a href="#" onclick="return removeroute(<?=$route->permissionid?>);"><i class="entypo-cancel-circled"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>#</td>
+                    <td><input type="text" class="form-control" name="routename" id="routename" placeholder="[New] Route name" /></td>
+                    <td><input type="text" class="form-control" name="routelink" id="routelink" placeholder="[New] Route link" /></td>
+                    <td>
+                        <div class="make-switch switch-small" data-on="primary"  data-off="primary">
+                            <input type="checkbox" checked id="status" name="status" />
+                        </div>
+                    </td>
+                    <td><a href="#" onclick="return add()"><i class="entypo-plus-circled"></i></a> </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    /*
+    *   Function remove route
+    */
+    function removeroute(routeid){
+        if(confirm("Are you sure to delete this route?")){
+            $.ajax({
+                type: "POST",
+                url: "<?=site_url('admin/permission/deleteRoute/')?>",
+                data: {
+                    permissionid : routeid
+                }
+            }).done(function(){
+                window.location = '';
+            });
+        }
+        return false;
+    }
+
+    /*
+    *   Function cancel update
+    */
+
+    function cancel(element){
+       
+        window.location = '';
+    }
+
+    /*
+    *   Function start update
+    */
+
+    function edit(element){
+        var rid = $(element).attr('data-id');
+
+        var parent = $(element).parents();
+        var ele = $(parent[1]).children();
+
+        $(ele[1]).html('<input type="text" value="' + $(ele[1]).text() + '" class="form-control" id="route_' + rid + '" placeholder="Route name" />'); // route name
+        $(ele[2]).html('<input type="text" value="' + $(ele[2]).text() + '" class="form-control" id="link_' + rid + '" placeholder="Route link" />'); // link
+        $(ele[3]).html('<div class="make-switch switch-small" data-on="primary"  data-off="primary">\
+                            <input class="changeswitch" type="checkbox" '+ ($(ele[3]).text() == 'Enabled' ? 'checked' : '') +' id="status_' + rid + '" />\
+                        </div>'); // status
+        $(ele[4]).html('<a href="#" data-id="' + rid +'" onclick="return update(this);"><i class="entypo-check"></i></a>\
+                        <a href="#" data-id="' + rid +'" onclick="return cancel(this);"><i class="entypo-cancel"></i></a>'); // action
+        $($('#status_' + rid).parents()[0]).bootstrapSwitch();
+        return false;
+    }
+
+    /*
+    *   Function add new group
+    */
+
+    function add(element){
+        var name = $('#routename').val();
+        var link= $('#routelink').val();
+        var status = $($('#status').parents()[0]).bootstrapSwitch('status') == true ? '1' : '0';
+
+
+        $.ajax({
+            type: 'POST',
+            url: '<?=site_url('admin/permission/addRoute/')?>',
+            data: {
+                name 		: 	name,
+                route		:   link,
+                status      : 	status,
+                group		:	"<?= $group[0]->usergroupid ?>"
+            }
+        }).done(function(data){
+           	alert(data);           	
+           	window.location = '';
+        });
+
+        return false
+    }
+
+    function update(element){
+        var rid = $(element).attr('data-id');
+        var name = $('#route_' + rid).val();
+        var link= $('#link_' + rid).val();
+        var status = $($('#status_' + rid).parents()[0]).bootstrapSwitch('status') == true ? '1' : '0';
+
+        $.ajax({
+            type: 'POST',
+            url: '<?=site_url('admin/permission/updateRoute/')?>',
+            data: {
+                name 		: name,
+                route 		: link,
+                status      : status,
+                permissionid: rid,
+                group		:	"<?= $group[0]->usergroupid ?>"
+            }
+        }).done(function(data){
+            alert(data);
+            window.location = '';
+        });
+
+        return false
+    }
+</script>

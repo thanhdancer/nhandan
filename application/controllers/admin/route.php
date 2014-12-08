@@ -26,8 +26,8 @@ class Route extends CI_Controller {
         // check authenication
         $this->_user = $this->session->all_userdata();
 
-        if (!isset($this->_user['userid'])){
-            redirect('admin/user/login');
+    	if(!$this->user->authentication()){
+        	redirect('admin/user/login');
         }
 
 

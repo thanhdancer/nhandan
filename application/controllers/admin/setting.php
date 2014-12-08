@@ -31,8 +31,8 @@ class Setting extends CI_Controller{
         $this->load->helper(array('url', 'language', 'form', 'file'));
 
         $this->_user = $this->session->all_userdata();
-        if(!isset($this->_user['userid'])){
-            redirect('admin/user/login');
+    	if(!$this->user->authentication()){
+        	redirect('admin/user/login');
         }
 
         $this->data = array();

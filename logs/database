@@ -122,3 +122,16 @@ CREATE TABLE IF NOT EXISTS `thnd_category` (
   `modified_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`categoryid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_permission` (
+  `permissionid` int(11) NOT NULL AUTO_INCREMENT,
+  `usergroupid`	int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,  
+  `route` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`permissionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

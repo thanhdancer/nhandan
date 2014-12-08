@@ -33,11 +33,12 @@ class Permission extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('user');
         $this->load->helper(array('url', 'language', 'form', 'file'));
 
         $this->_user = $this->session->all_userdata();
-        if(!isset($this->_user['userid'])){
-            redirect('admin/user/login');
+    	if(!$this->user->authentication()){
+        	redirect('admin/user/login');
         }
 
         $this->data = array();
@@ -54,7 +55,8 @@ class Permission extends CI_Controller{
             )
         );
 
-        $this->load->model('permission/Permission_model', 'pModel');
+        $this->load->model('permission/Usergroup_model', 'ugModel');
+        $this->load->model('permission/Permission_model', 'permissionModel');
 
     }
 
@@ -65,7 +67,7 @@ class Permission extends CI_Controller{
 
         $this->data['pageTitle'] = "List all groups";
 
-        $this->data['groups'] = $this->pModel->getAll();
+        $this->data['groups'] = $this->ugModel->getAll();
 
         $this->data['_additionFooter'] = '
             <link rel="stylesheet" href="' . base_url() .'assets/js/zurb-responsive-tables/responsive-tables.css">
@@ -99,7 +101,7 @@ class Permission extends CI_Controller{
     public function delete(){
         $groupid = intval($this->input->post('usergroupid', TRUE));
 
-        $affected_row = $this->pModel->delete($groupid);
+        $affected_row = $this->ugModel->delete($groupid);
 
         if($affected_row > 0){
             $this->session->set_flashdata(array(
@@ -133,7 +135,7 @@ class Permission extends CI_Controller{
         }
 
         if(count($error) == 0){
-            $groupid = $this->pModel->add($data);
+            $groupid = $this->ugModel->add($data);
         }else{
             $this->session->set_flashdata(array(
                 'type'      => 'error',
@@ -169,7 +171,7 @@ class Permission extends CI_Controller{
         }
 
         if(count($error) == 0){
-            $affected_row = $this->pModel->update($data);
+            $affected_row = $this->ugModel->update($data);
         }else{
             $this->session->set_flashdata(array(
                 'type'      => 'error',
@@ -179,6 +181,147 @@ class Permission extends CI_Controller{
         }
 
         return $affected_row;
+    }
+    
+    ###################### Permission area #################################3
+    
+    /*
+     * Function view permission of a group 
+     * 
+     * @groupid int	
+     */
+    public function view($groupid = 0){
+    	
+    	$this->data['group'] = $this->ugModel->find('usergroupid', $groupid);
+    	
+    	if(!$this->data['group']){
+    		show_404();
+    	}
+    	
+    	$this->data['routes'] = $this->permissionModel->getByUsergroup($groupid);
+    	
+    	$this->data['pageTitle'] = "View permission of group " . $this->data['group'][0]->usergroupname; 
+    	
+    	$this->data['_additionFooter'] = '
+    	<link rel="stylesheet" href="' . base_url() .'assets/js/zurb-responsive-tables/responsive-tables.css">
+    	<link rel="stylesheet" href="' . base_url() . 'assets/js/selectboxit/jquery.selectBoxIt.css">
+    	<script src="' . base_url() . 'assets/js/zurb-responsive-tables/responsive-tables.js"></script>
+    	<script src="' . base_url() . 'assets/js/selectboxit/jquery.selectBoxIt.min.js"></script>
+    	<script src="' . base_url() . 'assets/js/bootstrap-switch.min.js"></script>
+    	
+    	';
+    	
+    	$this->data['_mainModule'] = $this->load->view('permission/permission.phtml', $this->data, TRUE);
+    	
+    	if($this->session->flashdata('message')){
+    		$this->data['_additionFooter'] .= '
+    		<script type="text/javascript">
+    		jQuery(document).ready(function($){
+    		toastr.' . $this->session->flashdata('type') . '(\'' . $this->session->flashdata('message') . '\')
+    	});
+    	</script>
+    	';
+    	}
+    	
+    	$this->load->view('includes/_adminTemplate.phtml', $this->data);
+    }
+    
+    /**
+     * Add new route
+     * 
+     * @return boolean
+     */
+    
+    public function addRoute(){
+    	
+    	if($this->input->post()){
+    		$post	= array();
+    		
+    		$this->load->library('form_validation');
+    		$this->form_validation->set_rules('name', "Name", 'required|xss_clean');
+    		$this->form_validation->set_rules('route', "Route", 'required|xss_clean');
+    		
+    		if($this->form_validation->run() == FALSE){
+    			$this->form_validation->set_error_delimiters('', "\n");
+
+                echo str_replace("\n", '',validation_errors());
+                return false;
+    		}
+    		
+    		$post['name']			= $this->input->post('name');
+    		$post['route']			= $this->input->post('route');
+    		$post['status']			= $this->input->post('status');
+    		$post['usergroupid']	= $this->input->post('group');
+    		$post['created_date']	= time();
+    		$post['created_user']	= $this->_user['userid'];
+    		
+    		// check group avaiable
+    		if(!$this->ugModel->find('usergroupid', $post['usergroupid'])){
+    			echo "Usergroup not avaiable";
+    			return false;
+    		}
+    		
+    		// check route
+    		if(!preg_match('/^\w+\/\w+/', $post['route'])){
+    			echo "Format of route must be module/method";
+    			return false;
+    		}
+    		
+    		$this->permissionModel->add($post);
+    		echo "Add new route successful";
+    		return false;
+    		
+    	}
+    }
+    
+    public function updateRoute(){
+    	if($this->input->post()){
+    		$post	= array();
+    		
+    		$this->load->library('form_validation');
+    		$this->form_validation->set_rules('name', "Name", 'required|xss_clean');
+    		$this->form_validation->set_rules('route', "Route", 'required|xss_clean');
+    		
+    		if($this->form_validation->run() == FALSE){
+    			$this->form_validation->set_error_delimiters('', "\n");
+    		
+    			echo str_replace("\n", '',validation_errors());
+    			return false;
+    		}
+    		
+    		$post['name']			= $this->input->post('name');
+    		$post['route']			= $this->input->post('route');
+    		$post['status']			= $this->input->post('status');
+    		$post['usergroupid']	= $this->input->post('group');
+    		$post['modified_date']	= time();
+    		$post['modified_user']	= $this->_user['userid'];
+    		
+    		// check group avaiable
+    		if(!$this->ugModel->find('usergroupid', $post['usergroupid'])){
+    			echo "Usergroup not avaiable";
+    			return false;
+    		}
+    		
+    		// check route
+    		if(!preg_match('/^\w+\/\w+/', $post['route'])){
+    			echo "Format of route must be module/method";
+    			return false;
+    		}
+    		
+    		$this->permissionModel->update($this->input->post('permissionid'), $post);
+    		echo "Add new route successful";
+    		return false;
+    	}
+    }
+    
+    /**
+     * Delete a route
+     */
+    
+    public function deleteRoute(){
+    	if($this->input->post()){
+    		$this->permissionModel->delete($this->input->post('permissionid'));
+    	}
     }
 }
  ?>

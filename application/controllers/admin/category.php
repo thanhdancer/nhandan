@@ -27,13 +27,14 @@ class Category extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('user');
         $this->load->helper(array('url', 'language', 'form', 'file'));
 
         // check authenication
         $this->_user = $this->session->all_userdata();
 
-        if (!isset($this->_user['userid'])){
-            redirect('admin/user/login');
+    	if(!$this->user->authentication()){
+        	redirect('admin/user/login');
         }
 
 

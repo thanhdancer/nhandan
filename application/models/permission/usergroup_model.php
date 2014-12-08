@@ -9,54 +9,69 @@
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@vv0lll.com so we can send you a copy immediately.
- * 
+ *
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
  * @author		Thanh Dancer - dancer.thanh@gmail.com
  * @since			1.0
- * @version		$Id: category_model.php  10/30/14 11:38 PM lion $
+ * @version		$Id: permission_model.php  10/30/14 12:55 AM lion $
  */
 
-class Category_model extends CI_Model{
+class Usergroup_model extends CI_Model{
 
-    /**
-     *  Constructor
-     */
     public function __construct(){
         parent::__construct();
     }
 
     /**
-     * Find category by a field
+     * List all group of users
      *
-     * @param $filed
+     * @return mixed
+     */
+    public function getAll(){
+        $sql = "SELECT `g`.* , count(`u`.`userid`) as `numusers`
+                FROM `" . $this->db->dbprefix('usergroup') . "` as `g`
+                LEFT JOIN `" . $this->db->dbprefix('user') . "` as `u`
+                ON `u`.`usergroup` = `g`.`usergroupid`
+                GROUP BY `g`.`usergroupid`";
+        $result = $this->db->query($sql);
+        return $result->result();
+
+    }
+
+    /**
+     * Find user by field and value
+     *
+     * @param $field
      * @param $value
      * @return mixed
      */
-    public function find($filed, $value){
+    public function find($field, $value){
         $sql = "SELECT *
-                FROM `" . $this->db->dbprefix('project_category') . "`
-                WHERE `" . $filed . "` = ?";
+                FROM `" . $this->db->dbprefix('usergroup') . "`
+                WHERE `" . $field . "` = ?";
         $result = $this->db->query($sql, array(
-            $value
+           $value
         ));
 
         return $result->result();
     }
 
     /**
-     * Add new category
+     * Add new user group
      *
      * @param $data
      * @return mixed
      */
     public function add($data){
-        $sql = "INSERT INTO `" . $this->db->dbprefix('project_category') . "`
-                (`parentid`, `categoryname`, `status`, `created_date`, `created_user`)
+        $sql = "INSERT INTO `" . $this->db->dbprefix('usergroup') . "`
+                (`usergroupname`, `description`, `status`, `created_date`, `created_user`)
                 VALUES
-                (?, ?, ?, ?, ?)";
+                (?, ?, ?, ?, ?)
+                ";
+
         $this->db->query($sql, array(
-            $data['parentid'],
-            $data['categoryname'],
+            $data['usergroupname'],
+            $data['description'],
             $data['status'],
             time(),
             $data['userid']
@@ -66,28 +81,28 @@ class Category_model extends CI_Model{
     }
 
     /**
-     * Update a category
+     * Update a user group
      *
      * @param $data
      * @return mixed
      */
     public function update($data){
-        $sql = "UPDATE `" . $this->db->dbprefix('project_category') . "`
-                SET `parentid` = ?,
-                    `categoryname` = ?,
+        $sql = "UPDATE `" . $this->db->dbprefix('usergroup') . "`
+                SET `usergroupname` = ?,
+                    `description` = ?,
                     `status`    = ?,
                     `modified_date` = ?,
                     `modified_user` = ?
-                WHERE `categoryid` = ?
+                WHERE `usergroupid` = ?
                 ";
 
         $this->db->query($sql, array(
-            $data['parentid'],
-            $data['categoryname'],
+            $data['usergroupname'],
+            $data['description'],
             $data['status'],
             time(),
             $data['userid'],
-            $data['categoryid']
+            $data['usergroupid']
         ));
 
         return $this->db->affected_rows();
@@ -96,32 +111,30 @@ class Category_model extends CI_Model{
     /**
      * Delete a user group
      *
-     * @param int
+     * @param int $userid
      * @return mixed
      */
-    public function delete($categoryid = 0){
+    public function delete($usergroupid = 0){
 
-        $sql = "DELETE FROM `" . $this->db->dbprefix('project_category') . "`
-                WHERE `categoryid` = ?";
+        $sql = "DELETE FROM `" . $this->db->dbprefix('usergroup') . "`
+                WHERE `usergroupid` = ?";
         $this->db->query($sql, array(
-            $categoryid
+           $usergroupid
         ));
 
         $affected_row = $this->db->affected_rows();
 
-        $sql = "DELETE FROM `" . $this->db->dbprefix('project') . "`
-                WHERE `categoryid` = ?";
+        $sql = "DELETE FROM `" . $this->db->dbprefix('user') . "`
+                WHERE `usergroup` = ?";
 
         $this->db->query($sql, array(
-            $categoryid
+            $usergroupid
         ));
 
         $affected_row += $this->db->affected_rows();
 
         return $affected_row;
     }
-
-
 }
 
  ?>

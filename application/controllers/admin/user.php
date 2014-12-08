@@ -189,7 +189,7 @@ class User extends CI_Controller{
         $data['pageTitle'] = "Edit user";
         $data['USER'] = $user;
 
-        $this->load->Model('permission/Permission_model', 'pModel');
+        $this->load->Model('permission/Usergroup_model', 'pModel');
         $data['groups'] = $this->pModel->getAll();
 
         $data['_mainModule'] = $this->load->view('user/edit.phtml', $data, TRUE);
@@ -258,7 +258,7 @@ class User extends CI_Controller{
 
         $data['pageTitle'] = "Add new user";
 
-        $this->load->Model('permission/Permission_model', 'pModel');
+        $this->load->Model('permission/Usergroup_model', 'pModel');
         $data['groups'] = $this->pModel->getAll();
 
         $data['_mainModule'] = $this->load->view('user/add.phtml', $data, TRUE);

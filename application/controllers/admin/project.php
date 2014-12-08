@@ -29,12 +29,13 @@ class Project extends CI_Controller{
 
     public function __construct(){
         parent::__construct();
-        $this->load->library('session');
+        $this->load->library(array('session', 'user'));
         $this->load->helper(array('language', 'url', 'form', 'file', 'text'));
 
         $this->_user = $this->session->all_userdata();
-        if(!isset($this->_user['userid']) ){
-            redirect('admin/user/login');
+        
+        if(!$this->user->authentication()){
+        	redirect('admin/user/login');
         }
         $this->uploadConfig  = array(
             'upload_path'   =>  'media/' . $this->_user['userid'] . '/project/',
