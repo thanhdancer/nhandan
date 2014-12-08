@@ -28,6 +28,7 @@ class Setting extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('user');
         $this->load->helper(array('url', 'language', 'form', 'file'));
 
         $this->_user = $this->session->all_userdata();

@@ -118,10 +118,16 @@
             plugins: [
                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                "save table contextmenu directionality emoticons template paste textcolor"
+                "save table contextmenu directionality emoticons template paste textcolor responsivefilemanager"
             ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
-
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | responsivefilemanager | ",
+            
+ 
+            
+            external_filemanager_path:"/assets/filemanager/",
+            filemanager_title:"Nhandan.edu.vn" ,
+            filemanager_access_key:'bgB65j4AUmDs5cR84s3ZnJdvv9DQYxVZBRk2bzNn7HfDL4jRkXnFjyJksJJWH23Wvq249XV3hxTywEX5FVx4KEqbMyVh',
+            external_plugins: { "filemanager" : "/assets/filemanager/plugin.min.js"}
         });
 
         $("#goal").inputmask('decimal', {

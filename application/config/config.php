@@ -365,100 +365,114 @@ $config['proxy_ips'] = '';
 
 $config['adminMenu'] = array(
 
-    /**
-     * Module categories
-     */
+		/**
+		 * Module categories
+*/
 
-    'category' => array(
-        'title' => 'Category',
-        'route' => 'admin/category',
-        'icon' => 'entypo-flow-tree',
-        'permission' => '*',
-        'sub' => array(
-            'list' => array(
-                'title' => 'List all categories',
-                'icon'  => 'entypo-menu',
-                'route' => 'admin/category'
-            ),
-            'add' => array(
-                'title' => 'Add new cateogry',
-                'icon' => 'entypo-plus-squared',
-                'route' => 'admin/category/add'
-            ),
+		'category' => array(
+				'title' => 'Category',
+				'route' => 'admin/category',
+				'icon' => 'entypo-flow-tree',
+				'permission' => '*',
+				'visibility'	=> '1',
+				'sub' => array(
+						'list' => array(
+								'title' => 'List all categories',
+								'icon'  => 'entypo-menu',
+								'visibility'	=> '1',
+								'route' => 'admin/category'
+						),
+						'add' => array(
+								'title' => 'Add new cateogry',
+								'icon' => 'entypo-plus-squared',
+								'visibility'	=> '1',
+								'route' => 'admin/category/add'
+						),
 
-        )
-    ),
+				)
+		),
 
-    /**
-     * Module Project
-     */
-    'project' => array(
-        'title' => 'Project',
-        'route' => 'admin/project',
-        'icon' => 'entypo-globe',
-        'permission' => '*',
-        'sub' => array(
-            'list' => array(
-                'title' => 'List projects',
-                'icon' => 'entypo-menu',
-                'route' => 'admin/project/'
-            ),
-            'add' => array(
-                'title' => 'Add project',
-                'icon'  => 'entypo-plus-squared',
-                'route' => 'admin/project/newproject'
-            ),
-            'config' => array(
-                'title' => 'Config',
-                'icon'  => 'entypo-cog',
-                'route' => 'admin/project/config'
-            )
-        )
-    ),
+		/**
+		 * Module Project
+*/
+		'project' => array(
+				'title' => 'Project',
+				'route' => 'admin/project',
+				'visibility'	=> '1,10',
+				'icon' => 'entypo-globe',
+				'permission' => '*',
 
-    /**
-     * Module Core
-     */
-    'core' => array(
-        'title' => 'Administrator',
-        'route' => 'admin',
-        'icon' => 'entypo-cog',
-        'permission' => '*',
-        'sub' => array(
-            'user' => array(
-                'title' => 'User',
-                'icon' => 'entypo-user',
-                'route' => 'admin/user',
-                'permission' => '*',
-                'sub' => array(
-                    'list' => array(
-                        'title' => 'List users',
-                        'icon'  => '',
-                        'permission' => '*',
-                        'route' => 'admin/user/display'
-                    ),
-                    'add' => array(
-                        'title' => 'Add user',
-                        'icon'  => '',
-                        'permission' => '*',
-                        'route' => 'admin/user/add'
-                    )
-                )
-            ),
-            'permission' => array(
-                'title' => 'Permission',
-                'icon' => 'entypo-lock',
-                'route' => 'admin/permission',
-                'permission' => '*'
-            ),
-            'setting' => array(
-                'title' => 'Setting',
-                'icon' => 'entypo-tools',
-                'route' => 'admin/setting',
-                'permission' => '*'
-            )
-        )
-    ),
+				'sub' => array(
+						'list' => array(
+								'title' => 'List projects',
+								'icon' => 'entypo-menu',
+								'visibility'	=> '1,10',
+								'route' => 'admin/project/'
+						),
+						'add' => array(
+								'title' => 'Add project',
+								'visibility'	=> '1',
+								'icon'  => 'entypo-plus-squared',
+								'route' => 'admin/project/newproject'
+						),
+						'config' => array(
+								'title' => 'Config',
+								'icon'  => 'entypo-cog',
+								'visibility'	=> '',
+								'route' => 'admin/project/config'
+						)
+				)
+		),
+
+		/**
+		 * Module Core
+*/
+		'core' => array(
+				'title' => 'Administrator',
+				'route' => 'admin',
+				'icon' => 'entypo-cog',
+				'permission' => '*',
+				'visibility'	=> '1',
+				'sub' => array(
+						'user' => array(
+								'title' => 'User',
+								'icon' => 'entypo-user',
+								'route' => 'admin/user',
+								'permission' => '*',
+								'visibility'	=> '1',
+								'sub' => array(
+										'list' => array(
+												'title' => 'List users',
+												'icon'  => '',
+												'permission' => '*',
+												'visibility'	=> '1',
+												'route' => 'admin/user/display'
+										),
+										'add' => array(
+												'title' => 'Add user',
+												'icon'  => '',
+												'permission' => '*',
+												'visibility'	=> '1',
+												'route' => 'admin/user/add'
+										)
+								)
+						),
+						'permission' => array(
+								'title' => 'Permission',
+								'icon' => 'entypo-lock',
+								'visibility'	=> '1',
+								'route' => 'admin/permission',
+								'permission' => '*'
+						),
+						'setting' => array(
+								'title' => 'Setting',
+								'visibility'	=> '1',
+								'icon' => 'entypo-tools',
+								'route' => 'admin/setting',
+								'permission' => '*'
+						)
+				)
+		),
 
 );
 /*
@@ -467,8 +481,7 @@ $config['adminMenu'] = array(
 |--------------------------------------------------------------------------
 */
 
-$config['adminController'] = array(
-    'news'    => "News",
+$config['adminController'] = array(    
     'project' => "Project"
 );
 

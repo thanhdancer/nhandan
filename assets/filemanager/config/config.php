@@ -26,10 +26,10 @@ $base_url =
 	'://'.
 	// Get domain portion
 	$_SERVER['HTTP_HOST']; // DON'T TOUCH (base url (only domain) of site (without final /)).
-$upload_dir = '/source/'; // path from base_url to base of upload folder (with start and final /)
-$current_path = '../source/'; // relative path from filemanager folder to upload folder (with final /)
+$upload_dir = '/../media/'; // path from base_url to base of upload folder (with start and final /)
+$current_path = '../../media/'; // relative path from filemanager folder to upload folder (with final /)
 //thumbs folder can't put inside upload folder
-$thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
+$thumbs_base_path = '../images/'; // relative path from filemanager folder to thumbs folder (with final /)
 
 // OPTIONAL SECURITY
 // if set to true only those will access RF whose url contains the access key(akey) like: 
@@ -42,7 +42,7 @@ $thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to th
 // filemanager_title:"Filemanager" ,
 // filemanager_access_key:"myPrivateKey" ,
 // ...
-define('USE_ACCESS_KEYS', FALSE); // TRUE or FALSE
+define('USE_ACCESS_KEYS', TRUE); // TRUE or FALSE
 
 // add access keys eg: array('myPrivateKey', 'someoneElseKey');
 // keys should only containt (a-z A-Z 0-9 \ . _ -) characters
@@ -52,7 +52,7 @@ define('USE_ACCESS_KEYS', FALSE); // TRUE or FALSE
 // $akey = md5($username.$salt);
 // DO NOT use 'key' as access key!
 // Keys are CASE SENSITIVE!
-$access_keys = array();
+$access_keys = array('bgB65j4AUmDs5cR84s3ZnJdvv9DQYxVZBRk2bzNn7HfDL4jRkXnFjyJksJJWH23Wvq249XV3hxTywEX5FVx4KEqbMyVh');
 
 //--------------------------------------------------------------------------------------------------------
 // YOU CAN COPY AND CHANGE THESE VARIABLES INTO FOLDERS config.php FILES TO CUSTOMIZE EACH FOLDER OPTIONS
@@ -174,7 +174,7 @@ $ext_video 	= array('mov', 'mpeg', 'm4v', 'mp4', 'avi', 'mpg','wma',"flv","webm"
 $ext_music 	= array('mp3', 'm4a', 'ac3', 'aiff', 'mid','ogg','wav'); //Audio
 $ext_misc 	= array('zip', 'rar','gz','tar','iso','dmg'); //Archives
 
-$ext = array_merge($ext_img, $ext_file, $ext_misc, $ext_video,$ext_music); //allowed extensions
+$ext = array_merge($ext_img, $ext_video); //allowed extensions
 
 /******************
  * AVIARY config

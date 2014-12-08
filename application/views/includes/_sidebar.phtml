@@ -72,9 +72,9 @@
     <!--/ Default menu -->
 
     <!-- Addition menus -->
-    <?php
-
+    <?php 
     foreach($this->config->config['adminMenu'] as $menus):
+    if(!in_array($this->session->userdata('group'), explode(',', $menus['visibility']))) continue;
     ?>
     <li>
         <a href="<?=site_url($menus['route'])?>">
@@ -85,6 +85,7 @@
         <ul>
             <?php
             foreach($menus['sub'] as $sub1):
+            if(!in_array($this->session->userdata('group'), explode(',', $sub1['visibility']))) continue;
             ?>
             <li <?php echo (('admin/' . $this->uri->segment(2) . '/' . $this->uri->segment(3)) == $sub1['route'] || ('admin/' . $this->uri->segment(2) ) == $sub1['route']) ? 'class="active"' : ''; ?>>
                 <a href="<?=site_url($sub1['route'])?>">
@@ -95,6 +96,7 @@
                 <ul>
                     <?php
                     foreach($sub1['sub'] as $sub2):
+                    if(!in_array($this->session->userdata('group'), explode(',', $sub2['visibility']))) continue;
                     ?>
                     <li <?php echo (('admin/' . $this->uri->segment(2) . '/' . $this->uri->segment(3)) == $sub2['route']); ?>>
                         <a href="<?=site_url($sub2['route'])?>">
