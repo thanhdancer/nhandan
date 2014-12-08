@@ -48,7 +48,7 @@
                 <?=number_format($project->total + 0, 0, ',', '.') . ' / ' . number_format($project->goal, 0, ',', '.')?>
             </td>
             <td><?=$project->deadline?></td>
-            <td><?=$project->location?></td>
+            <td><?=isset($province[$project->location]) ? $province[$project->location] : ''?></td>
             <td>
                 <a class="view" title="View <?=$project->projectname?>" href="<?=site_url('admin/project/view/') . '/' . $project->projectid?>"><i style="font-size: 20px" class="entypo-search"></i></a>-
                 <a class="edit" title="Edit <?=$project->projectname?>" href="<?=site_url('admin/project/edit/') . '/' . $project->projectid?>"><i style="font-size: 20px" class="entypo-pencil"></i></a>-

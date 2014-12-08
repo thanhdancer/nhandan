@@ -49,7 +49,13 @@
                 </div>
                 <div class="col-md-4">
                     <label class="control-label">Location</label>
-                    <input type="text" value="<?=set_value('location')?>" class="form-control" data-validate="required" name="location" placeholder="Project location" />
+                    <select class="form-control" name="location">
+	                    <?php
+	                    foreach($province as $code => $value){
+	                    	echo '<option value="'. $code . '">' . $value . '</option>';
+	                    }  
+	                    ?>
+                    </select>
                 </div>
             </div>
 

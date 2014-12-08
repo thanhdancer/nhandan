@@ -25,6 +25,7 @@ class Project extends CI_Controller{
     private $_user;
     private $data;
     private $uploadConfig;
+    private $province;
 
     public function __construct(){
         parent::__construct();
@@ -32,10 +33,9 @@ class Project extends CI_Controller{
         $this->load->helper(array('language', 'url', 'form', 'file', 'text'));
 
         $this->_user = $this->session->all_userdata();
-        if(!isset($this->_user['userid']) && substr($this->router->fetch_method(),0,5) == 'admin' ){
+        if(!isset($this->_user['userid']) ){
             redirect('admin/user/login');
         }
-
         $this->uploadConfig  = array(
             'upload_path'   =>  'media/' . $this->_user['userid'] . '/project/',
             'allowed_types' =>  'jpg|gif|png',
@@ -55,7 +55,73 @@ class Project extends CI_Controller{
                 'link'      =>  site_url('admin/project/')
             )
         );
-
+		
+        $this->province = array(
+        		'VN.AG' => 'An Giang',
+        		'VN.BK' => 'Bac Can',
+        		'VN.BG' => 'Bac Giang',
+        		'VN.BL' => 'Bac Lieu',
+        		'VN.BN' => 'Bac Ninh',
+        		'VN.BV' => 'BaRia-VungTau',
+        		'VN.BR' => 'Ben Tre',
+        		'VN.BD' => 'Binh Dinh',
+        		'VN.BI' => 'Binh Duong',
+        		'VN.BP' => 'Binh Phuoc',
+        		'VN.BU' => 'Binh Thuan',
+        		'VN.CM' => 'Ca Mau',
+        		'VN.CN' => 'Can Tho',
+        		'VN.CB' => 'Cao Bang',
+        		'VN.DA' => 'Da Nang',
+        		'VN.DC' => 'Dac Lac',
+        		'VN.DO' => 'Dac Nong',
+        		'VN.DB' => 'Dien Bien',
+        		'VN.DN' => 'Dong Nai',
+        		'VN.DT' => 'Dong Thap',
+        		'VN.GL' => 'Gia Lai',
+        		'VN.HG' => 'Ha Giang',
+        		'VN.HM' => 'Ha Nam',
+        		'VN.HT' => 'Ha Tinh',
+        		'VN.HD' => 'Hai Duong',
+        		'VN.HP' => 'Haiphong',
+        		'VN.HN' => 'Hanoi',
+        		'VN.HU' => 'Hau Giang',
+        		'VN.HC' => 'Ho Chi Minh',
+        		'VN.HO' => 'Hoa Binh',
+        		'VN.HY' => 'Hung Yen',
+        		'VN.KH' => 'Khanh Hoa',
+        		'VN.KG' => 'Kien Giang',
+        		'VN.KT' => 'Kon Tum',
+        		'VN.LI' => 'Lai Chau',
+        		'VN.LD' => 'Lam Dong',
+        		'VN.LS' => 'Lang Son',
+        		'VN.LO' => 'Lao Cai',
+        		'VN.LA' => 'Long An',
+        		'VN.ND' => 'Nam Dinh',
+        		'VN.NA' => 'Nghe An',
+        		'VN.NB' => 'Ninh Binh',
+        		'VN.NT' => 'Ninh Thuan',
+        		'VN.PT' => 'Phu Tho',
+        		'VN.PY' => 'Phu Yen',
+        		'VN.QB' => 'Quang Binh',
+        		'VN.QM' => 'Quang Nam',
+        		'VN.QG' => 'Quang Ngai',
+        		'VN.QN' => 'Quang Ninh',
+        		'VN.QT' => 'Quang Tri',
+        		'VN.ST' => 'Soc Trang',
+        		'VN.SL' => 'Son La',
+        		'VN.TN' => 'Tay Ninh',
+        		'VN.TB' => 'Thai Binh',
+        		'VN.TY' => 'Thai Nguyen',
+        		'VN.TH' => 'Thanh Hoa',
+        		'VN.TT' => 'Thua Thien Hue',
+        		'VN.TG' => 'Tien Giang',
+        		'VN.TV' => 'Tra Vinh',
+        		'VN.TQ' => 'Tuyen Quang',
+        		'VN.VL' => 'Vinh Long',
+        		'VN.VC' => 'Vinh Phuc',
+        		'VN.YB' => 'Yen Bai'
+        );
+        
         $this->load->model('category/Category_model', 'cModel');
         $this->load->model('project/Project_model', 'pModel');
     }
@@ -69,7 +135,7 @@ class Project extends CI_Controller{
             'name'  =>  'List projects',
             'link'  =>  'admin/project'
         );
-
+		
         $this->data['_additionFooter'] = '
             <link rel="stylesheet" href="' . base_url() . 'assets/js/datatables/responsive/css/datatables.responsive.css">
             <link rel="stylesheet" href="' . base_url() . 'assets/js/select2/select2-bootstrap.css">
@@ -91,7 +157,7 @@ class Project extends CI_Controller{
             $this->data['projects'][] = $project;
         }
 
-
+        $this->data['province'] = $this->province;
         $this->data['_mainModule'] = $this->load->view('project/list.phtml', $this->data, TRUE);
 
         if($this->session->flashdata('message')){
@@ -119,6 +185,8 @@ class Project extends CI_Controller{
             'link'  =>  "admin/project/newproject"
         );
 
+        $this->data['province'] = $this->province;
+        
         $this->data['_additionFooter'] = '
             <script src="' . base_url() . 'assets/js/tinymce/tinymce.min.js"></script>
 	        <script src="' . base_url() . 'assets/js/jquery.inputmask.bundle.min.js"></script>
@@ -163,12 +231,11 @@ class Project extends CI_Controller{
             $post['status'] = $this->input->post('status');
             $post['userid'] = $this->_user['userid'];
 
-
-            // check required field
-            if(trim($post['projectname']) == '' || trim($post['deadline']) == '' || trim($post['goal']) == '' || trim($post['location']) == ''){
-                $error[] = "Required field(s) need fill.";
+            // check province
+            if(!in_array($post['location'], array_keys($this->province) )){
+            	$error[] = 'Wrong location';
             }
-
+            
             // check and convert deadline time
             $date = explode('/', $post['deadline']);
             $post['deadline'] = mktime(0,0,0,$date[1],$date[0], $date[2]);
@@ -221,7 +288,8 @@ class Project extends CI_Controller{
         );
 
         $this->data['project'] = $this->pModel->find($projectid);
-
+        $this->data['province'] = $this->province;
+        
         if(!$this->data['project']){
             show_404();
         }
@@ -272,9 +340,9 @@ class Project extends CI_Controller{
             $post['userid'] = $this->_user['userid'];
             $post['projectid'] = $this->input->post('projectid');
 
-            // check required field
-            if(trim($post['projectname']) == '' || trim($post['deadline']) == '' || trim($post['goal']) == '' || trim($post['location']) == ''){
-                $error[] = "Required field(s) need fill.";
+            // check province
+            if(!in_array($post['location'], array_keys($this->province) )){
+            	$error[] = 'Wrong location';
             }
 
             // check and convert deadline time

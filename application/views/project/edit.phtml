@@ -49,7 +49,14 @@
                 </div>
                 <div class="col-md-4">
                     <label class="control-label">Location</label>
-                    <input type="text" class="form-control" data-validate="required" name="location" placeholder="Project location" value="<?=htmlspecialchars($project->location)?>" />
+                    <select class="form-control" name="location">
+	                    <?php
+	                    foreach($province as $code => $value){
+	                    	
+	                    	echo '<option '  . ($project->location == $code ? 'selected' : '') . ' value="'. $code . '">' . $value . '</option>';
+	                    }  
+	                    ?>
+                    </select>
                 </div>
             </div>
 
