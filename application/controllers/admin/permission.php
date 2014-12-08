@@ -26,6 +26,7 @@ class Permission extends CI_Controller{
     private $data;
 
 
+
     /**
      * Contructor
      */
