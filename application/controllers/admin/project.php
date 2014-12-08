@@ -85,7 +85,7 @@ class Project extends CI_Controller{
 
         $projects = $this->pModel->getAll();
 
-        $this->data['projects'] = [];
+        $this->data['projects'] = array();
         foreach($projects as $project){
             $project->deadline = date('d/m/Y', $project->deadline);
             $this->data['projects'][] = $project;
@@ -126,8 +126,8 @@ class Project extends CI_Controller{
         ';
 
         if($this->input->post()){
-            $error = [];
-            $post = [];
+            $error = array();
+            $post = array();
 
             $path = '';
             foreach(explode('/', $this->uploadConfig['upload_path']) as $tmp){
@@ -233,8 +233,8 @@ class Project extends CI_Controller{
         ';
 
         if($this->input->post()){
-            $error = [];
-            $post = [];
+            $error = array();
+            $post = array();
 
             $path = '';
             foreach(explode('/', $this->uploadConfig['upload_path']) as $tmp){

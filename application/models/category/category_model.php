@@ -47,7 +47,7 @@ class Category_model extends CI_Model{
      * @return array
      */
     public function getTreeByModule($moduleName){
-        $children = [];
+        $children = array();
         $categories = self::getByModule($moduleName);
 
         if($categories){
@@ -86,7 +86,7 @@ class Category_model extends CI_Model{
      * @return array
      */
     public function getTreeByModuleExceptId($moduleName, $categoryid){
-        $children = [];
+        $children = array();
         $categories = self::getByModule($moduleName);
 
         if($categories){
@@ -124,7 +124,7 @@ class Category_model extends CI_Model{
      * @return array
      */
     public function getTreeById($categoryid){
-        $children = [];
+        $children = array();
         $details = self::find($categoryid);
         $categories = self::getByModule($details[0]->module);
 

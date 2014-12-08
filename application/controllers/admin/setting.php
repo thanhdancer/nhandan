@@ -95,16 +95,16 @@ class Setting extends CI_Controller{
         $data['userid'] = $this->_user['userid'];
 
         // set config site title
-        $this->sModel->setConfig(array_merge($data, [
+        $this->sModel->setConfig(array_merge($data, array(
             'name' => 'siteTitle',
             'value' => $this->input->post('siteTitle', TRUE)
-        ]));
+        )));
 
         // set config logo link
-        $this->sModel->setConfig(array_merge($data, [
+        $this->sModel->setConfig(array_merge($data, array(
             'name' => 'logo',
             'value' => $this->input->post('logo', TRUE)
-        ]));
+        )));
 
         $this->session->set_flashdata(array(
             'type'      => 'success',

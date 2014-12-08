@@ -50,9 +50,9 @@ class Setting_model extends CI_Model{
         $sql = "SELECT *
                 FROM `" . $this->db->dbprefix('config') . "`
                 WHERE `configname` = ?";
-        $result = $this->db->query($sql, [
+        $result = $this->db->query($sql, array(
            $configname
-        ]);
+        ));
 
         return $result->result();
     }
@@ -69,12 +69,12 @@ class Setting_model extends CI_Model{
                 WHERE `configname` = ?
                 ";
 
-        $this->db->query($sql, [
+        $this->db->query($sql, array(
             $config['value'],
             time(),
             $config['userid'],
             $config['name']
-        ]);
+        ));
 
         // INSERT if not exists config
         if($this->db->affected_rows() < 1){
@@ -82,7 +82,7 @@ class Setting_model extends CI_Model{
                     (`modulename`, `configname`, `configvalue`, `title`, `description`, `created_date`, `created_user`)
                     VALUES
                     (?,?,?,?,?,?,?)";
-            $this->db->query($sql, [
+            $this->db->query($sql, array(
                 $config['module'],
                 $config['name'],
                 $config['value'],
@@ -90,7 +90,7 @@ class Setting_model extends CI_Model{
                 $config['description'],
                 time(),
                 $config['userid']
-            ]);
+            ));
             return $this->db->insert_id();
         }
 
