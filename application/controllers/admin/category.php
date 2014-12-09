@@ -61,7 +61,8 @@ class Category extends CI_Controller {
     public function index($module = ''){
 
         if($module == ''){
-            $module = array_keys($this->config->config['adminController'])[0];
+        	$moduleKeys = array_keys($this->config->config['adminController']); 
+            $module = $moduleKeys[0];
         }
         $this->data['pageTitle'] = "Category";
         $this->data['module'] = $module;
@@ -95,7 +96,8 @@ class Category extends CI_Controller {
     public function add($module = ''){
         $this->data['pageTitle'] = "Add new category";
         $this->data['title'] .= 'Add';
-        $module = ($module == '' ? array_keys($this->config->config['adminController'])[0] : $module);
+        $moduleKeys = array_keys($this->config->config['adminController']);
+        $module = ($module == '' ? $moduleKeys[0] : $module);
         $this->data['modulename'] = $module;
 
 
@@ -154,8 +156,11 @@ class Category extends CI_Controller {
     }
 
     public function edit($module = '', $categoryid = 0){
-        $module = ($module == '' ? array_keys($this->config->config['adminController'])[0] : $module);
-        $category = $this->cModel->find($categoryid)[0];
+    	
+    	$moduleKeys = array_keys($this->config->config['adminController']);
+        $module = ($module == '' ? $moduleKeys[0] : $module);
+        $category = $this->cModel->find($categoryid);
+        $category = $category[0];
         $this->data['category'] = $category;
 
         $this->data['parents']   = $this->cModel->getTreeByModuleExceptId($category->module, $categoryid);
@@ -213,7 +218,9 @@ class Category extends CI_Controller {
      * @param int    $categoryid
      */
     public function delete($module = '', $categoryid = 0){
-        $module = ($module == '' ? array_keys($this->config->config['adminController'])[0] : $module);
+    	
+    	$moduleKeys = array_keys($this->config->config['adminController']);
+        $module = ($module == '' ? $moduleKeys[0] : $module);
         $affected_row = $this->cModel->delete($categoryid);
         if($affected_row > 0){
             $this->session->set_flashdata(array(

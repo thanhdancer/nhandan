@@ -250,7 +250,8 @@ class Project extends CI_Controller{
             if(!$this->upload->do_upload('thumb')){
                 $error[] = $this->upload->display_errors();
             }else{
-                $post['imgthumb'] = $this->uploadConfig['upload_path'] . $this->upload->data()['file_name'];
+            	$uploadData = $this->upload->data(); 
+                $post['imgthumb'] = $this->uploadConfig['upload_path'] . $uploadData['file_name'];
             }
 
             if(count($error) == 0){
@@ -360,7 +361,8 @@ class Project extends CI_Controller{
                 if(!$this->upload->do_upload('thumb')){
                     $error[] = $this->upload->display_errors();
                 }else{
-                    $post['imgthumb'] = $this->uploadConfig['upload_path'] . $this->upload->data()['file_name'];
+                	$uploadData = $this->upload->data();
+                	$post['imgthumb'] = $this->uploadConfig['upload_path'] . $uploadData['file_name'];
                 }
             }else{
                 $post['imgthumb'] = $this->data['project']->imgthumb;

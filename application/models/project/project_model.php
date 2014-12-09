@@ -24,6 +24,17 @@ class Project_model extends CI_Model{
     public function __construct(){
         parent::__construct();
     }
+    
+    public function getGroupLocation(){
+    	$this->db->select('count(projectid) AS total, projectid, projectname, location');
+    	$this->db->where('status', "2");
+    	$this->db->group_by('location');
+    	
+    	$query = $this->db->get($this->db->dbprefix('project'));
+    	
+    	return $query->result();
+    	
+    }
 
     /**
      * @param string $sort
@@ -53,6 +64,12 @@ class Project_model extends CI_Model{
         return $result->result();
     }
 
+    /**
+     * List backers 
+     * 
+     * @param unknown_type $projectid
+     */
+    
     public function listBackers($projectid = 0){
         $this->db->select('*');
         $this->db->from($this->db->dbprefix('project_backers'));

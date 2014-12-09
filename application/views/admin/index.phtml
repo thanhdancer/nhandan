@@ -19,3 +19,104 @@
  ?>
 <h2><?php echo $pageTitle ?></h2>
 <br />
+<div class="row">
+	<div class="col-sm-3">
+		<div class="tile-stats tile-green">
+			<div class="icon"><i class="entypo-flag"></i></div>
+			<div class="num" data-start="0" data-end="<?php echo count($projects);?>" data-postfix="" data-duration="1000" data-delay="1">0</div>
+			
+			<h3>Projects</h3>
+			<p>On web site</p>
+		</div>
+	</div>
+	<div class="col-sm-3">
+		<div class="tile-stats tile-red">
+			<div class="icon"><i class="entypo-users"></i></div>
+			<div class="num" data-start="0" data-end="<?php echo count($users);?>" data-postfix="" data-duration="1000" data-delay="1">0</div>
+			
+			<h3>Registered users</h3>
+			
+		</div>
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div id="project_map">
+	</div>
+</div>
+<script>
+ 	$(document).ready(function(){
+ 		FusionCharts.ready(function () {
+ 		   var salesByState = new FusionCharts({
+ 		        "type": "maps/vietnam",
+ 		        "renderAt": "project_map",
+ 		        "width": "100%",
+ 		        "height": "100%",
+ 		        "dataFormat": "json",
+ 		        "dataSource": {
+ 		            "chart": {
+ 		                "caption": "Project map",
+ 		                "subcaption": "Group number of projects by location",
+ 		                "entityFillHoverColor": "#cccccc",
+ 				"formatNumberScale":"0",
+ 		                "numberScaleValue": "1,1000,1000",
+ 		                "numberScaleUnit": "K,M,B", 		                
+ 		                "showLabels": "0",
+ 		                "theme": "fint"
+ 		            },
+ 		            "colorrange": { 		                
+ 		                "color": [
+ 		                    {
+ 		                    	"minvalue": "1",
+ 		                        "maxvalue": "5", 		                       
+ 		                        "code": "#00ffff"
+ 		                    },
+ 		                    {
+ 		                    	"minvalue": "6",
+ 		                        "maxvalue": "10", 		                        
+ 		                        "code": "#00ff19"
+ 		                    },
+ 		                   	{
+		                    	"minvalue": "11",
+		                        "maxvalue": "20", 		                        
+		                        "code": "#dbff00"
+		                    },
+ 		                   	{
+		                    	"minvalue": "21",
+		                        "maxvalue": "50", 		                        
+		                        "code": "#f9ff00"
+		                    },
+ 		                   	{
+		                    	"minvalue": "51",
+		                        "maxvalue": "100", 		                        
+		                        "code": "#ff8900"
+		                    },
+ 		                   	{
+		                    	"minvalue": "101",
+		                    	"maxvalue": "10000",
+		                    	"displayValue": "> 100",		                         		                       
+		                        "code": "#ff0000"
+		                    }
+ 		                ]
+ 		            },
+ 		            "data": [
+ 		                
+ 		                <?php
+ 		                foreach($map as $value){
+ 		                	echo 
+ 		                	'{
+ 		                		"id" : "' . $value->location . '",
+ 		                		"value" : "' . $value->total. '"
+ 		                	},';
+ 		                	
+ 		                } 
+ 		                ?>
+ 		                
+ 		            ]
+ 		        }
+ 		    });
+ 		    salesByState.render();
+ 		});
+ 	});
+  
+</script>
