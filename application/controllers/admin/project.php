@@ -125,6 +125,7 @@ class Project extends CI_Controller{
         
         $this->load->model('category/Category_model', 'cModel');
         $this->load->model('project/Project_model', 'pModel');
+        $this->data['categories'] = $this->cModel->getTreeByModule('project');
     }
 
     /**
@@ -187,7 +188,7 @@ class Project extends CI_Controller{
         );
 
         $this->data['province'] = $this->province;
-        
+
         $this->data['_additionFooter'] = '
             <script src="' . base_url() . 'assets/js/tinymce/tinymce.min.js"></script>
 	        <script src="' . base_url() . 'assets/js/jquery.inputmask.bundle.min.js"></script>
@@ -209,6 +210,7 @@ class Project extends CI_Controller{
             $this->load->library('upload', $this->uploadConfig);
             $this->load->library('form_validation');
 
+            $this->form_validation->set_rules('categoryid', "Project category", 'required|numeric');
             $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
             $this->form_validation->set_rules('title', "Title", 'prep_for_form');
             $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
@@ -222,6 +224,7 @@ class Project extends CI_Controller{
 
             }
 
+            $post['categoryid'] = $this->input->post('categoryid');
             $post['projectname'] = $this->input->post('projectname');
             $post['title'] = $this->input->post('title');
             $post['sapo'] = $this->input->post('sapo');
@@ -317,6 +320,7 @@ class Project extends CI_Controller{
             $this->load->library('upload', $this->uploadConfig);
             $this->load->library('form_validation');
 
+            $this->form_validation->set_rules('categoryid', "Project category", 'required|numeric');
             $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
             $this->form_validation->set_rules('title', "Title", 'prep_for_form');
             $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
@@ -330,7 +334,7 @@ class Project extends CI_Controller{
 
             }
 
-
+            $post['categoryid'] = $this->input->post('categoryid');
             $post['projectname'] = $this->input->post('projectname');
             $post['title'] = $this->input->post('title');
             $post['sapo'] = $this->input->post('sapo');

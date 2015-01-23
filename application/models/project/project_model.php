@@ -140,7 +140,7 @@ class Project_model extends CI_Model{
                 ";
 
         $this->db->query($sql, array(
-            0, // need edit
+            $data['categoryid'],
             $data['projectname'],
             $data['title'],
             $data['imgthumb'],
@@ -173,7 +173,7 @@ class Project_model extends CI_Model{
                 ";
 
         $this->db->query($sql, array(
-            0, // need edit
+            $data['categoryid'], // need edit
             $data['projectname'],
             $data['title'],
             $data['imgthumb'],

@@ -29,6 +29,21 @@
     <div class="panel-body">
         <form enctype="multipart/form-data" role="form" method="post" class="validate">
             <div class="form-group">
+                <label class="control-label">Project category</label>
+                <select class="form-control" name="categoryid">
+                    <option>Choose a Category</option>
+                    <?php
+                    foreach($categories['items'] as $category):
+                    ?>
+
+                    <option value="<?=$category['categoryid']?>"><?=str_repeat('---', $category['depth']) . ' '.  $category['name']?></option>
+                    <?php
+                    endforeach;
+                    ?>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label class="control-label">Project name</label>
                 <input type="text" value="<?=set_value('projectname')?>" data-validate="required" class="form-control" name="projectname" placeholder="Project name" />
             </div>
@@ -112,6 +127,7 @@
 
 <script>
     $(document).ready(function(){
+        // Rich editor
         tinymce.init({
             selector: "#content",
             theme: "modern",
@@ -130,6 +146,7 @@
             external_plugins: { "filemanager" : "/assets/filemanager/plugin.min.js"}
         });
 
+        // goal input mask
         $("#goal").inputmask('decimal', {
             alias: "currency",
             radixPoint: '.',
