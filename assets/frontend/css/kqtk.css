@@ -1,0 +1,146 @@
+.header_landing_kqtk {
+	height: 303px;
+	overflow: hidden;
+	margin: 0 auto;
+	width: 100%;
+	position: relative;
+}
+.content_holder {
+	width: 1060px;
+	height: 380px;
+	display: table-cell;
+	vertical-align: middle;
+	overflow: hidden;
+	position: relative;
+	text-align: center;
+	z-index: 1000;
+}
+.content_holder p {
+	color: #fff;
+	display: block;
+	width: 934px;
+	text-align: center;
+	font-size: 22px;
+}
+p.quote_by_kqtk {
+	text-transform: capitalize;
+	font-style: italic;
+	font-size: 17px;
+	text-align: right;
+	margin-top: 20px;
+}
+.wrap_text_kqtk {
+	width: 934px;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+}
+img.bg_img_kqtk {
+	position: absolute;
+	width: 100%;
+	top: -315px;
+}
+.black_shadow_kqtk {
+	width: 100%;
+	height: 303px;
+	position: relative;
+	z-index: 100;
+	background-color: #000;
+	opacity: 0.49;
+}
+.wrap_both_black_shadow_and_bg_img_kqtk {
+	position: absolute;
+	overflow: hidden;
+	height: 303px;
+	width: 100%;
+}
+.all_projects {
+	width: 100%;
+	overflow: hidden;
+	height: auto;
+	background-color: #fff;
+}
+.title_line_kqtk {
+	overflow: hidden;
+	width: 100%;
+	height: auto;
+	margin: 48px auto;
+}
+.line_kqtk {
+	height: 24px;
+	width: 86.62264150943396%; /* 950px */
+	float: right;
+	overflow: hidden;
+}
+.notation_projects2 {
+	max-width: 8%;
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+}
+.vline_kqtk {
+	height: 24px;
+	width: 960px;
+	display: table-cell;
+	vertical-align: middle;
+}
+.line_kqtk2 {
+	width: 100%;
+	height: 1px;
+	background-color: #c9c9c9;
+}
+.search_box_kqtk_2 {
+	width: 970px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.three_col_kqtk {
+	width: 33%;
+	float: left;
+}
+.first_col_kqtk {
+	text-align: left;
+}
+.second_col_kqtk {
+	text-align: center;
+}
+.third_col_kqtk {
+	text-align: right;
+}
+a.submit_button_kqtk {
+	width: 160px;
+	height: 34px;
+	background-color: #41b06e;
+	box-sizing: border-box;
+	text-align: center;
+	color: #fff;
+	display: block;
+	border-radius: 10px;
+	margin: 50px auto 40px;
+}
+a.submit_button_kqtk span {
+	width: 160px;
+	height: 34px;
+	display: table-cell;
+	vertical-align: middle;
+}
+a.submit_button_kqtk:hover {
+	border: 1px solid #41b06e;
+	color: #41b06e;
+	background-color: transparent;;
+}
+.name_kqtk {
+	padding-right: 5px;
+}
+.three_col_kqtk select {
+	border-radius: 4px;
+	border-color: #000;
+	box-shadow: inset 0 0 0 1px #979797;
+	padding: 3px 10px;
+}
+.three_col_kqtk select:focus {
+
+}
+.project_count_result {
+	font-style: italic;
+}

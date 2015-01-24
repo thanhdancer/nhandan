@@ -24,7 +24,10 @@ class Project_model extends CI_Model{
     public function __construct(){
         parent::__construct();
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function getGroupLocation(){
     	$this->db->select('count(projectid) AS total, projectid, projectname, location');
     	$this->db->where('status', "2");
@@ -43,7 +46,7 @@ class Project_model extends CI_Model{
      *
      * @return mixed
      */
-    public function getAll($sort = 'created_date', $page = 0, $limit = 100){
+    public function getAll($where = '1', $sort = 'created_date', $page = 0, $limit = 100){
         $sql = "SELECT COUNT(  `b`.`backerid` ) AS  `numbacker` , SUM(  `b`.`amount` ) + 0 AS  `total` ,  `p`.*
                 FROM  `" . $this->db->dbprefix('project') . "` AS  `p`
                 LEFT JOIN (
@@ -51,12 +54,13 @@ class Project_model extends CI_Model{
                 FROM  `" . $this->db->dbprefix('project_backers') . "`
                 WHERE `status` = 1
                 ) AS  `b` ON  `p`.`projectid` =  `b`.`projectid`
+                WHERE $where
                 GROUP BY  `p`.`projectid`
-                ORDER BY ?
+                ORDER BY $sort
                 LIMIT ? , ?";
 
         $result = $this->db->query($sql, array(
-            $sort,
+
             $page * $limit,
             $limit
         ));
@@ -133,7 +137,9 @@ class Project_model extends CI_Model{
                     `deadline`   =   ?,
                     `goal`   =   ?,
                     `location`   =   ?,
+                    `address`   =   ?,
                     `status`   =   ?,
+                    `priority`   =   ?,
                     `modified_date`   =   ?,
                     `modified_user`   =   ?
                 WHERE `projectid`   =   ?
@@ -149,7 +155,9 @@ class Project_model extends CI_Model{
             $data['deadline'],
             $data['goal'],
             $data['location'],
+            $data['address'],
             $data['status'],
+            $data['priority'],
             time(),
             $data['userid'],
             $data['projectid']
@@ -167,7 +175,7 @@ class Project_model extends CI_Model{
      */
     public function add($data){
         $sql = "INSERT INTO `" . $this->db->dbprefix('project') . "`
-                (`categoryid`, `projectname`, `title`, `imgthumb`, `sapo`, `content`, `deadline`, `goal`, `location`, `status`, `created_date`, `created_user`)
+                (`categoryid`, `projectname`, `title`, `imgthumb`, `sapo`, `content`, `deadline`, `goal`, `location`, `address`, `status`, `priority`, `created_date`, `created_user`)
                 VALUES
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ";
@@ -182,7 +190,9 @@ class Project_model extends CI_Model{
             $data['deadline'],
             $data['goal'],
             $data['location'],
+            $data['address'],
             $data['status'],
+            $data['priority'],
             time(),
             $data['userid']
         ));

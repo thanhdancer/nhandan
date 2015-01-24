@@ -33,7 +33,9 @@ CREATE TABLE IF NOT EXISTS `thnd_project` (
   `deadline` text NOT NULL ,
   `goal` DOUBLE DEFAULT 0 ,
   `location` text,
+  `address` text,
   `status` int(11) NOT NULL,
+  `priority` int(11) NOT NULL,
   `created_date` text NOT NULL,
   `modified_date` text NOT NULL,
   `created_user` int(11) DEFAULT NULL,
@@ -134,4 +136,18 @@ CREATE TABLE IF NOT EXISTS `thnd_permission` (
   `created_user` int(11) DEFAULT NULL,
   `modified_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`permissionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_sponsor` (
+  `sponsorid` int(11) NOT NULL AUTO_INCREMENT,
+  `sponsorname`	varchar(255) NOT NULL,
+  `sponsorlink` text NOT NULL,
+  `sponsorlogo` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `order`   int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`sponsorid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

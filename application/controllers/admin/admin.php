@@ -59,7 +59,7 @@ class Admin extends CI_Controller{
         $this->load->model('project/Project_model', 'projectModel');
         $this->load->model('User_model', 'userModel');
         
-        $data['projects'] = $this->projectModel->getAll('created_date', 0, 10000);
+        $data['projects'] = $this->projectModel->getAll('1', 'created_date', 0, 10000);
         $data['map']	=	$this->projectModel->getGroupLocation();
         $data['users'] = $this->userModel->getAll('created_date', 0, 10000);
         

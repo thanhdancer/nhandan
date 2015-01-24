@@ -391,10 +391,20 @@ $config['adminMenu'] = array(
 
 				)
 		),
+    /**
+     *  Module sponsor
+     */
+        'sponsor'   =>  array(
+            'title'         =>  'Sponsor',
+            'route'         =>  'admin/sponsor',
+            'visibility'    =>  '1,10',
+            'icon'          =>  'entypo-suitcase',
+            'permission'    =>  '*'
+        ),
 
 		/**
 		 * Module Project
-*/
+        */
 		'project' => array(
 				'title' => 'Project',
 				'route' => 'admin/project',
@@ -482,7 +492,8 @@ $config['adminMenu'] = array(
 */
 
 $config['adminController'] = array(    
-    'project' => "Project"
+    'project'   =>  "Project",
+    'sponsor'   =>  "Sponsor"
 );
 
 /*

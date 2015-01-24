@@ -214,8 +214,10 @@ class Project extends CI_Controller{
             $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
             $this->form_validation->set_rules('title', "Title", 'prep_for_form');
             $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
+            $this->form_validation->set_rules('address', "Address", 'prep_for_form');
             $this->form_validation->set_rules('location', "Location", 'prep_for_form');
             $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
+            $this->form_validation->set_rules('priority', "Priority", 'required|numeric|greater_than[0]');
 
             if($this->form_validation->run() == FALSE){
                 $this->form_validation->set_error_delimiters('', '<br />');
@@ -233,6 +235,8 @@ class Project extends CI_Controller{
             $post['goal'] = $this->input->post('goal');
             $post['location'] = $this->input->post('location');
             $post['status'] = $this->input->post('status');
+            $post['priority'] = $this->input->post('priority');
+            $post['address'] = $this->input->post('address');
             $post['userid'] = $this->_user['userid'];
 
             // check province
@@ -324,8 +328,10 @@ class Project extends CI_Controller{
             $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
             $this->form_validation->set_rules('title', "Title", 'prep_for_form');
             $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
+            $this->form_validation->set_rules('address', "Address", 'prep_for_form');
             $this->form_validation->set_rules('location', "Location", 'prep_for_form');
             $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
+            $this->form_validation->set_rules('priority', "Priority", 'required|numeric|greater_than[0]');
 
             if($this->form_validation->run() == FALSE){
                 $this->form_validation->set_error_delimiters('', '<br />');
@@ -342,7 +348,9 @@ class Project extends CI_Controller{
             $post['deadline'] = $this->input->post('deadline');
             $post['goal'] = $this->input->post('goal');
             $post['location'] = $this->input->post('location');
+            $post['address'] = $this->input->post('address');
             $post['status'] = $this->input->post('status');
+            $post['priority'] = $this->input->post('priority');
             $post['userid'] = $this->_user['userid'];
             $post['projectid'] = $this->input->post('projectid');
 

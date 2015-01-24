@@ -64,13 +64,20 @@
                 </div>
                 <div class="col-md-4">
                     <label class="control-label">Location</label>
-                    <select class="form-control" name="location">
-	                    <?php
-	                    foreach($province as $code => $value){
-	                    	echo '<option value="'. $code . '">' . $value . '</option>';
-	                    }  
-	                    ?>
-                    </select>
+                    <div class="control-group">
+                        <div class="col-md-6">
+                            <input type="text" name="address" class="form-control" placeholder="Address" value="<?=set_value('goal')?>" />
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" name="location">
+                                <?php
+                                foreach($province as $code => $value){
+                                    echo '<option value="'. $code . '">' . $value . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -112,6 +119,11 @@
                     <option value="0">Disabled</option>
                     <option value="1">Pending</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Priority</label>
+                <input type="number" class="form-control" value="1" name="priority" placeholder="Priority" />
             </div>
             <div class="form-group">
                 <div class="col-sm-12">

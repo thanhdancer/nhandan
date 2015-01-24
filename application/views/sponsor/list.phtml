@@ -1,0 +1,204 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: list.phtml  1/24/15 12:18 PM lion $
+ */
+ 
+ ?>
+
+<h2><?=$pageTitle?></h2>
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <td>Sponsor name</td>
+                <td>Sponsor logo</td>
+                <td>Sponsor link</td>
+                <td>Order</td>
+                <td>Status</td>
+                <td>Activity</td>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            $i = 0;
+            foreach($sponsors as $sponsor):
+                $i++;
+            ?>
+                <tr>
+                    <td><?=$i?></td>
+                    <td><?=$sponsor->sponsorname?></td>
+                    <td><img src="<?=$sponsor->sponsorlogo?>" style="max-height: 50px; max-width: 50px" /></td>
+                    <td><a href="<?=$sponsor->sponsorlink?>" target="_blank"><?=$sponsor->sponsorlink?></a> </td>
+                    <td><?=$sponsor->order?></td>
+                    <td><?=$sponsor->status == 1 ? 'Enabled' : 'Disabled'?></td>
+                    <td>
+                        <a href="#" data-id="<?=$sponsor->sponsorid?>" onclick="return edit(this);"><i class="entypo-pencil"></i></a>
+                        <a href="#" onclick="return removeSponsor(<?=$sponsor->sponsorid?>);"><i class="entypo-cancel-circled"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach;?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>#</td>
+                <td><input type="text" class="form-control" name="sponsorname" id="sname" placeholder="[New] Sponsor Name" /> </td>
+                <td><input type="url" class="form-control" name="sponsorlogo" id="slogo" placeholder="[New] Logo" /> </td>
+                <td><input type="url" class="form-control" name="sponsorlink" id="slink" placeholder="[New] Link" /></td>
+                <td><input type="number" class="form-control" name="order" id="order" placeholder="[New] Order" /> </td>
+                <td>
+                    <div class="make-switch switch-small" data-on="primary" date-off="primary">
+                        <input type="checkbox" id="status" name="status" checked />
+                    </div>
+                </td>
+                <td><a href="#" onclick="return add()"><i class="entypo-plus-circled"></i></a></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+ <script>
+
+
+     /**
+      * Function add new sponsor
+      * @returns {boolean}
+      */
+     function add(){
+         var sponsorName = $("#sname").val();
+         var sponsorLogo = $("#slogo").val();
+         var sponsorLink = $("#slink").val();
+         var order = $("#order").val();
+         var status = $($('#status').parents()[0]).bootstrapSwitch('status') == true ? '1' : '0';
+
+         $.ajax({
+             type   :   'POST',
+             url    :   '<?=site_url('admin/sponsor/add')?>',
+             data   :   {
+                 sponsorname    :   sponsorName,
+                 sponsorlink    :   sponsorLink,
+                 sponsorlogo    :   sponsorLogo,
+                 status         :   status,
+                 order          :   order
+             }
+         }).done(function(){
+             window.location = '';
+         });
+         return false;
+     }
+
+
+     /**
+      * Function start update a sponsor
+      * @param element
+      * @returns {boolean}
+      */
+
+     function edit(element){
+         var sid = $(element).attr('data-id');
+
+         var parent = $(element).parents();
+         var ele = $(parent[1]).children();
+
+         $(ele[1]).html('<input type="text" value="' + $(ele[1]).text() + '" class="form-control" id="name_' + sid + '" placeholder="Sponsor name" />'); // Sponsor name
+         $(ele[2]).html('<input type="text" value="' + $($(ele[2]).html()).attr('src') + '" class="form-control" id="logo_' + sid + '" placeholder="Logo" />'); // Logo
+         $(ele[3]).html('<input type="text" value="' + $(ele[3]).text() + '" class="form-control" id="link_' + sid + '" placeholder="Link" />'); // Link
+         $(ele[4]).html('<input type="text" value="' + $(ele[4]).text() + '" class="form-control" id="order_' + sid + '" placeholder="Order" />'); // Order
+         $(ele[5]).html('<div class="make-switch switch-small" data-on="primary"  data-off="primary">\
+                            <input class="changeswitch" type="checkbox" '+ ($(ele[5]).text() == 'Enabled' ? 'checked' : '') +' id="status_' + sid + '" />\
+                        </div>'); // status
+         $(ele[6]).html('<a href="#" data-id="' + sid +'" onclick="return update(this);"><i class="entypo-check"></i></a>\
+                        <a href="#" data-id="' + sid +'" onclick="return cancel(this);"><i class="entypo-cancel"></i></a>'); // action
+         $($('#status_' + sid).parents()[0]).bootstrapSwitch();
+         return false;
+     }
+
+     /**
+      * Function cancel edit sponsor
+      * @param element
+      */
+
+     function cancel(element){
+         var sid = $(element).attr('data-id');
+         var parent = $(element).parents();
+         var ele = $(parent[1]).children();
+
+
+         $(ele[1]).text($('#name_' + sid).val());
+         $(ele[2]).html('<img src="' + $('#logo_' + sid).val() + '" style="max-width: 50px; max-height: 50px" />');
+         $(ele[3]).text('<a href="' + $('#link_' + sid).val() + '">' + $('#link_' + sid).val()+ '</a>');
+         $(ele[4]).text($('#order_' + sid).val());
+         $(ele[5]).text($('#status_' + sid).attr('checked') == 'checked' ? 'Enabled' : 'Disabled');
+         $(ele[6]).html('<a href="#" data-id="'+ sid + '" onclick="return edit(this);"><i class="entypo-pencil"></i></a>\
+                        <a href="#" onclick="return removeSponsor('+ sid + ');"><i class="entypo-cancel-circled"></i></a>'); // action
+         window.location = '';
+     }
+
+     /**
+      * Function request update
+      * @param element
+      * @returns {boolean}
+      */
+
+     function update(element){
+         var sid = $(element).attr('data-id');
+         var sponsorName = $('#name_' + sid).val();
+         var sponsorLogo = $('#logo_' + sid).val();
+         var sponsorLink = $('#link_' + sid).val();
+         var order = $('#order_' + sid).val();
+         var status = $($('#status_' + sid).parents()[0]).bootstrapSwitch('status') == true ? '1' : '0';
+
+         $.ajax({
+             type: 'POST',
+             url: '<?=site_url('admin/sponsor/update/')?>',
+             data: {
+                 sponsorid      :   sid,
+                 sponsorname    :   sponsorName,
+                 sponsorlink    :   sponsorLink,
+                 sponsorlogo    :   sponsorLogo,
+                 status         :   status,
+                 order          :   order
+             }
+         }).done(function(){
+             window.location = '';
+         });
+
+         return false
+     }
+
+     /**
+      * Delete a sponsor
+      * @param sid
+      */
+
+     function removeSponsor(sid){
+         if(confirm("Are you sure to delete this sponsor?")){
+             $.ajax({
+                 type   :   'POST',
+                 url    :   '<?=site_url('admin/sponsor/delete')?>',
+                 data   :   {
+                     sponsorid  :   sid
+                 }
+             }).done(function(){
+                 window.location = '';
+             });
+         }
+         return false;
+     }
+ </script>

@@ -36,6 +36,10 @@ class Backer_model extends CI_Model{
         $this->db->delete($this->db->dbprefix('project_backers'), array('backerid' => $backerid));
     }
 
+    public function insert($data){
+        $this->db->insert($this->db->dbprefix('project_backers'), $data);
+    }
+
     public function updateStatus($backerid, $status){
         $data = array('status' => $status);
         $this->db->where('backerid', $backerid);
