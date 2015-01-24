@@ -550,7 +550,7 @@ table.index_content tr.lower_row_content {
 	background-color: transparent;
 	margin: 0 auto;
 	position: relative;
-	margin-bottom: 94px;
+
 }
 button#left_click_urgent_projects {
 	float: left;
@@ -593,9 +593,9 @@ button#right_click_urgent_projects:hover , button#left_click_urgent_projects:hov
 	overflow: hidden;
 }
 .col_urgent {
-	width: 23.58490566037736%; /* 250px */
+	width: 23%; /* 250px */
 	float: left;
-	height: auto;
+	height: 465px;
 	background-color: #fff;
 	border: 1px solid #e3e3e7;
 	box-sizing: border-box;

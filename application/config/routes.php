@@ -44,6 +44,9 @@ $route['404_override'] = '';
 
 /* Added by Thanh Dancer */
 $route['admin'] = "admin/admin";
+$route['projects'] = "home/projects";
+$route['projects/(:any)/(:num)']    =   "home/projects";
+$route['projects/(:any)']    =   "home/projects";
 //$route['admin/category/add/(:any)'] = "admin/category/add"
 
 /* End of file routes.php */

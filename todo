@@ -1,7 +1,7 @@
 + User permission
 + Upload, file browse ckeditor
 + Create map
-- Insert map into project
++ Insert map into project
 + Review project
 \ Config project
 + Dashboard
@@ -10,9 +10,10 @@
 - Modify model
 - MODULE STATIC PAGE
 - MODULE NEWS
+
 ====================================
 FRONT END
-- Edit javascript, slider
++ Edit javascript, slider
 
 'VN.AG' => 'An Giang',
 'VN.BK' => 'Bac Can',

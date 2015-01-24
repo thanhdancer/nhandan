@@ -96,14 +96,55 @@ class Home extends CI_Controller{
 
     }
 
+    /**
+     *
+     * Homepage
+     *
+     */
     public function index(){
         $this->load->model('project/Project_model', 'projectModel');
         $this->load->model('sponsor/Sponsor_model', 'sponsorModel');
+
+        $data['title']      =   "Trường học nhân dân | Trang chủ";
+        $data['menu']               =   "home";
         $data['map']	    =	$this->projectModel->getGroupLocation();
         $data['highlight']  =   $this->projectModel->getAll('`priority` > 1', 'priority desc');
-        $data['urgent']     =   $this->projectModel->getAll('`deadline` < ' . (30 * 86400 + time()), 'priority desc', 0, 4);
+        $data['urgent']     =   $this->projectModel->getAll('`deadline` < ' . (30 * 86400 + time()), 'priority desc');
         $data['province']   =   $this->province;
         $data['sponsors']   =   $this->sponsorModel->getAll();
-        $this->load->view('frontend/homepage.phtml', $data);
+
+        $data['_mainContent'] = $this->load->view('frontend/homepage.phtml', $data, TRUE);
+
+        $this->load->view('includes/_homeTemplate.phtml', $data);
+    }
+
+    /**
+     *  Projects
+     */
+    public function projects(){
+        $this->load->model('project/Project_model', 'projectModel');
+        $this->load->model('category/Category_model', 'categoryModel');
+
+        $data['select_province'] = $this->uri->segment(2);
+        $data['select_category'] = $this->uri->segment(3);
+
+        $data['title']              =   "Trường học nhân dân | Các dự án";
+        $data['menu']               =   "projects";
+
+        $data['_additionHeader']    =   '<link rel="stylesheet" type="text/css" href="' . base_url() . '/assets/frontend/css/kqtk.css">';
+
+        $where = '';
+        // Make project condition
+            $where .= (isset($data['select_province']) && trim($data['select_province']) != '') ?  ' AND `location` = ' . $this->db->escape($data['select_province']) : '';
+        $where .= (isset($data['select_category']) && trim($data['select_category']) != '') ?  ' AND `categoryid` = ' . $this->db->escape($data['select_category']) : '';
+
+        $data['highlight']  =   $this->projectModel->getAll('`priority` > 1' . $where, 'priority desc');
+        $data['urgent']     =   $this->projectModel->getAll('`deadline` < ' . (30 * 86400 + time()) . $where, 'priority desc');
+        $data['provinces']   =   $this->province;
+        $data['categories'] = $this->categoryModel->getTreeByModule('project');
+
+        $data['_mainContent'] = $this->load->view('frontend/project.phtml', $data, TRUE);
+        $this->load->view('includes/_homeTemplate.phtml', $data);
+
     }
 } 

@@ -177,7 +177,7 @@ class Project_model extends CI_Model{
         $sql = "INSERT INTO `" . $this->db->dbprefix('project') . "`
                 (`categoryid`, `projectname`, `title`, `imgthumb`, `sapo`, `content`, `deadline`, `goal`, `location`, `address`, `status`, `priority`, `created_date`, `created_user`)
                 VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ";
 
         $this->db->query($sql, array(

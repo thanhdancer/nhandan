@@ -1,107 +1,88 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Truong hoc nhan dan </title>
-    <link href="<?=base_url()?>/assets/frontend/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?=base_url()?>/assets/frontend/css/style.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+<script>
+    $(document).ready(function(){
+        FusionCharts.ready(function () {
+            var salesByState = new FusionCharts({
+                "type": "maps/vietnam",
+                "renderAt": "project_map",
+                "width": "100%",
+                "height": "100%",
+                "dataFormat": "json",
+                "dataSource": {
+                    "chart": {
+                        "bgimagealpha": "0",
+                        "caption": "Project map",
+                        "subcaption": "Group number of projects by location",
+                        "entityFillHoverColor": "#cccccc",
+                        "formatNumberScale":"0",
+                        "numberScaleValue": "1,1000,1000",
+                        "numberScaleUnit": "K,M,B",
+                        "showLabels": "0",
+                        "theme": "fint"
+                    },
+                    "colorrange": {
+                        "color": [
+                            {
+                                "minvalue": "1",
+                                "maxvalue": "5",
+                                "code": "#00ffff"
+                            },
+                            {
+                                "minvalue": "6",
+                                "maxvalue": "10",
+                                "code": "#00ff19"
+                            },
+                            {
+                                "minvalue": "11",
+                                "maxvalue": "20",
+                                "code": "#dbff00"
+                            },
+                            {
+                                "minvalue": "21",
+                                "maxvalue": "50",
+                                "code": "#f9ff00"
+                            },
+                            {
+                                "minvalue": "51",
+                                "maxvalue": "100",
+                                "code": "#ff8900"
+                            },
+                            {
+                                "minvalue": "101",
+                                "maxvalue": "10000",
+                                "displayValue": "> 100",
+                                "code": "#ff0000"
+                            }
+                        ]
+                    },
+                    "data": [
 
-    <script type="text/javascript" src="<?=base_url()?>/assets/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript"  src="<?=base_url()?>/assets/frontend/js/jssor.slider.mini.js"></script>
-    <script>
-        jQuery(document).ready(function ($) {
-            var options = {
-                $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
-                $AutoPlaySteps: 1,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
-                $AutoPlayInterval: 0,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
-                $PauseOnHover: 4,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+                        <?php
+                        foreach($map as $value){
+                            echo
+                            '{
+                                "id" : "' . $value->location . '",
+                                "value" : "' . $value->total. '"
+                            },';
 
-                $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
-                $SlideEasing: $JssorEasing$.$EaseLinear,          //[Optional] Specifies easing for right to left animation, default value is $JssorEasing$.$EaseOutQuad
-                $SlideDuration: 1600,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
-                $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
-                $SlideWidth: 100,                                   //[Optional] Width of every slide in pixels, default value is width of 'slides' container
-                //$SlideHeight: 100,                                //[Optional] Height of every slide in pixels, default value is height of 'slides' container
-                $SlideSpacing: 100, 					                //[Optional] Space between each slide in pixels, default value is 0
-                $DisplayPieces: 5,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
-                $ParkingPosition: 0,                              //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
-                $UISearchMode: 1,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
-                $PlayOrientation: 1,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
-                $DragOrientation: 1                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
-            };
+                        }
+                        ?>
 
-            var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+                    ]
+                },
+                "events":{
+                    "entityClick": function (evt, data) {
 
-            //responsive code begin
-            //you can remove responsive code if you don't want the slider scales while window resizes
-            function ScaleSlider() {
-                var bodyWidth = document.body.clientWidth;
-                if (bodyWidth)
-                    jssor_slider1.$ScaleWidth(Math.min(bodyWidth, 900));
-                else
-                    window.setTimeout(ScaleSlider, 30);
-            }
-            ScaleSlider();
+                        window.location = '<?php echo site_url('/projects');?>/' + data.id.toUpperCase();
 
-            $(window).bind("load", ScaleSlider);
-            $(window).bind("resize", ScaleSlider);
-            $(window).bind("orientationchange", ScaleSlider);
-            //responsive code end
+                    }
+                }
+            });
+            salesByState.render();
         });
-    </script>
-</head>
-<body>
-    <nav class="nav_container">
-        <div class="wrapper">
-            <div class="wrap_the_logo">
-                <div class="wrap_the_logo2">
-                    <a href="index.html" title="trang chủ THND">
-                        <img src="<?=base_url()?>/assets/frontend/images/logo.png" alt="logo_THND" title="Trường Học Nhân Dân">
-                        <img class="logo_text" src="<?=base_url()?>/assets/frontend/images/thnd-logo.png" alt="logo_THND" title="Trường Học Nhân Dân">
-                        <h1 id="logo_THND">
-                        </h1>
-                    </a>
-                </div> <!-- .wrap_the_logo2 -->
-            </div> <!-- .wrap_the_logo -->
-            <div class="wrap_the_nav">
-                <ul class="nav_ul_header">
-                    <li class="active" title="trang chủ">
-                        <a href="#">
-                            Trang chủ
-                        </a>
-                    </li>
-                    <li class="" title="giới thiệu">
-                        <a href="#">
-                            Giới thiệu
-                        </a>
-                    </li>
-                    <li class="" title="các dự án">
-                        <a href="ket_qua_tim_kiem.html">
-                            Các dự án
-                        </a>
-                    </li>
-                    <li class="" title="tin tức">
-                        <a href="#">
-                            Tin tức
-                        </a>
-                    </li>
-                    <li class="" title="liên hệ">
-                        <a href="#">
-                            Liên hệ
-                        </a>
-                    </li>
-                </ul> <!-- .nav_ul_header -->
-            </div> <!-- .wrap_the_nav -->
-        </div> <!-- wrap -->
-    </nav>
-    <!-- end of nav_container -->
-    <div class="header">
+    });
+</script>
+
+<div class="header">
         <div class="container_top">
             <div class="wrap_landing_and_text">
                 <div class="content_top">
@@ -184,7 +165,7 @@
 
             <div class="content_project">
                 <div class="content_project_inner">
-                    <img style="max-width: 415px" src="<?=$project_2light->imgthumb?>" alt="<?=$project_2light->projectname?>" title="<?=$project_2light->projectname?>">
+                    <img style="max-width: 415px" src="<?=base_url().$project_2light->imgthumb?>" alt="<?=$project_2light->projectname?>" title="<?=$project_2light->projectname?>">
                     <div class="featured_project_content">
                         <div class="feature_project_content_inner">
                             <div class="text_upper_project_content">
@@ -258,59 +239,111 @@
         </div>
         <!-- end of wrapper-->
         <div class="urgent_projects">
-            <div class="button_urgent_holder">
+            <!--<div class="button_urgent_holder">
                 <button id="left_click_urgent_projects">
                     <img src="<?=base_url()?>/assets/frontend/images/left_urgent.png">
                 </button>
                 <button id="right_click_urgent_projects">
                     <img src="<?=base_url()?>/assets/frontend/images/right_urgent.png">
                 </button>
-            </div>
+            </div>-->
             <div class="hold_content_urgent_projects">
                 <div class="wrapper" id="blacken_test">
-                    <?php
-                    $i = 0;
-                    foreach($urgent as $project_urgent):
-                        $i++;
-                        ?>
-                    <div class="col_urgent">
-                        <a href="#">
-                            <img style="max-width: 230px; max-height: 170px" src="<?=$project_urgent->imgthumb?>">
-                            <h4><?=$project_urgent->title?></h4>
-                        </a>
-                        <p><?=$project_urgent->sapo?></p>
-                        <div class="index_container">
-                            <div class="urgent_index_detail">
-                                <a href="#" class="nav_to_location" title="<?=$project_urgent->address?>, <?=isset($province[$project_urgent->location]) ? $province[$project_urgent->location] : $project_urgent->location?>">
-                                    <p class="location_artical text_urgent">
-                                        <?=$project_urgent->address?>, <?=isset($province[$project_urgent->location]) ? $province[$project_urgent->location] : $project_urgent->location?>
-                                    </p>
-                                </a>
-                                <meter class="urgent_meter" value="<?=ceil($project_urgent->total * 100 / $project_urgent->goal)?>" min="0" max="100">
-                                    còn 19 ngày
-                                </meter>
-                                <table class="index_content">
-                                    <tr class="upper_row_content">
-                                        <td><?=ceil($project_urgent->total * 100 / $project_urgent->goal)?>%</td>
-                                        <td><?=ceil(($project_urgent->deadline - time())/86400)?> ngày</td>
-                                        <td><?=number_format($project_urgent->total)?> </td>
-                                    </tr>
-                                    <tr class="lower_row_content">
-                                        <td>toàn bộ</td>
-                                        <td>còn lại</td>
-                                        <td>đã nhận</td>
-                                    </tr>
-                                </table>
+                    <div id="urgent_slider_container" style="position: relative; top: 0px; left: 0px; width: 1060px; height: 550px; overflow: hidden; ">
+                        <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 1060px; height: 550px;
+            overflow: hidden;" >
+                            <?php
+                            $i = 0;
+                            foreach($urgent as $project_urgent):
+                                if($i == 0 || $i % 4 == 0){
+                                    echo '<div>';
+                                }
+
+                                ?>
+                                <div class="col_urgent">
+                                    <a href="#">
+                                        <img style="max-width: 225px; height: 170px" src="<?=base_url().$project_urgent->imgthumb?>">
+                                        <h4 style="height: 40px;"><?=$project_urgent->title?></h4>
+                                    </a>
+                                    <p style="height: 100px; overflow: hidden; margin-bottom: 5px"><?=$project_urgent->sapo?></p>
+                                    <div class="index_container">
+                                        <div class="urgent_index_detail">
+                                            <a href="#" class="nav_to_location" title="<?=$project_urgent->address?>, <?=isset($province[$project_urgent->location]) ? $province[$project_urgent->location] : $project_urgent->location?>">
+                                                <p class="location_artical text_urgent">
+                                                    <?=$project_urgent->address?>, <?=isset($province[$project_urgent->location]) ? $province[$project_urgent->location] : $project_urgent->location?>
+                                                </p>
+                                            </a>
+                                            <meter class="urgent_meter" value="<?=ceil($project_urgent->total * 100 / $project_urgent->goal)?>" min="0" max="100">
+                                                còn 19 ngày
+                                            </meter>
+                                            <table class="index_content">
+                                                <tr class="upper_row_content">
+                                                    <td><?=ceil($project_urgent->total * 100 / $project_urgent->goal)?>%</td>
+                                                    <td><?=ceil(($project_urgent->deadline - time())/86400)?> ngày</td>
+                                                    <td><?=number_format($project_urgent->total)?> </td>
+                                                </tr>
+                                                <tr class="lower_row_content">
+                                                    <td>toàn bộ</td>
+                                                    <td>còn lại</td>
+                                                    <td>đã nhận</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- End of col_urgent <?=$i + 1 ?> -->
+                            <?php
+                                if($i == (count($urgent) - 1) || $i % 4 == 3 ){
+                                    echo "</div><!-- End block -->";
+                                }
+                                $i++;
+                                endforeach;
+                            ?>
+                        </div>
+                        <!-- Bullet Navigator Skin Begin -->
+                        <style>
+                            /* jssor slider bullet navigator skin 18 css */
+                            /*
+                            .jssorb18 div           (normal)
+                            .jssorb18 div:hover     (normal mouseover)
+                            .jssorb18 .av           (active)
+                            .jssorb18 .av:hover     (active mouseover)
+                            .jssorb18 .dn           (mousedown)
+                            */
+                            .jssorb18 div, .jssorb18 div:hover, .jssorb18 .av
+                            {
+                                background: url(<?=base_url()?>/assets/frontend/images/b18.png) no-repeat;
+                                overflow:hidden;
+                                cursor: pointer;
+                            }
+                            .jssorb18 div { background-position: -3px -3px; }
+                            .jssorb18 div:hover, .jssorb18 .av:hover { background-position: -33px -3px; }
+                            .jssorb18 .av { background-position: -63px -3px; }
+                            .jssorb18 .dn, .jssorb18 .dn:hover { background-position: -93px -3px; }
+
+                            .jssorb18 .n
+                            {
+                                display: none;
+                                color: #000;
+                            }
+                            .jssorb18 div:hover .n, .jssorb18 .av .n, .jssorb18 .av:hover .n, .jssorb18 .dn .n { display: block; }
+                        </style>
+                        <!-- bullet navigator container -->
+                        <div u="navigator" class="jssorb18" style="position: absolute; bottom: 16px; right: 6px;">
+                            <!-- bullet navigator item prototype -->
+                            <div u="prototype" style="position: absolute; width: 24px; height: 24px; text-align: center;
+                line-height: 24px; font-size: 16px;">
+                                <div u="numbertemplate" class=n></div>
                             </div>
                         </div>
+                        <!-- Bullet Navigator Skin End -->
                     </div>
 
-                    <!-- end of col_urgent <?=$i?> -->
-                    <?php endforeach; ?>
 
                 </div>
                 <!-- end of col_urgent -->
-            </div>
+            </div><!--
             <div class="selection_urgent">
                 <ul>
                     <li class="active_urgent">
@@ -363,83 +396,81 @@
 
     </div>
     <!-- end of top_donors -->
-</body>
-<script type="text/javascript" src="<?=base_url()?>/assets/js/fushioncharts/js/fusioncharts.js"></script>
-<script type="text/javascript" src="<?=base_url()?>/assets/js/fushioncharts/js/themes/fusioncharts.theme.fint.js"></script>
-<script>
-    $(document).ready(function(){
-        FusionCharts.ready(function () {
-            var salesByState = new FusionCharts({
-                "type": "maps/vietnam",
-                "renderAt": "project_map",
-                "width": "100%",
-                "height": "100%",
-                "dataFormat": "json",
-                "dataSource": {
-                    "chart": {
-                        "bgimagealpha": "0",
-                        "caption": "Project map",
-                        "subcaption": "Group number of projects by location",
-                        "entityFillHoverColor": "#cccccc",
-                        "formatNumberScale":"0",
-                        "numberScaleValue": "1,1000,1000",
-                        "numberScaleUnit": "K,M,B",
-                        "showLabels": "0",
-                        "theme": "fint"
-                    },
-                    "colorrange": {
-                        "color": [
-                            {
-                                "minvalue": "1",
-                                "maxvalue": "5",
-                                "code": "#00ffff"
-                            },
-                            {
-                                "minvalue": "6",
-                                "maxvalue": "10",
-                                "code": "#00ff19"
-                            },
-                            {
-                                "minvalue": "11",
-                                "maxvalue": "20",
-                                "code": "#dbff00"
-                            },
-                            {
-                                "minvalue": "21",
-                                "maxvalue": "50",
-                                "code": "#f9ff00"
-                            },
-                            {
-                                "minvalue": "51",
-                                "maxvalue": "100",
-                                "code": "#ff8900"
-                            },
-                            {
-                                "minvalue": "101",
-                                "maxvalue": "10000",
-                                "displayValue": "> 100",
-                                "code": "#ff0000"
-                            }
-                        ]
-                    },
-                    "data": [
+    <script>
 
-                        <?php
-                        foreach($map as $value){
-                            echo
-                            '{
-                                "id" : "' . $value->location . '",
-                                "value" : "' . $value->total. '"
-                            },';
-
-                        }
-                        ?>
-
-                    ]
+        jQuery(document).ready(function ($) {
+            var options = {
+                $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
+                    $Class: $JssorBulletNavigator$,                       //[Required] Class to create navigator instance
+                    $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                    $AutoCenter: 1,                                  //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                    $SpacingX: 0                                   //[Optional] Horizontal space between each item in pixel, default value is 0
                 }
-            });
-            salesByState.render();
+            };
+
+            var urgent_slider = new $JssorSlider$("urgent_slider_container", options);
+
+            //responsive code begin
+            //you can remove responsive code if you don\'t want the slider scales while window resizes
+            function ScaleSlider() {
+                var parentWidth = urgent_slider.$Elmt.parentNode.clientWidth;
+                if (parentWidth) {
+                    var sliderWidth = parentWidth;
+
+                    //keep the slider width no more than 800
+                    sliderWidth = Math.min(sliderWidth, 1060);
+
+                    urgent_slider.$ScaleWidth(sliderWidth);
+                }
+                else
+                    window.setTimeout(ScaleSlider, 30);
+            }
+            //ScaleSlider();
+
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+            //responsive code end
         });
-    });
-</script>
-</html>
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            var options = {
+                $AutoPlay: true,                                    //[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+                $AutoPlaySteps: 1,                                  //[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
+                $AutoPlayInterval: 0,                            //[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
+                $PauseOnHover: 4,                               //[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+
+                $ArrowKeyNavigation: true,   			            //[Optional] Allows keyboard (arrow key) navigation or not, default value is false
+                $SlideEasing: $JssorEasing$.$EaseLinear,          //[Optional] Specifies easing for right to left animation, default value is $JssorEasing$.$EaseOutQuad
+                $SlideDuration: 1600,                                //[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+                $MinDragOffsetToSlide: 20,                          //[Optional] Minimum drag offset to trigger slide , default value is 20
+                $SlideWidth: 100,                                   //[Optional] Width of every slide in pixels, default value is width of \'slides\' container
+                //$SlideHeight: 100,                                //[Optional] Height of every slide in pixels, default value is height of \'slides\' container
+                $SlideSpacing: 100, 					                //[Optional] Space between each slide in pixels, default value is 0
+                $DisplayPieces: 5,                                  //[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
+                $ParkingPosition: 0,                              //[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
+                $UISearchMode: 1,                                   //[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+                $PlayOrientation: 1,                                //[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
+                $DragOrientation: 1                                //[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
+            };
+
+            var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+
+            //responsive code begin
+            //you can remove responsive code if you don\'t want the slider scales while window resizes
+            function ScaleSlider() {
+                var bodyWidth = document.body.clientWidth;
+                if (bodyWidth)
+                    jssor_slider1.$ScaleWidth(Math.min(bodyWidth, 900));
+                else
+                    window.setTimeout(ScaleSlider, 30);
+            }
+            ScaleSlider();
+
+            $(window).bind("load", ScaleSlider);
+            $(window).bind("resize", ScaleSlider);
+            $(window).bind("orientationchange", ScaleSlider);
+            //responsive code end
+        });
+    </script>
