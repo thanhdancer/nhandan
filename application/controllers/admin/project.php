@@ -214,7 +214,7 @@ class Project extends CI_Controller{
             $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
             $this->form_validation->set_rules('title', "Title", 'prep_for_form');
             $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
-            $this->form_validation->set_rules('address', "Address", 'prep_for_form');
+            $this->form_validation->set_rules('addess', "Address", 'prep_for_form');
             $this->form_validation->set_rules('location', "Location", 'prep_for_form');
             $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
             $this->form_validation->set_rules('priority', "Priority", 'required|numeric|greater_than[0]');

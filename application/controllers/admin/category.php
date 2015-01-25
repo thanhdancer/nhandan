@@ -113,17 +113,21 @@ class Category extends CI_Controller {
             $error = array();
             $post = array();
 
+            // load library form validate
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('categoryname', 'Category name', 'required');
+            if($this->form_validation->run() == FALSE){
+                $this->form_validation->set_error_delimiters('', '<br />');
+                $error[]    =   str_replace('\n', '', validation_errors());
+            }
+
             $post['name']           = $this->input->post('categoryname');
             $post['module']         = $this->input->post('module');
             $post['parentid']       = $this->input->post('parent');
             $post['status']         = $this->input->post('status');
             $post['created_user']         = $this->session->userdata('userid');
             $post['created_date']   =   time();
-
-            // check required fields
-            if(trim($post['name']) == ''){
-                $error[] = "Required field must be fill.";
-            }
 
             // check module
             if(!array_key_exists($post['module'], $this->config->config['adminController'])){
@@ -178,17 +182,22 @@ class Category extends CI_Controller {
             $error = array();
             $post = array();
             $module = $this->input->post('module');
+
+            // load library form validate
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('categoryname', 'Category name', 'required');
+            if($this->form_validation->run() == FALSE){
+                $this->form_validation->set_error_delimiters('', '<br />');
+                $error[]    =   str_replace('\n', '', validation_errors());
+            }
+
             $catid                  = $this->input->post('categoryid');
             $post['name']           = $this->input->post('categoryname');
             $post['parentid']       = $this->input->post('parent');
             $post['status']         = $this->input->post('status');
             $post['modified_user']  = $this->session->userdata('userid');
             $post['modified_date']  =   time();
-
-            // check required fields
-            if(trim($post['name']) == ''){
-                $error[] = "Required field must be fill.";
-            }
 
 
             if(count($error) == 0){
