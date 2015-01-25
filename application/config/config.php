@@ -391,15 +391,29 @@ $config['adminMenu'] = array(
 
 				)
 		),
-    /**
-     *  Module sponsor
-     */
-        'sponsor'   =>  array(
-            'title'         =>  'Sponsor',
-            'route'         =>  'admin/sponsor',
+
+        'article'   =>  array(
+            'title'         =>  'News',
+            'route'         =>  'admin/article',
             'visibility'    =>  '1,10',
-            'icon'          =>  'entypo-suitcase',
-            'permission'    =>  '*'
+            'icon'    =>  'entypo-newspaper',
+            'permission'    =>  '*',
+
+            'sub'     =>    array(
+                'list'  =>  array(
+                    'title' =>  'List articles',
+                    'icon'  =>  'entypo-menu',
+                    'visibility'    =>  '1,10',
+                    'route' =>  'admin/article'
+                ),
+
+                'add'  =>  array(
+                    'title' =>  'Add new',
+                    'icon'  =>  'entypo-plus-squared',
+                    'visibility'    =>  '1',
+                    'route' =>  'admin/article/add'
+                ),
+            )
         ),
 
 		/**
@@ -433,7 +447,16 @@ $config['adminMenu'] = array(
 						)
 				)
 		),
-
+        /**
+         *  Module sponsor
+         */
+        'sponsor'   =>  array(
+            'title'         =>  'Sponsor',
+            'route'         =>  'admin/sponsor',
+            'visibility'    =>  '1,10',
+            'icon'          =>  'entypo-suitcase',
+            'permission'    =>  '*'
+        ),
 		/**
 		 * Module Core
 */
@@ -491,9 +514,11 @@ $config['adminMenu'] = array(
 |--------------------------------------------------------------------------
 */
 
-$config['adminController'] = array(    
+$config['adminController'] = array(
+    'article'   =>  "News",
     'project'   =>  "Project",
     'sponsor'   =>  "Sponsor"
+
 );
 
 /*

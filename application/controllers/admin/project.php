@@ -226,18 +226,19 @@ class Project extends CI_Controller{
 
             }
 
-            $post['categoryid'] = $this->input->post('categoryid');
-            $post['projectname'] = $this->input->post('projectname');
-            $post['title'] = $this->input->post('title');
-            $post['sapo'] = $this->input->post('sapo');
-            $post['content'] = $this->input->post('projectcontent', false);
-            $post['deadline'] = $this->input->post('deadline');
-            $post['goal'] = $this->input->post('goal');
-            $post['location'] = $this->input->post('location');
-            $post['status'] = $this->input->post('status');
-            $post['priority'] = $this->input->post('priority');
-            $post['address'] = $this->input->post('address');
-            $post['userid'] = $this->_user['userid'];
+            $post['categoryid']     =   $this->input->post('categoryid');
+            $post['projectname']    =   $this->input->post('projectname');
+            $post['title']          =   $this->input->post('title');
+            $post['sapo']           =   $this->input->post('sapo');
+            $post['content']        =   $this->input->post('projectcontent', false);
+            $post['deadline']       =   $this->input->post('deadline');
+            $post['goal']           =   $this->input->post('goal');
+            $post['location']       =   $this->input->post('location');
+            $post['status']         =   $this->input->post('status');
+            $post['priority']       =   $this->input->post('priority');
+            $post['address']        =   $this->input->post('address');
+            $post['created_user']   =   $this->_user['userid'];
+            $post['created_date']   =   time();
 
             // check province
             if(!in_array($post['location'], array_keys($this->province) )){
@@ -281,6 +282,17 @@ class Project extends CI_Controller{
         }
 
         $this->data['_mainModule'] = $this->load->view('project/add.phtml', $this->data, TRUE);
+
+        if($this->session->flashdata('message')){
+            $this->data['_additionFooter'] .= '
+                <script type="text/javascript">
+                    jQuery(document).ready(function($){
+                        toastr.' . $this->session->flashdata('type') . '(\'' . $this->session->flashdata('message') . '\')
+                    });
+                </script>
+            ';
+        }
+
         $this->load->view('includes/_adminTemplate.phtml', $this->data);
     }
 
@@ -340,19 +352,20 @@ class Project extends CI_Controller{
 
             }
 
-            $post['categoryid'] = $this->input->post('categoryid');
-            $post['projectname'] = $this->input->post('projectname');
-            $post['title'] = $this->input->post('title');
-            $post['sapo'] = $this->input->post('sapo');
-            $post['content'] = $this->input->post('projectcontent', false);
-            $post['deadline'] = $this->input->post('deadline');
-            $post['goal'] = $this->input->post('goal');
-            $post['location'] = $this->input->post('location');
-            $post['address'] = $this->input->post('address');
-            $post['status'] = $this->input->post('status');
-            $post['priority'] = $this->input->post('priority');
-            $post['userid'] = $this->_user['userid'];
-            $post['projectid'] = $this->input->post('projectid');
+            $post['categoryid']     =   $this->input->post('categoryid');
+            $post['projectname']    =   $this->input->post('projectname');
+            $post['title']          =   $this->input->post('title');
+            $post['sapo']           =   $this->input->post('sapo');
+            $post['content']        =   $this->input->post('projectcontent', false);
+            $post['deadline']       =   $this->input->post('deadline');
+            $post['goal']           =   $this->input->post('goal');
+            $post['location']       =   $this->input->post('location');
+            $post['address']        =   $this->input->post('address');
+            $post['status']         =   $this->input->post('status');
+            $post['priority']       =   $this->input->post('priority');
+            $post['modified_user']  =   $this->_user['userid'];
+            $post['modified_user']  =   time();
+            $pid                    =   $this->input->post('projectid');
 
             // check province
             if(!in_array($post['location'], array_keys($this->province) )){
@@ -382,7 +395,7 @@ class Project extends CI_Controller{
 
 
             if(count($error) == 0){
-                $this->pModel->save($post);
+                $this->pModel->save($post, $pid);
                 $this->session->set_flashdata(array(
                     'type'      =>  'success',
                     'message'   =>  'Project <strong>' . $post['projectname'] . '</strong> has been edited successful.'

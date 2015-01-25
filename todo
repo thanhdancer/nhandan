@@ -5,11 +5,12 @@
 + Review project
 \ Config project
 + Dashboard
-- resize thumb picture
 + Modify form validation
 + Modify model
-- MODULE STATIC PAGE
-- MODULE NEWS
++ MODULE NEWS
+- Category weight (order)
+- resize thumb picture
+
 
 ====================================
 FRONT END

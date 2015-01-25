@@ -126,43 +126,8 @@ class Project_model extends CI_Model{
      *
      * @return mixed
      */
-    public function save($data){
-        $sql = "UPDATE `" . $this->db->dbprefix('project') . "`
-                SET `categoryid`    =   ?,
-                    `projectname`   =   ?,
-                    `title`   =   ?,
-                    `imgthumb`   =   ?,
-                    `sapo`   =   ?,
-                    `content`   =   ?,
-                    `deadline`   =   ?,
-                    `goal`   =   ?,
-                    `location`   =   ?,
-                    `address`   =   ?,
-                    `status`   =   ?,
-                    `priority`   =   ?,
-                    `modified_date`   =   ?,
-                    `modified_user`   =   ?
-                WHERE `projectid`   =   ?
-                ";
-
-        $this->db->query($sql, array(
-            $data['categoryid'],
-            $data['projectname'],
-            $data['title'],
-            $data['imgthumb'],
-            $data['sapo'],
-            $data['content'],
-            $data['deadline'],
-            $data['goal'],
-            $data['location'],
-            $data['address'],
-            $data['status'],
-            $data['priority'],
-            time(),
-            $data['userid'],
-            $data['projectid']
-        ));
-
+    public function save($data, $pid){
+        $this->db->update($this->db->dbprefix('project'), $data, array('projectid'  =>  $pid));
         return $this->db->affected_rows();
     }
 
@@ -174,29 +139,7 @@ class Project_model extends CI_Model{
      * @return mixed
      */
     public function add($data){
-        $sql = "INSERT INTO `" . $this->db->dbprefix('project') . "`
-                (`categoryid`, `projectname`, `title`, `imgthumb`, `sapo`, `content`, `deadline`, `goal`, `location`, `address`, `status`, `priority`, `created_date`, `created_user`)
-                VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ";
-
-        $this->db->query($sql, array(
-            $data['categoryid'], // need edit
-            $data['projectname'],
-            $data['title'],
-            $data['imgthumb'],
-            $data['sapo'],
-            $data['content'],
-            $data['deadline'],
-            $data['goal'],
-            $data['location'],
-            $data['address'],
-            $data['status'],
-            $data['priority'],
-            time(),
-            $data['userid']
-        ));
-
+        $this->db->insert($this->db->dbprefix('project'), $data);
         return $this->db->insert_id();
     }
 
@@ -206,23 +149,12 @@ class Project_model extends CI_Model{
      * @return mixed
      */
     public function delete($projectid = 0){
-        $sql = "DELETE FROM `" . $this->db->dbprefix('project_backers') . "`
-                WHERE `projectid` = ?";
 
-        $this->db->query($sql, array(
-            $projectid
-        ));
+        $this->db->where('projectid', $projectid);
+        $this->db->delete(
+            array($this->db->dbprefix('project_backers'), $this->db->dbprefix('project')));
 
         $affected_row = $this->db->affected_rows();
-
-        $sql = "DELETE FROM `" . $this->db->dbprefix('project') . "`
-                WHERE `projectid` = ?";
-
-        $this->db->query($sql, array(
-            $projectid
-        ));
-
-        $affected_row += $this->db->affected_rows();
 
         return $affected_row;
     }

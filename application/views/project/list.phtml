@@ -38,7 +38,7 @@
         <tr>
             <td><?=$project->projectname?></td>
             <td><img src="<?=base_url() . $project->imgthumb?>" alt="<?=$project->projectname?>" style="max-width: 100px; max-height: 100px"/></td>
-            <td><a href="<?=site_url('admin/project/backers/' . $project->projectid)?>"><?=$project->numbacker?></a></td>
+            <td><a href="<?=site_url('admin/project/backers/' . $project->projectid)?>"><span class="badge <?php echo $project->numbacker > 0 ? "badge-success" : ''?>"><?=$project->numbacker?></span></a></td>
             <td>
                 <div class="progress progress-bar-danger">
                     <div class="progress-bar progress-bar-success" style="width: <?= (100* $project->total) /$project->goal ?>%" role="progressbar" aria-valuenow="<?=$project->total?>" aria-valuemin="0" aria-valuemax="<?=$project->goal?>">
@@ -64,7 +64,7 @@
 <script>
     $(document).ready(function(){
         $("#listProject").dataTable({
-            "sPaginationType": "bootstrap",
+            "sPaginationType": "bootstrap"
         });
 
         $(".delete").click(function(){

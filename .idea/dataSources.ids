@@ -1509,6 +1509,25 @@
       <column name="CHARACTER_SET_CLIENT" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="COLLATION_CONNECTION" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
     </table>
+    <table name="thnd_article" schema="" catalog="nhandan" type="TABLE">
+      <column name="articleid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="categoryid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="categorypath" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="slug" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="sapo" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="content" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="status" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="ishot" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="publishdate" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="numberview" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_date" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="modified_date" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="created_user" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="modified_user" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="imgthumb" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="articleid"/>
+    </table>
     <table name="thnd_category" schema="" catalog="nhandan" type="TABLE">
       <column name="categoryid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
