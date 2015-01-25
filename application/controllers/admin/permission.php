@@ -121,10 +121,11 @@ class Permission extends CI_Controller{
     public function add(){
         $data = array();
         $error = array();
-        $data['usergroupname'] = $this->input->post('usergroupname', TRUE);
-        $data['description'] = $this->input->post('description', TRUE);
-        $data['status'] = $this->input->post('status', TRUE) == 'on' ? 1 : 0;
-        $data['userid'] = $this->session->userdata('userid');
+        $data['usergroupname']  =   $this->input->post('usergroupname', TRUE);
+        $data['description']    =   $this->input->post('description', TRUE);
+        $data['status']         =   $this->input->post('status', TRUE) == 'on' ? 1 : 0;
+        $data['created_user']   =   $this->session->userdata('userid');
+        $data['created_date']   =   time();
 
         if(trim($data['usergroupname']) == ''){
             $error[] = 'Group name cannot empty.';
@@ -156,11 +157,12 @@ class Permission extends CI_Controller{
     public function update(){
         $data = array();
         $error = array();
-        $data['usergroupid'] = $this->input->post('usergroupid', TRUE);
-        $data['usergroupname'] = $this->input->post('usergroupname', TRUE);
-        $data['description'] = $this->input->post('description', TRUE);
-        $data['status'] = $this->input->post('status', TRUE) == 'on' ? 1 : 0;
-        $data['userid'] = $this->session->userdata('userid');
+        $ugid                   =   $this->input->post('usergroupid', TRUE);
+        $data['usergroupname']  =   $this->input->post('usergroupname', TRUE);
+        $data['description']    =   $this->input->post('description', TRUE);
+        $data['status']         =   $this->input->post('status', TRUE) == 'on' ? 1 : 0;
+        $data['modified_user']  =   $this->session->userdata('userid');
+        $data['modified_date']  =   time();
 
         if(trim($data['usergroupname']) == ''){
             $error[] = 'Group name cannot empty.';
@@ -171,7 +173,7 @@ class Permission extends CI_Controller{
         }
 
         if(count($error) == 0){
-            $affected_row = $this->ugModel->update($data);
+            $affected_row = $this->ugModel->update($data, $ugid);
         }else{
             $this->session->set_flashdata(array(
                 'type'      => 'error',

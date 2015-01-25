@@ -113,14 +113,15 @@ class Category extends CI_Controller {
             $error = array();
             $post = array();
 
-            $post['categoryname'] = $this->input->post('categoryname');
-            $post['module'] = $this->input->post('module');
-            $post['parent'] = $this->input->post('parent');
-            $post['status'] = $this->input->post('status');
-            $post['userid'] = $this->session->userdata('userid');
+            $post['name']           = $this->input->post('categoryname');
+            $post['module']         = $this->input->post('module');
+            $post['parentid']       = $this->input->post('parent');
+            $post['status']         = $this->input->post('status');
+            $post['created_user']         = $this->session->userdata('userid');
+            $post['created_date']   =   time();
 
             // check required fields
-            if(trim($post['categoryname']) == ''){
+            if(trim($post['name']) == ''){
                 $error[] = "Required field must be fill.";
             }
 
@@ -177,20 +178,21 @@ class Category extends CI_Controller {
             $error = array();
             $post = array();
             $module = $this->input->post('module');
-            $post['categoryid'] = $this->input->post('categoryid');
-            $post['categoryname'] = $this->input->post('categoryname');
-            $post['parent'] = $this->input->post('parent');
-            $post['status'] = $this->input->post('status');
-            $post['userid'] = $this->session->userdata('userid');
+            $catid                  = $this->input->post('categoryid');
+            $post['name']           = $this->input->post('categoryname');
+            $post['parentid']       = $this->input->post('parent');
+            $post['status']         = $this->input->post('status');
+            $post['modified_user']  = $this->session->userdata('userid');
+            $post['modified_date']  =   time();
 
             // check required fields
-            if(trim($post['categoryname']) == ''){
+            if(trim($post['name']) == ''){
                 $error[] = "Required field must be fill.";
             }
 
 
             if(count($error) == 0){
-                $this->cModel->update($post);
+                $this->cModel->update($post, $catid);
                 $this->session->set_flashdata(array(
                     'type'      =>  'success',
                     'message'   =>  'Edit category <strong>' . $post['categoryname'] . '</strong> successful.'

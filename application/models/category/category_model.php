@@ -29,14 +29,11 @@ class Category_model extends CI_Model{
      * @return mixed
      */
     public function getByModule($moduleName){
-        $sql = "SELECT *
-                FROM `" . $this->db->dbprefix('category') . "`
-                WHERE `module` = ?";
+        $this->db->select("*");
+        $this->db->from($this->db->dbprefix('category'));
+        $this->db->where('module', $moduleName);
 
-        $result = $this->db->query($sql, array(
-            $moduleName
-        ));
-
+        $result = $this->db->get();
         return $result->result();
 
     }
@@ -197,17 +194,27 @@ class Category_model extends CI_Model{
      */
 
     public function find($category = 0){
-        $sql = "SELECT *
-                FROM `" . $this->db->dbprefix('category') . "`
-                WHERE `categoryid` = ?";
-        $result = $this->db->query($sql, array(
-           $category
-        ));
-
+        $result = $this->db->get_where($this->db->dbprefix('category'), array('categoryid' => $category));
         return $result->result();
     }
 
     //////////////////////// BACK END  /////////////////////////////////
+
+
+    /**
+     * Delete all rows parentid is not exists
+     *
+     * @return mixed
+     */
+    private function clearOrphan(){
+        $sql = "DELETE `child` FROM `". $this->db->dbprefix('category') . "` AS `child`
+                LEFT JOIN  `". $this->db->dbprefix('category') . "` AS `parent`
+                  ON `child`.`parentid` = `parent`.`categoryid`
+                WHERE `parent`.`categoryid` is NULL AND `child`.`parentid` != 0";
+        $this->db->query($sql);
+        return $this->db->affected_rows();
+    }
+
     /**
      * Add new user group
      *
@@ -215,22 +222,7 @@ class Category_model extends CI_Model{
      * @return mixed
      */
     public function add($data){
-        $sql = "INSERT INTO `" . $this->db->dbprefix('category') . "`
-                (`name`, `module`, `parentid`, `status`, `created_user`, `created_date`)
-                VALUES
-                (?, ?, ?, ?, ?, ?)
-                ";
-
-        $this->db->query($sql, array(
-            $data['categoryname'],
-            $data['module'],
-            $data['parent'],
-            $data['status'],
-            $data['userid'],
-            time()
-
-        ));
-
+        $this->db->insert($this->db->dbprefix('category'), $data);
         return $this->db->insert_id();
     }
 
@@ -240,25 +232,9 @@ class Category_model extends CI_Model{
      * @param $data
      * @return mixed
      */
-    public function update($data){
-        $sql = "UPDATE `" . $this->db->dbprefix('category') . "`
-                SET `name` = ?,
-                    `parentid` = ?,
-                    `status`    = ?,
-                    `modified_date` = ?,
-                    `modified_user` = ?
-                WHERE `categoryid` = ?
-                ";
-
-        $this->db->query($sql, array(
-            $data['categoryname'],
-            $data['parent'],
-            $data['status'],
-            time(),
-            $data['userid'],
-            $data['categoryid']
-        ));
-
+    public function update($data, $categoryid){
+        $this->db->where('categoryid', $categoryid);
+        $this->db->update($this->db->dbprefix('category'), $data);
         return $this->db->affected_rows();
     }
 
@@ -270,27 +246,14 @@ class Category_model extends CI_Model{
      */
     public function delete($categoryid){
 
+        $this->db->where('parentid', $categoryid);
+        $this->db->or_where('categoryid', $categoryid);
+        $this->db->delete($this->db->dbprefix('category'));
 
+        $affected_rows = $this->clearOrphan();
+        $affected_rows += $this->db->affected_rows();
 
-        $sql = "DELETE FROM `" . $this->db->dbprefix('category') . "`
-                WHERE `parentid` = ?";
-
-        $this->db->query($sql, array(
-            $categoryid
-        ));
-
-        $affected_row = $this->db->affected_rows();
-
-        $sql = "DELETE FROM `" . $this->db->dbprefix('category') . "`
-                WHERE `categoryid` = ?";
-
-        $this->db->query($sql, array(
-            $categoryid
-        ));
-
-        $affected_row += $this->db->affected_rows();
-
-        return $affected_row;
+        return $affected_rows;
     }
 }
 

@@ -30,14 +30,7 @@ class Setting_model extends CI_Model{
      * @return mixed
      */
     public function moduleConfig($modulename){
-        $sql = "SELECT *
-                FROM `" . $this->db->dbprefix('config') . "`
-                WHERE `modulename` = ?
-                ";
-
-        $result = $this->db->query($sql, array(
-           $modulename
-        ));
+        $result = $this->db->get_where($this->db->dbprefix('config'), array('modulename' => $modulename));
 
         return $result->result();
     }
@@ -47,13 +40,7 @@ class Setting_model extends CI_Model{
      * @return mixed
      */
     public function getConfig($configname){
-        $sql = "SELECT *
-                FROM `" . $this->db->dbprefix('config') . "`
-                WHERE `configname` = ?";
-        $result = $this->db->query($sql, array(
-           $configname
-        ));
-
+        $result = $this->db->get_where($this->db->dbprefix('config'), array('configname' => $configname));
         return $result->result();
     }
 
@@ -61,36 +48,15 @@ class Setting_model extends CI_Model{
      * @param $config
      * @return mixed
      */
-    public function setConfig($config){
-        $sql = "UPDATE `" . $this->db->dbprefix('config') . "`
-                SET `configvalue` = ?,
-                    `modified_date` = ?,
-                    `modified_user` = ?
-                WHERE `configname` = ?
-                ";
-
-        $this->db->query($sql, array(
-            $config['value'],
-            time(),
-            $config['userid'],
-            $config['name']
-        ));
+    public function setConfig($config, $configname){
+        $this->db->where('configname', $configname);
+        $this->db->update($this->db->dbprefix('config'), $config);
 
         // INSERT if not exists config
         if($this->db->affected_rows() < 1){
-            $sql = "INSERT INTO `" . $this->db->dbprefix('config') . "`
-                    (`modulename`, `configname`, `configvalue`, `title`, `description`, `created_date`, `created_user`)
-                    VALUES
-                    (?,?,?,?,?,?,?)";
-            $this->db->query($sql, array(
-                $config['module'],
-                $config['name'],
-                $config['value'],
-                $config['title'],
-                $config['description'],
-                time(),
-                $config['userid']
-            ));
+            $config['created_date'] =   $config['modified_date'];
+            $config['created_user'] =   $config['modified_user'];
+            $this->db->insert($this->db->dbprefix('config'), $config);
             return $this->db->insert_id();
         }
 
