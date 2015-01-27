@@ -30,6 +30,7 @@ class Project extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library(array('session', 'user'));
+
         $this->load->helper(array('language', 'url', 'form', 'file', 'text'));
 
         $this->_user = $this->session->all_userdata();
@@ -254,7 +255,6 @@ class Project extends CI_Controller{
             $post['goal'] = implode('', $match[0]) * 1;
 
             // check uploaded file
-
             if(!$this->upload->do_upload('thumb')){
                 $error[] = $this->upload->display_errors();
             }else{

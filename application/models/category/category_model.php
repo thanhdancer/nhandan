@@ -32,6 +32,7 @@ class Category_model extends CI_Model{
         $this->db->select("*");
         $this->db->from($this->db->dbprefix('category'));
         $this->db->where('module', $moduleName);
+        $this->db->order_by('priority', 'asc');
 
         $result = $this->db->get();
         return $result->result();
@@ -176,6 +177,7 @@ class Category_model extends CI_Model{
                 'module'        =>  $category->module,
                 'parentid'      =>  $category->parentid,
                 'status'        =>  $category->status,
+                'priority'      =>  $category->priority,
                 'numberOfItems' =>  isset($children[$category->categoryid]) ? count($children[$category->categoryid]) : 0,
                 'depth'         =>  $depth
             );

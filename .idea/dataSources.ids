@@ -1538,6 +1538,7 @@
       <column name="modified_date" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="created_user" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="modified_user" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="priority" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MTA="/>
       <primary-key name="PRIMARY" columns="categoryid"/>
     </table>
     <table name="thnd_config" schema="" catalog="nhandan" type="TABLE">

@@ -126,6 +126,7 @@ class Category extends CI_Controller {
             $post['module']         = $this->input->post('module');
             $post['parentid']       = $this->input->post('parent');
             $post['status']         = $this->input->post('status');
+            $post['priority']         = $this->input->post('priority');
             $post['created_user']         = $this->session->userdata('userid');
             $post['created_date']   =   time();
 
@@ -196,6 +197,7 @@ class Category extends CI_Controller {
             $post['name']           = $this->input->post('categoryname');
             $post['parentid']       = $this->input->post('parent');
             $post['status']         = $this->input->post('status');
+            $post['priority']         = $this->input->post('priority');
             $post['modified_user']  = $this->session->userdata('userid');
             $post['modified_date']  =   time();
 

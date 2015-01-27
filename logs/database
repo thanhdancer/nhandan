@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `thnd_category` (
   `module` text NOT NULL,
   `parentid` int(11) NOT NULL,
   `status` int(11) NOT NULL,
+  `priority` int(11) DEFAULT 10 NOT NULL,
   `created_date` text NOT NULL,
   `modified_date` text NOT NULL,
   `created_user` int(11) DEFAULT NULL,
