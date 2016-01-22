@@ -13,17 +13,17 @@
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
  * @author		Thanh Dancer - dancer.thanh@gmail.com
  * @since			1.0
- * @version		$Id: add.phtml  12/6/14 6:13 PM lion $
+ * @version		$Id: editArticle.phtml  1/25/15 6:52 PM lion $
  */
  
  ?>
- <h2><?=$pageTitle?></h2>
+<h2><?=$pageTitle?></h2>
 <hr />
 <br/>
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-            Project infomation
+            Article Content
         </div>
     </div>
     <div class="panel-body">
@@ -34,9 +34,9 @@
                     <option>Choose a Category</option>
                     <?php
                     foreach($categories['items'] as $category):
-                    ?>
+                        ?>
 
-                    <option value="<?=$category['categoryid']?>"><?=str_repeat('---', $category['depth']) . ' '.  $category['name']?></option>
+                        <option <?php echo $category['categoryid'] == $article->categoryid ? 'selected' : ''; ?> value="<?=$category['categoryid']?>"><?=str_repeat('---', $category['depth']) . ' '.  $category['name']?></option>
                     <?php
                     endforeach;
                     ?>
@@ -44,53 +44,21 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label">Project name</label>
-                <input type="text" value="<?=set_value('projectname')?>" data-validate="required" class="form-control" name="projectname" placeholder="Project name" />
-            </div>
-
-            <div class="form-group">
                 <label class="control-label">Title</label>
-                <input type="text" value="<?=set_value('title')?>" class="form-control" name="title" placeholder="Title" />
+                <input type="text" value="<?php echo $article->title; ?>" class="form-control" name="title" placeholder="Title" />
             </div>
 
-            <div class="row form-group">
-                <div class="col-md-4">
-                    <label class="control-label">Goal</label>
-                    <input id="goal" type="text" value="<?=set_value('goal')?>" data-validate="required" class="form-control" name="goal" placeholder="Goal (VND)" />
-                </div>
-                <div class="col-md-4">
-                    <label class="control-label">Deadline</label>
-                    <input data-mask="date" value="<?=set_value('date')?>" class="form-control" data-validate="required" name="deadline" placeholder="dd/mm/yyyy" />
-                </div>
-                <div class="col-md-4">
-                    <label class="control-label">Location</label>
-                    <div class="control-group">
-                        <div class="col-md-6">
-                            <input type="text" name="address" class="form-control" placeholder="Address" value="<?=set_value('goal')?>" />
-                        </div>
-                        <div class="col-md-6">
-                            <select class="form-control" name="location">
-                                <?php
-                                foreach($province as $code => $value){
-                                    echo '<option value="'. $code . '">' . $value . '</option>';
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="row form-group">
                 <div class="col-md-9">
                     <label class="control-label">Sapo</label>
-                    <textarea style="height: 150px" name="sapo" class="form-control"><?=set_value('sapo')?></textarea>
+                    <textarea style="height: 150px" name="sapo" class="form-control"><?php echo $article->sapo; ?></textarea>
                 </div>
                 <div class="col-md-3">
 
                     <div class="fileinput fileinput-new" data-provides="fileinput">
                         <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;" data-trigger="fileinput">
-                            <img src="http://placehold.it/150&text=Thumbnail" alt="Project thumbnail">
+                            <img src="<?php echo base_url() . $article->imgthumb; ?>" alt="Project thumbnail">
                         </div>
                         <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 150px"></div>
                         <div>
@@ -109,24 +77,45 @@
 
 
             <div class="form-group">
-                <textarea data-validate="required" name="projectcontent" id="content" rows="20" class="form-control"><?=set_value('projectcontent')?></textarea>
+                <textarea data-validate="required" name="content" id="content" rows="20" class="form-control"><?php echo $article->content; ?></textarea>
             </div>
 
-            <div class="form-group">
-                <label class="control-label">Status</label>
-                <select class="form-control" name="status">
-                    <option value="2">Enabled</option>
-                    <option value="0">Disabled</option>
-                    <option value="1">Pending</option>
-                </select>
+            <div class="row form-group">
+
+                <div class="col-md-4">
+                    <label class="control-label">Publish date</label>
+                    <input data-mask="date" value="<?php echo $article->publishdate; ?>" class="form-control" data-validate="required" name="publishdate" placeholder="dd/mm/yyyy" />
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Status</label>
+                        <select class="form-control" name="status">
+                            <option <?php echo $article->status == 2 ? 'selected' : ''; ?> value="2">Enabled</option>
+                            <option <?php echo $article->status == 0 ? 'selected' : ''; ?> value="0">Disabled</option>
+                            <option <?php echo $article->status == 1 ? 'selected' : ''; ?> value="1">Pending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Hot article</label>
+                        <select class="form-control" name="hot">
+                            <option <?php echo $article->ishot == 0 ? 'selected' : ''; ?> value="0">No</option>
+                            <option <?php echo $article->ishot == 1 ? 'selected' : ''; ?> value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+
             </div>
 
-            <div class="form-group">
-                <label class="control-label">Priority</label>
-                <input type="number" class="form-control" value="1" name="priority" placeholder="Priority" />
-            </div>
+
+
             <div class="form-group">
                 <div class="col-sm-12">
+                    <input type="hidden" name="articleid" value="<?php echo $article->articleid ?>" />
                     <button type="submit" class="btn btn-success">Save</button>
                     <button type="reset" class="btn btn-primary">Reset</button>
                 </div>
@@ -149,24 +138,17 @@
                 "save table contextmenu directionality emoticons template paste textcolor responsivefilemanager"
             ],
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | responsivefilemanager | ",
-            
- 
-            
+
+
+
             external_filemanager_path:"/assets/filemanager/",
             filemanager_title:"Nhandan.edu.vn" ,
             filemanager_access_key:'bgB65j4AUmDs5cR84s3ZnJdvv9DQYxVZBRk2bzNn7HfDL4jRkXnFjyJksJJWH23Wvq249XV3hxTywEX5FVx4KEqbMyVh',
             external_plugins: { "filemanager" : "/assets/filemanager/plugin.min.js"}
         });
 
-        // goal input mask
-        $("#goal").inputmask('decimal', {
-            alias: "currency",
-            radixPoint: '.',
-            groupSeparator: ',',
-            autoGroup:  true,
-            rightAlign: true,
-            postfix : 'VND'
-        });
+
     });
 
 </script>
+ 

@@ -28,12 +28,18 @@ class Usergroup_model extends CI_Model{
      * @return mixed
      */
     public function getAll(){
-        $sql = "SELECT `g`.* , count(`u`.`userid`) as `numusers`
+
+        $this->db->select('usergroup.*, count( ' . $this->db->dbprefix('user'). '.userid ) as numusers');
+        $this->db->from($this->db->dbprefix('usergroup'));
+        $this->db->join($this->db->dbprefix('user'), 'user.usergroup = usergroup.usergroupid ', 'left');
+        $this->db->group_by('usergroup.usergroupid');
+
+        /*$sql = "SELECT `g`.* , count(`u`.`userid`) as `numusers`
                 FROM `" . $this->db->dbprefix('usergroup') . "` as `g`
                 LEFT JOIN `" . $this->db->dbprefix('user') . "` as `u`
                 ON `u`.`usergroup` = `g`.`usergroupid`
-                GROUP BY `g`.`usergroupid`";
-        $result = $this->db->query($sql);
+                GROUP BY `g`.`usergroupid`";*/
+        $result = $this->db->get();
         return $result->result();
 
     }
@@ -46,13 +52,8 @@ class Usergroup_model extends CI_Model{
      * @return mixed
      */
     public function find($field, $value){
-        $sql = "SELECT *
-                FROM `" . $this->db->dbprefix('usergroup') . "`
-                WHERE `" . $field . "` = ?";
-        $result = $this->db->query($sql, array(
-           $value
-        ));
 
+        $result = $this->db->get_where($this->db->dbprefix('usergroup'), array($field => $value));
         return $result->result();
     }
 
@@ -63,20 +64,7 @@ class Usergroup_model extends CI_Model{
      * @return mixed
      */
     public function add($data){
-        $sql = "INSERT INTO `" . $this->db->dbprefix('usergroup') . "`
-                (`usergroupname`, `description`, `status`, `created_date`, `created_user`)
-                VALUES
-                (?, ?, ?, ?, ?)
-                ";
-
-        $this->db->query($sql, array(
-            $data['usergroupname'],
-            $data['description'],
-            $data['status'],
-            time(),
-            $data['userid']
-        ));
-
+        $this->db->insert($this->db->dbprefix('usergroup'), $data);
         return $this->db->insert_id();
     }
 
@@ -86,25 +74,9 @@ class Usergroup_model extends CI_Model{
      * @param $data
      * @return mixed
      */
-    public function update($data){
-        $sql = "UPDATE `" . $this->db->dbprefix('usergroup') . "`
-                SET `usergroupname` = ?,
-                    `description` = ?,
-                    `status`    = ?,
-                    `modified_date` = ?,
-                    `modified_user` = ?
-                WHERE `usergroupid` = ?
-                ";
-
-        $this->db->query($sql, array(
-            $data['usergroupname'],
-            $data['description'],
-            $data['status'],
-            time(),
-            $data['userid'],
-            $data['usergroupid']
-        ));
-
+    public function update($data, $usergroupid){
+        $this->db->where('usergroupid', $usergroupid);
+        $this->db->update($this->db->dbprefix('usergroup'), $data);
         return $this->db->affected_rows();
     }
 
@@ -116,21 +88,12 @@ class Usergroup_model extends CI_Model{
      */
     public function delete($usergroupid = 0){
 
-        $sql = "DELETE FROM `" . $this->db->dbprefix('usergroup') . "`
-                WHERE `usergroupid` = ?";
-        $this->db->query($sql, array(
-           $usergroupid
-        ));
-
+        $this->db->where('usergroupid', $usergroupid);
+        $this->db->delete($this->db->dbprefix('usergroup'));
         $affected_row = $this->db->affected_rows();
 
-        $sql = "DELETE FROM `" . $this->db->dbprefix('user') . "`
-                WHERE `usergroup` = ?";
-
-        $this->db->query($sql, array(
-            $usergroupid
-        ));
-
+        $this->db->where('usergroup', $usergroupid);
+        $this->db->delete($this->db->dbprefix('user'));
         $affected_row += $this->db->affected_rows();
 
         return $affected_row;

@@ -46,6 +46,7 @@
             <tr>
                 <th>#</th>
                 <th>Category name</th>
+                <th>Priority</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -59,6 +60,7 @@
                 <tr>
                     <td><?=$i?></td>
                     <td><?=str_repeat('---', $category['depth']) . ' '.  $category['name']?></td>
+                    <td><?php echo $category['priority']; ?></td>
                     <td><?=$category['status'] == 1 ? '<div class="label label-success">Enabled</div>':'<div class="label label-secondary">Disabled</div>'?></td>
                     <td>
                         <select onchange="action(this);" class="selectboxit" data-first-option="false" data-id="<?=$category['categoryid']?>">

@@ -58,10 +58,12 @@ class Admin extends CI_Controller{
 
         $this->load->model('project/Project_model', 'projectModel');
         $this->load->model('User_model', 'userModel');
+        $this->load->model('article/Article_model', 'articleModel');
         
-        $data['projects'] = $this->projectModel->getAll('created_date', 0, 10000);
-        $data['map']	=	$this->projectModel->getGroupLocation();
-        $data['users'] = $this->userModel->getAll('created_date', 0, 10000);
+        $data['projects']   =   $this->projectModel->getAll('1', 'created_date', 0, 10000);
+        $data['map']	    =	$this->projectModel->getGroupLocation();
+        $data['users']      =   $this->userModel->getAll('created_date', 0, 10000);
+        $data['article']    =   $this->articleModel->getAll();
         
         $data['_additionFooter'] = '
         <script type="text/javascript" src="'. base_url() . 'assets/js/fushioncharts/js/fusioncharts.js"></script>

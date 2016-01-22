@@ -29,6 +29,21 @@
     <div class="panel-body">
         <form enctype="multipart/form-data" role="form" method="post" class="validate">
             <div class="form-group">
+                <label class="control-label">Project category</label>
+                <select class="form-control" name="categoryid">
+                    <option>Choose a Category</option>
+                    <?php
+                    foreach($categories['items'] as $category):
+                        ?>
+
+                        <option <?=$project->categoryid == $category['categoryid'] ? 'selected' : ''?> value="<?=$category['categoryid']?>"><?=str_repeat('---', $category['depth']) . ' '.  $category['name']?></option>
+                    <?php
+                    endforeach;
+                    ?>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label class="control-label">Project name</label>
                 <input type="text" data-validate="required" class="form-control" name="projectname" placeholder="Project name" value="<?=htmlspecialchars($project->projectname)?>" />
             </div>
@@ -49,14 +64,22 @@
                 </div>
                 <div class="col-md-4">
                     <label class="control-label">Location</label>
-                    <select class="form-control" name="location">
-	                    <?php
-	                    foreach($province as $code => $value){
-	                    	
-	                    	echo '<option '  . ($project->location == $code ? 'selected' : '') . ' value="'. $code . '">' . $value . '</option>';
-	                    }  
-	                    ?>
-                    </select>
+                    <div class="control-group">
+                    <div class="col-md-6">
+                        <input type="text" name="address" class="form-control" placeholder="Address" value="<?=$project->address?>" />
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" name="location">
+                            <?php
+                            foreach($province as $code => $value){
+
+                                echo '<option '  . ($project->location == $code ? 'selected' : '') . ' value="'. $code . '">' . $value . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -99,6 +122,12 @@
                     <option <?=$project->status == 1 ? 'selected' : '' ?> value="1">Pending</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label class="control-label">Priority</label>
+                <input type="number" class="form-control" name="priority" placeholder="Priority" value="<?=$project->priority?>" />
+            </div>
+
             <div class="form-group">
                 <div class="col-sm-12">
                     <button type="submit" class="btn btn-success">Save</button>

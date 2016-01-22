@@ -1,0 +1,44 @@
+<nav class="nav_container">
+    <div class="wrapper">
+        <div class="wrap_the_logo">
+            <div class="wrap_the_logo2">
+                <a href="index.html" title="trang chủ THND">
+                    <img src="<?=base_url()?>/assets/frontend/images/logo.png" alt="logo_THND" title="Trường Học Nhân Dân">
+                    <img class="logo_text" src="<?=base_url()?>/assets/frontend/images/thnd-logo.png" alt="logo_THND" title="Trường Học Nhân Dân">
+                    <h1 id="logo_THND">
+                    </h1>
+                </a>
+            </div> <!-- .wrap_the_logo2 -->
+        </div> <!-- .wrap_the_logo -->
+        <div class="wrap_the_nav">
+            <ul class="nav_ul_header">
+                <li class="<?php echo $menu == 'home' ? 'active' : '' ?>" title="trang chủ">
+                    <a href="<?php echo site_url('/'); ?>">
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="<?php echo $menu == 'about' ? 'active' : '' ?>" title="giới thiệu">
+                    <a href="#">
+                        Giới thiệu
+                    </a>
+                </li>
+                <li class="<?php echo $menu == 'projects' ? 'active' : '' ?>" title="các dự án">
+                    <a href="<?php echo site_url('/projects'); ?>">
+                        Các dự án
+                    </a>
+                </li>
+                <li class="<?php echo $menu == 'news' ? 'active' : '' ?>" title="tin tức">
+                    <a href="#">
+                        Tin tức
+                    </a>
+                </li>
+                <li class="<?php echo $menu == 'contact' ? 'active' : '' ?>" title="liên hệ">
+                    <a href="#">
+                        Liên hệ
+                    </a>
+                </li>
+            </ul> <!-- .nav_ul_header -->
+        </div> <!-- .wrap_the_nav -->
+    </div> <!-- wrap -->
+</nav>
+<!-- end of nav_container -->

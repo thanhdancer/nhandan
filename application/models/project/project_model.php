@@ -24,7 +24,10 @@ class Project_model extends CI_Model{
     public function __construct(){
         parent::__construct();
     }
-    
+
+    /**
+     * @return mixed
+     */
     public function getGroupLocation(){
     	$this->db->select('count(projectid) AS total, projectid, projectname, location');
     	$this->db->where('status', "2");
@@ -43,7 +46,7 @@ class Project_model extends CI_Model{
      *
      * @return mixed
      */
-    public function getAll($sort = 'created_date', $page = 0, $limit = 100){
+    public function getAll($where = '1', $sort = 'created_date', $page = 0, $limit = 100){
         $sql = "SELECT COUNT(  `b`.`backerid` ) AS  `numbacker` , SUM(  `b`.`amount` ) + 0 AS  `total` ,  `p`.*
                 FROM  `" . $this->db->dbprefix('project') . "` AS  `p`
                 LEFT JOIN (
@@ -51,12 +54,13 @@ class Project_model extends CI_Model{
                 FROM  `" . $this->db->dbprefix('project_backers') . "`
                 WHERE `status` = 1
                 ) AS  `b` ON  `p`.`projectid` =  `b`.`projectid`
+                WHERE $where
                 GROUP BY  `p`.`projectid`
-                ORDER BY ?
+                ORDER BY $sort
                 LIMIT ? , ?";
 
         $result = $this->db->query($sql, array(
-            $sort,
+
             $page * $limit,
             $limit
         ));
@@ -122,39 +126,8 @@ class Project_model extends CI_Model{
      *
      * @return mixed
      */
-    public function save($data){
-        $sql = "UPDATE `" . $this->db->dbprefix('project') . "`
-                SET `categoryid`    =   ?,
-                    `projectname`   =   ?,
-                    `title`   =   ?,
-                    `imgthumb`   =   ?,
-                    `sapo`   =   ?,
-                    `content`   =   ?,
-                    `deadline`   =   ?,
-                    `goal`   =   ?,
-                    `location`   =   ?,
-                    `status`   =   ?,
-                    `modified_date`   =   ?,
-                    `modified_user`   =   ?
-                WHERE `projectid`   =   ?
-                ";
-
-        $this->db->query($sql, array(
-            0, // need edit
-            $data['projectname'],
-            $data['title'],
-            $data['imgthumb'],
-            $data['sapo'],
-            $data['content'],
-            $data['deadline'],
-            $data['goal'],
-            $data['location'],
-            $data['status'],
-            time(),
-            $data['userid'],
-            $data['projectid']
-        ));
-
+    public function save($data, $pid){
+        $this->db->update($this->db->dbprefix('project'), $data, array('projectid'  =>  $pid));
         return $this->db->affected_rows();
     }
 
@@ -166,27 +139,7 @@ class Project_model extends CI_Model{
      * @return mixed
      */
     public function add($data){
-        $sql = "INSERT INTO `" . $this->db->dbprefix('project') . "`
-                (`categoryid`, `projectname`, `title`, `imgthumb`, `sapo`, `content`, `deadline`, `goal`, `location`, `status`, `created_date`, `created_user`)
-                VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ";
-
-        $this->db->query($sql, array(
-            0, // need edit
-            $data['projectname'],
-            $data['title'],
-            $data['imgthumb'],
-            $data['sapo'],
-            $data['content'],
-            $data['deadline'],
-            $data['goal'],
-            $data['location'],
-            $data['status'],
-            time(),
-            $data['userid']
-        ));
-
+        $this->db->insert($this->db->dbprefix('project'), $data);
         return $this->db->insert_id();
     }
 
@@ -196,23 +149,12 @@ class Project_model extends CI_Model{
      * @return mixed
      */
     public function delete($projectid = 0){
-        $sql = "DELETE FROM `" . $this->db->dbprefix('project_backers') . "`
-                WHERE `projectid` = ?";
 
-        $this->db->query($sql, array(
-            $projectid
-        ));
+        $this->db->where('projectid', $projectid);
+        $this->db->delete(
+            array($this->db->dbprefix('project_backers'), $this->db->dbprefix('project')));
 
         $affected_row = $this->db->affected_rows();
-
-        $sql = "DELETE FROM `" . $this->db->dbprefix('project') . "`
-                WHERE `projectid` = ?";
-
-        $this->db->query($sql, array(
-            $projectid
-        ));
-
-        $affected_row += $this->db->affected_rows();
 
         return $affected_row;
     }

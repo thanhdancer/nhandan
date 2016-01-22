@@ -101,8 +101,8 @@ class User extends CI_Controller{
         // check logged in
         if( !$this->session->userdata('userid') ){
             $data['title'] = "Login";
-            $data['_header'] = $this->load->view("includes/_header.phtml", $data, TRUE);
-            $data['_footer'] = $this->load->view("includes/_footer.phtml", '', TRUE);
+            $data['_header'] = $this->load->view("includes/_adminHeader.phtml", $data, TRUE);
+            $data['_footer'] = $this->load->view("includes/_adminFooter.phtml", '', TRUE);
             $this->load->view("includes/_loginTemplate.phtml", $data);
         }
         else{

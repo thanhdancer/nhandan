@@ -92,20 +92,28 @@ class Setting extends CI_Controller{
      */
     public function update(){
         $data = array();
-        $data['module'] = "core";
-        $data['userid'] = $this->_user['userid'];
+        $data['modulename']     =   "core";
+        $data['modified_user']  =   $this->_user['userid'];
+        $data['modified_date']  =   time();
 
         // set config site title
-        $this->sModel->setConfig(array_merge($data, array(
-            'name' => 'siteTitle',
-            'value' => $this->input->post('siteTitle', TRUE)
-        )));
+        $this->sModel->setConfig(
+            array_merge(
+                $data,
+                array(
+                    'configvalue' => $this->input->post('siteTitle', TRUE)
+                )
+            ),
+            'siteTitle'
+        );
 
         // set config logo link
-        $this->sModel->setConfig(array_merge($data, array(
-            'name' => 'logo',
-            'value' => $this->input->post('logo', TRUE)
-        )));
+        $this->sModel->setConfig(
+            array_merge($data, array(
+            'configvalue' => $this->input->post('logo', TRUE)
+            )),
+            'logo'
+        );
 
         $this->session->set_flashdata(array(
             'type'      => 'success',

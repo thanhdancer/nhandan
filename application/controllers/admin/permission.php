@@ -121,18 +121,22 @@ class Permission extends CI_Controller{
     public function add(){
         $data = array();
         $error = array();
-        $data['usergroupname'] = $this->input->post('usergroupname', TRUE);
-        $data['description'] = $this->input->post('description', TRUE);
-        $data['status'] = $this->input->post('status', TRUE) == 'on' ? 1 : 0;
-        $data['userid'] = $this->session->userdata('userid');
 
-        if(trim($data['usergroupname']) == ''){
-            $error[] = 'Group name cannot empty.';
-        }
+        // load library form validate
+        $this->load->library('form_validation');
 
-        if ( !in_array($data['status'], array(0,1))){
-            $error[] = "Invalid status.";
-        }
+        $this->form_validation->set_rules('usergroupname', 'Usergroup name', 'required');
+        $this->form_validation->set_rules('status', 'Status', 'greater_than[-1]|less_than[3]');
+        if($this->form_validation->run() == FALSE){
+            $this->form_validation->set_error_delimiters('', '<br />');
+            $error[]    =   str_replace('\n', '', validation_errors());
+            }
+
+        $data['usergroupname']  =   $this->input->post('usergroupname', TRUE);
+        $data['description']    =   $this->input->post('description', TRUE);
+        $data['status']         =   $this->input->post('status', TRUE) == 'on' ? 1 : 0;
+        $data['created_user']   =   $this->session->userdata('userid');
+        $data['created_date']   =   time();
 
         if(count($error) == 0){
             $groupid = $this->ugModel->add($data);
@@ -156,22 +160,27 @@ class Permission extends CI_Controller{
     public function update(){
         $data = array();
         $error = array();
-        $data['usergroupid'] = $this->input->post('usergroupid', TRUE);
-        $data['usergroupname'] = $this->input->post('usergroupname', TRUE);
-        $data['description'] = $this->input->post('description', TRUE);
-        $data['status'] = $this->input->post('status', TRUE) == 'on' ? 1 : 0;
-        $data['userid'] = $this->session->userdata('userid');
 
-        if(trim($data['usergroupname']) == ''){
-            $error[] = 'Group name cannot empty.';
-        }
+        // load library form validate
+        $this->load->library('form_validation');
 
-        if ( !in_array($data['status'], array(0,1))){
-            $error[] = "Invalid status.";
-        }
+        // Form validate
+        $this->form_validation->set_rules('usergroupname', 'Usergroup name', 'required');
+        $this->form_validation->set_rules('status', 'Status', 'greater_than[-1]|less_than[3]');
+        if($this->form_validation->run() == FALSE){
+            $this->form_validation->set_error_delimiters('', '<br />');
+            $error[]    =   str_replace('\n', '', validation_errors());
+            }
+
+        $ugid                   =   $this->input->post('usergroupid', TRUE);
+        $data['usergroupname']  =   $this->input->post('usergroupname', TRUE);
+        $data['description']    =   $this->input->post('description', TRUE);
+        $data['status']         =   $this->input->post('status', TRUE) == 'on' ? 1 : 0;
+        $data['modified_user']  =   $this->session->userdata('userid');
+        $data['modified_date']  =   time();
 
         if(count($error) == 0){
-            $affected_row = $this->ugModel->update($data);
+            $affected_row = $this->ugModel->update($data, $ugid);
         }else{
             $this->session->set_flashdata(array(
                 'type'      => 'error',

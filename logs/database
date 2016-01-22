@@ -33,7 +33,9 @@ CREATE TABLE IF NOT EXISTS `thnd_project` (
   `deadline` text NOT NULL ,
   `goal` DOUBLE DEFAULT 0 ,
   `location` text,
+  `address` text,
   `status` int(11) NOT NULL,
+  `priority` int(11) NOT NULL,
   `created_date` text NOT NULL,
   `modified_date` text NOT NULL,
   `created_user` int(11) DEFAULT NULL,
@@ -116,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `thnd_category` (
   `module` text NOT NULL,
   `parentid` int(11) NOT NULL,
   `status` int(11) NOT NULL,
+  `priority` int(11) DEFAULT 10 NOT NULL,
   `created_date` text NOT NULL,
   `modified_date` text NOT NULL,
   `created_user` int(11) DEFAULT NULL,
@@ -134,4 +137,38 @@ CREATE TABLE IF NOT EXISTS `thnd_permission` (
   `created_user` int(11) DEFAULT NULL,
   `modified_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`permissionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_sponsor` (
+  `sponsorid` int(11) NOT NULL AUTO_INCREMENT,
+  `sponsorname`	varchar(255) NOT NULL,
+  `sponsorlink` text NOT NULL,
+  `sponsorlogo` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `order`   int(11) NOT NULL,
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`sponsorid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `thnd_sponsor` (
+  `articleid` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryid` int(11) NOT NULL,
+  `categorypath` text,
+  `title`	varchar(255) NOT NULL,
+  `slug` text NOT NULL,
+  `imgthumb` txt NOT NULL,
+  `sapo` text NOT NULL,
+  `content` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `ishot`   int(11) NOT NULL,
+  `publishdate` int(11) NOT NULL,
+  `numberview`  int(11)
+  `created_date` text NOT NULL,
+  `modified_date` text NOT NULL,
+  `created_user` int(11) DEFAULT NULL,
+  `modified_user` int(11) DEFAULT NULL,
+  PRIMARY KEY (`articleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

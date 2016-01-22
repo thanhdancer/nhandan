@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <!-- Default header -->
+    <?php echo $this->load->view('includes/_homeHeader.phtml', $title, TRUE); ?>
+    <!-- / Default header -->
+
+    <!-- Addition header -->
+    <?php echo isset($_additionHeader) ? $_additionHeader : ''; ?>
+    <!-- / Addition header -->
+</head>
+<body>
+    <!-- Menu -->
+    <?php echo $this->load->view('includes/_homeMenu.phtml', $menu, TRUE); ?>
+    <!-- / Menu -->
+
+    <!-- Main -->
+    <?php echo isset($_mainContent) ? $_mainContent : '' ?>
+    <!-- /Main -->
+
+</body>
+</html>

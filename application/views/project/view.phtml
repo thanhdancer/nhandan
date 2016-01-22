@@ -44,7 +44,7 @@
     <div class="panel-body">
         <h4>Deadline: <?=date('d/m/Y', $project->deadline) . ' ( ' . ($project->deadline > time() ? floor(($project->deadline - time()) / 86400)  . ' day(s) left)' : '<span class="text-danger">Out of date</span> )')?></h4>
         <h4>Total backers: <?=$project->numbacker + 0?> <a href="<?=site_url('admin/project/backers/' . $project->projectid)?>"><span class="label label-primary">View</span></a></h4>
-        <h4>Goal: <?=number_format($project->total + 0, 0, ',', '.') . ' / ' . number_format($project->goal, 0, ',', '.') . ' (' . round(( $project->total * 100 ) / $project->goal, 2) . '%)' ?></h4>
+            <h4>Goal: <?=number_format($project->total + 0, 0, ',', '.') . ' / ' . number_format($project->goal, 0, ',', '.') . ' (' . round(( $project->total * 100 ) / $project->goal, 2) . '%)' ?></h4>
         <h4>
             <div class="progress progress-bar-danger">
                 <div class="progress-bar progress-bar-success" style="width: <?= (100* $project->total) /$project->goal ?>%" role="progressbar" aria-valuenow="<?=$project->total?>" aria-valuemin="0" aria-valuemax="<?=$project->goal?>">

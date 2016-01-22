@@ -1,0 +1,66 @@
+<?php
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU GENERAL PUBLIC LICENSE Version 2 
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/licenses/gpl-2.0.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@vv0lll.com so we can send you a copy immediately.
+ * 
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GNU GENERAL PUBLIC LICENSE Version 2
+ * @author		Thanh Dancer - dancer.thanh@gmail.com
+ * @since			1.0
+ * @version		$Id: listArticle.phtml  1/25/15 5:18 PM lion $
+ */
+ 
+ ?>
+
+<h2><?=$pageTitle?></h2>
+<br />
+
+<table class="table table-bordered datatable" id="listArticle">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Thumbnail</th>
+        <th>Publish Date</th>
+        <th>Hot</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($articles as $post): ?>
+        <tr>
+            <td><?=$post->title?></td>
+            <td><img src="<?=base_url() . $post->imgthumb?>" alt="<?=$post->title?>" style="max-width: 100px; max-height: 100px"/></td>
+            <td><?=$post->publishdate?></td>
+            <td><?php echo ($post->ishot == 1) ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>'; ?></td>
+            <td>
+                <a class="edit" title="Edit <?=$post->title?>" href="<?=site_url('admin/article/edit/') . '/' . $post->articleid?>"><i style="font-size: 20px" class="entypo-pencil"></i></a>-
+                <a title="Delete <?=$post->title?>" href="<?=site_url('admin/article/delete/') . '/' . $post->articleid?>" class="delete"><i style="font-size: 20px" class="entypo-cancel-circled"></i></a>
+            </td>
+        </tr>
+    <?php
+    endforeach;
+    ?>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function(){
+        $("#listArticle").dataTable({
+            "sPaginationType": "bootstrap",
+        });
+
+        $(".delete").click(function(){
+            if(confirm("Are you sure to delete this article?")){
+                return true;
+            }
+            return false;
+        })
+    });
+</script>
+ 

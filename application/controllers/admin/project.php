@@ -30,6 +30,7 @@ class Project extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->library(array('session', 'user'));
+
         $this->load->helper(array('language', 'url', 'form', 'file', 'text'));
 
         $this->_user = $this->session->all_userdata();
@@ -125,6 +126,7 @@ class Project extends CI_Controller{
         
         $this->load->model('category/Category_model', 'cModel');
         $this->load->model('project/Project_model', 'pModel');
+        $this->data['categories'] = $this->cModel->getTreeByModule('project');
     }
 
     /**
@@ -187,7 +189,7 @@ class Project extends CI_Controller{
         );
 
         $this->data['province'] = $this->province;
-        
+
         $this->data['_additionFooter'] = '
             <script src="' . base_url() . 'assets/js/tinymce/tinymce.min.js"></script>
 	        <script src="' . base_url() . 'assets/js/jquery.inputmask.bundle.min.js"></script>
@@ -209,11 +211,14 @@ class Project extends CI_Controller{
             $this->load->library('upload', $this->uploadConfig);
             $this->load->library('form_validation');
 
+            $this->form_validation->set_rules('categoryid', "Project category", 'required|numeric');
             $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
             $this->form_validation->set_rules('title', "Title", 'prep_for_form');
             $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
+            $this->form_validation->set_rules('addess', "Address", 'prep_for_form');
             $this->form_validation->set_rules('location', "Location", 'prep_for_form');
             $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
+            $this->form_validation->set_rules('priority', "Priority", 'required|numeric|greater_than[0]');
 
             if($this->form_validation->run() == FALSE){
                 $this->form_validation->set_error_delimiters('', '<br />');
@@ -222,15 +227,19 @@ class Project extends CI_Controller{
 
             }
 
-            $post['projectname'] = $this->input->post('projectname');
-            $post['title'] = $this->input->post('title');
-            $post['sapo'] = $this->input->post('sapo');
-            $post['content'] = $this->input->post('projectcontent', false);
-            $post['deadline'] = $this->input->post('deadline');
-            $post['goal'] = $this->input->post('goal');
-            $post['location'] = $this->input->post('location');
-            $post['status'] = $this->input->post('status');
-            $post['userid'] = $this->_user['userid'];
+            $post['categoryid']     =   $this->input->post('categoryid');
+            $post['projectname']    =   $this->input->post('projectname');
+            $post['title']          =   $this->input->post('title');
+            $post['sapo']           =   $this->input->post('sapo');
+            $post['content']        =   $this->input->post('projectcontent', false);
+            $post['deadline']       =   $this->input->post('deadline');
+            $post['goal']           =   $this->input->post('goal');
+            $post['location']       =   $this->input->post('location');
+            $post['status']         =   $this->input->post('status');
+            $post['priority']       =   $this->input->post('priority');
+            $post['address']        =   $this->input->post('address');
+            $post['created_user']   =   $this->_user['userid'];
+            $post['created_date']   =   time();
 
             // check province
             if(!in_array($post['location'], array_keys($this->province) )){
@@ -246,7 +255,6 @@ class Project extends CI_Controller{
             $post['goal'] = implode('', $match[0]) * 1;
 
             // check uploaded file
-
             if(!$this->upload->do_upload('thumb')){
                 $error[] = $this->upload->display_errors();
             }else{
@@ -274,6 +282,17 @@ class Project extends CI_Controller{
         }
 
         $this->data['_mainModule'] = $this->load->view('project/add.phtml', $this->data, TRUE);
+
+        if($this->session->flashdata('message')){
+            $this->data['_additionFooter'] .= '
+                <script type="text/javascript">
+                    jQuery(document).ready(function($){
+                        toastr.' . $this->session->flashdata('type') . '(\'' . $this->session->flashdata('message') . '\')
+                    });
+                </script>
+            ';
+        }
+
         $this->load->view('includes/_adminTemplate.phtml', $this->data);
     }
 
@@ -317,11 +336,14 @@ class Project extends CI_Controller{
             $this->load->library('upload', $this->uploadConfig);
             $this->load->library('form_validation');
 
+            $this->form_validation->set_rules('categoryid', "Project category", 'required|numeric');
             $this->form_validation->set_rules('projectname', "Project name", 'required|min_length[6]|prep_for_form');
             $this->form_validation->set_rules('title', "Title", 'prep_for_form');
             $this->form_validation->set_rules('sapo', "Sapo", 'prep_for_form');
+            $this->form_validation->set_rules('address', "Address", 'prep_for_form');
             $this->form_validation->set_rules('location', "Location", 'prep_for_form');
             $this->form_validation->set_rules('status', "Status", 'greater_than[-1]|less_than[3]');
+            $this->form_validation->set_rules('priority', "Priority", 'required|numeric|greater_than[0]');
 
             if($this->form_validation->run() == FALSE){
                 $this->form_validation->set_error_delimiters('', '<br />');
@@ -330,17 +352,20 @@ class Project extends CI_Controller{
 
             }
 
-
-            $post['projectname'] = $this->input->post('projectname');
-            $post['title'] = $this->input->post('title');
-            $post['sapo'] = $this->input->post('sapo');
-            $post['content'] = $this->input->post('projectcontent', false);
-            $post['deadline'] = $this->input->post('deadline');
-            $post['goal'] = $this->input->post('goal');
-            $post['location'] = $this->input->post('location');
-            $post['status'] = $this->input->post('status');
-            $post['userid'] = $this->_user['userid'];
-            $post['projectid'] = $this->input->post('projectid');
+            $post['categoryid']     =   $this->input->post('categoryid');
+            $post['projectname']    =   $this->input->post('projectname');
+            $post['title']          =   $this->input->post('title');
+            $post['sapo']           =   $this->input->post('sapo');
+            $post['content']        =   $this->input->post('projectcontent', false);
+            $post['deadline']       =   $this->input->post('deadline');
+            $post['goal']           =   $this->input->post('goal');
+            $post['location']       =   $this->input->post('location');
+            $post['address']        =   $this->input->post('address');
+            $post['status']         =   $this->input->post('status');
+            $post['priority']       =   $this->input->post('priority');
+            $post['modified_user']  =   $this->_user['userid'];
+            $post['modified_user']  =   time();
+            $pid                    =   $this->input->post('projectid');
 
             // check province
             if(!in_array($post['location'], array_keys($this->province) )){
@@ -370,7 +395,7 @@ class Project extends CI_Controller{
 
 
             if(count($error) == 0){
-                $this->pModel->save($post);
+                $this->pModel->save($post, $pid);
                 $this->session->set_flashdata(array(
                     'type'      =>  'success',
                     'message'   =>  'Project <strong>' . $post['projectname'] . '</strong> has been edited successful.'

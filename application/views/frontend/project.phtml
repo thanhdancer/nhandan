@@ -1,0 +1,334 @@
+<div class="header_landing_kqtk">
+    <div class="wrap_both_black_shadow_and_bg_img_kqtk">
+        <div class="black_shadow_kqtk">
+        </div>
+        <img class="bg_img_kqtk" src="<?=base_url()?>/assets/frontend/images/featured_image.jpg">
+    </div>
+    <div class="wrapper">
+        <div class="content_holder">
+            <div class="wrap_text_kqtk">
+                <p>
+                    Có rất nhiều biến thể của Lorem Ipsum mà bạn có thể tìm thấy, nhưng đa số được biến đổi bằng cách thêm các yếu tố hài hước, các từ ngẫu nhiên có khi không có vẻ gì là có ý nghĩa.
+                </p>
+                <p class="quote_by_kqtk">
+                    - lorem ipsum
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end of header_landing_kqtk -->
+<div class="all_projects">
+<div class="wrapper">
+    <h1 class="title_of_projects">các dự án</h1>
+    <div class="title_line_kqtk">
+        <p class="notation_projects notation_projects2">
+            <a href="#" title="dự án nổi bật">Tìm dự án</a>
+        </p>
+        <div class="line_kqtk">
+            <div class="vline_kqtk">
+                <div class="line_kqtk2">
+                </div>
+            </div>
+        </div>
+        <!-- end of line_kqtk -->
+    </div>
+    <div class="search_box_kqtk_2">
+        <div class="three_col_kqtk first_col_kqtk">
+	  				<span class="name_kqtk">
+	  				Tỉnh thành
+	  				</span>
+            <select name="provinces" id="provinces">
+                <?php foreach($provinces as $code => $province): ?>
+                    <option <?php echo $code == $select_province ? 'selected' : '';?> value="<?php echo $code ?>"><?php echo $province ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <!-- end ò three_col_kqtk 1 -->
+        <div class="three_col_kqtk second_col_kqtk">
+	  				<!--<span class="name_kqtk">
+	  				Cấp học
+	  				</span>
+            <select>
+                <option>
+                    Tiểu học
+                </option>
+                <option>
+                    Trung Học
+                </option>
+            </select>-->&nbsp;
+        </div>
+        <!-- end ò three_col_kqtk 1 -->
+        <div class="three_col_kqtk third_col_kqtk">
+	  				<span class="name_kqtk">
+	  				Cấp độ hỗ trợ
+	  				</span>
+            <select name="category" id="category">
+                <option value="">Select category</option>
+                <?php
+                foreach($categories['items'] as $category):
+                    ?>
+                    <option <?php echo $category['categoryid'] == $select_category ? 'selected' : '';?> value="<?=$category['categoryid']?>"><?=str_repeat('---', $category['depth']) . ' '.  $category['name']?></option>
+                <?php
+                endforeach;
+                ?>
+            </select>
+        </div>
+        <!-- end ò three_col_kqtk 1 -->
+        <a class="submit_button_kqtk" href="#">
+  					<span>
+  						Tìm dự án
+  					</span>
+        </a>
+    </div>
+    <!-- end of title_line_kqtk -->
+    <div class="content_filter_projects">
+        <div class="wrap_the_notation_and_decoration">
+            <p class="notation_projects">
+                <a href="#" title="dự án nổi bật">
+                    Dự án nổi bật
+                </a>
+            </p>
+            <div class="wrap_the_decoration_container line_du_an_2">
+                <div class="container_of_decoration_line line_du_an_3">
+                    <div class="decoration_line_projects line_du_an">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of content_filter_projects -->
+    <?php foreach($highlight as $project_2light): ?>
+
+        <div class="content_project">
+            <div class="content_project_inner">
+                <img style="max-width: 415px" src="<?=base_url().$project_2light->imgthumb?>" alt="<?=$project_2light->projectname?>" title="<?=$project_2light->projectname?>">
+                <div class="featured_project_content">
+                    <div class="feature_project_content_inner">
+                        <div class="text_upper_project_content">
+                            <h2 class="article_title">
+                                <?=$project_2light->title?>
+                            </h2>
+                            <p class="article_content">
+                                <?=$project_2light->sapo?>
+                            </p>
+                        </div>
+                        <div class="detail_of_upper_project_content">
+                            <div class="left_index_detail">
+                                <a href="#" class="nav_to_location" title="<?=$project_2light->address?>, <?=isset($province[$project_2light->location]) ? $province[$project_2light->location] : $project_2light->location?>">
+                                    <p class="location_artical">
+                                        <?=$project_2light->address?>, <?=isset($province[$project_2light->location]) ? $province[$project_2light->location] : $project_2light->location?>
+                                    </p>
+                                </a>
+                                <meter id="article_meter" value="<?=ceil($project_2light->total * 100 / $project_2light->goal)?>" min="0" max="100">
+                                    còn <?=ceil(($project_2light->deadline - time())/86400)?> ngày
+                                </meter>
+                                <table class="index_content">
+                                    <tr class="upper_row_content">
+                                        <td><?=ceil($project_2light->total * 100 / $project_2light->goal)?>%</td>
+                                        <td><?=ceil(($project_2light->deadline - time())/86400)?> ngày</td>
+                                        <td><?=number_format($project_2light->total)?></td>
+                                    </tr>
+                                    <tr class="lower_row_content">
+                                        <td>toàn bộ</td>
+                                        <td>còn lại</td>
+                                        <td>đã nhận</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <a href="#" class="right_index_detail" title="tài trợ">
+                                        <span class="donor_button">
+                                        Tài trợ
+                                        </span>
+                            </a>
+                        </div>
+                        <!-- end of detail_of_upper_project_content -->
+                    </div>
+                    <!-- end of feature_project_content_inner -->
+                </div>
+                <!-- end of featured_project_content -->
+            </div>
+            <!-- end of content_project_inner -->
+        </div>
+        <!-- end of content_project -->
+    <?php endforeach;?>
+    <div class="content_filter_projects2">
+        <div class="wrap_the_notation_and_decoration">
+            <p class="notation_projects">
+                <a href="#" title="dự án nổi bật">
+                    Dự án gấp rút
+                </a>
+            </p>
+            <div class="wrap_the_decoration_container line_du_an_2">
+                <div class="container_of_decoration_line line_du_an_3" style="width:903px">
+                    <div class="decoration_line_projects line_du_an">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of content_filter_projects -->
+</div>
+<!-- end of wrapper -->
+<div class="urgent_projects">
+
+    <div class="hold_content_urgent_projects">
+        <div class="wrapper" id="blacken_test">
+            <div id="urgent_slider_container" style="position: relative; top: 0px; left: 0px; width: 1060px; height: 550px; overflow: hidden; ">
+                <div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: 1060px; height: 550px;
+            overflow: hidden;" >
+                    <?php
+                    $i = 0;
+                    foreach($urgent as $project_urgent):
+                        if($i == 0 || $i % 4 == 0){
+                            echo '<div>';
+                        }
+
+                        ?>
+                        <div class="col_urgent">
+                            <a href="#">
+                                <img style="max-width: 225px; height: 170px" src="<?=base_url().$project_urgent->imgthumb?>">
+                                <h4 style="height: 40px;"><?=$project_urgent->title?></h4>
+                            </a>
+                            <p style="height: 100px; overflow: hidden; margin-bottom: 5px"><?=$project_urgent->sapo?></p>
+                            <div class="index_container">
+                                <div class="urgent_index_detail">
+                                    <a href="#" class="nav_to_location" title="<?=$project_urgent->address?>, <?=isset($province[$project_urgent->location]) ? $province[$project_urgent->location] : $project_urgent->location?>">
+                                        <p class="location_artical text_urgent">
+                                            <?=$project_urgent->address?>, <?=isset($province[$project_urgent->location]) ? $province[$project_urgent->location] : $project_urgent->location?>
+                                        </p>
+                                    </a>
+                                    <meter class="urgent_meter" value="<?=ceil($project_urgent->total * 100 / $project_urgent->goal)?>" min="0" max="100">
+                                        còn 19 ngày
+                                    </meter>
+                                    <table class="index_content">
+                                        <tr class="upper_row_content">
+                                            <td><?=ceil($project_urgent->total * 100 / $project_urgent->goal)?>%</td>
+                                            <td><?=ceil(($project_urgent->deadline - time())/86400)?> ngày</td>
+                                            <td><?=number_format($project_urgent->total)?> </td>
+                                        </tr>
+                                        <tr class="lower_row_content">
+                                            <td>toàn bộ</td>
+                                            <td>còn lại</td>
+                                            <td>đã nhận</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- End of col_urgent <?=$i + 1 ?> -->
+                        <?php
+                        if($i == (count($urgent) - 1) || $i % 4 == 3 ){
+                            echo "</div><!-- End block -->";
+                        }
+                        $i++;
+                    endforeach;
+                    ?>
+                </div>
+                <!-- Bullet Navigator Skin Begin -->
+                <style>
+                    /* jssor slider bullet navigator skin 18 css */
+                    /*
+                    .jssorb18 div           (normal)
+                    .jssorb18 div:hover     (normal mouseover)
+                    .jssorb18 .av           (active)
+                    .jssorb18 .av:hover     (active mouseover)
+                    .jssorb18 .dn           (mousedown)
+                    */
+                    .jssorb18 div, .jssorb18 div:hover, .jssorb18 .av
+                    {
+                        background: url(<?=base_url()?>/assets/frontend/images/b18.png) no-repeat;
+                        overflow:hidden;
+                        cursor: pointer;
+                    }
+                    .jssorb18 div { background-position: -3px -3px; }
+                    .jssorb18 div:hover, .jssorb18 .av:hover { background-position: -33px -3px; }
+                    .jssorb18 .av { background-position: -63px -3px; }
+                    .jssorb18 .dn, .jssorb18 .dn:hover { background-position: -93px -3px; }
+
+                    .jssorb18 .n
+                    {
+                        display: none;
+                        color: #000;
+                    }
+                    .jssorb18 div:hover .n, .jssorb18 .av .n, .jssorb18 .av:hover .n, .jssorb18 .dn .n { display: block; }
+                </style>
+                <!-- bullet navigator container -->
+                <div u="navigator" class="jssorb18" style="position: absolute; bottom: 16px; right: 6px;">
+                    <!-- bullet navigator item prototype -->
+                    <div u="prototype" style="position: absolute; width: 24px; height: 24px; text-align: center;
+                line-height: 24px; font-size: 16px;">
+                        <div u="numbertemplate" class=n></div>
+                    </div>
+                </div>
+                <!-- Bullet Navigator Skin End -->
+            </div>
+
+
+        </div>
+        <!-- end of col_urgent -->
+    </div><!--
+            <div class="selection_urgent">
+                <ul>
+                    <li class="active_urgent">
+                        <a href="#">1</a>
+                    </li>
+                    <li class="">
+                        <a href="#">2</a>
+                    </li>
+                    <li class="">
+                        <a href="#">3</a>
+                    </li>
+                    <li class="">
+                        <a href="#">4</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- end of wrapper -->
+</div>
+</div>
+<!-- end of all_projects -->
+<script>
+
+    jQuery(document).ready(function ($) {
+        var options = {
+            $BulletNavigatorOptions: {                                //[Optional] Options to specify and enable navigator or not
+                $Class: $JssorBulletNavigator$,                       //[Required] Class to create navigator instance
+                $ChanceToShow: 2,                               //[Required] 0 Never, 1 Mouse Over, 2 Always
+                $AutoCenter: 1,                                  //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+                $SpacingX: 0                                   //[Optional] Horizontal space between each item in pixel, default value is 0
+            }
+        };
+
+        var urgent_slider = new $JssorSlider$("urgent_slider_container", options);
+
+        //responsive code begin
+        //you can remove responsive code if you don\'t want the slider scales while window resizes
+        function ScaleSlider() {
+            var parentWidth = urgent_slider.$Elmt.parentNode.clientWidth;
+            if (parentWidth) {
+                var sliderWidth = parentWidth;
+
+                //keep the slider width no more than 800
+                sliderWidth = Math.min(sliderWidth, 1060);
+
+                urgent_slider.$ScaleWidth(sliderWidth);
+            }
+            else
+                window.setTimeout(ScaleSlider, 30);
+        }
+        //ScaleSlider();
+
+        $(window).bind("load", ScaleSlider);
+        $(window).bind("resize", ScaleSlider);
+        $(window).bind("orientationchange", ScaleSlider);
+        //responsive code end
+    });
+
+    $(".submit_button_kqtk").click(function(){
+        var province = $("#provinces").val();
+        var category = $("#category").val();
+        window.location = '<?php echo site_url('/projects');?>/' + province + '/' + category;
+    });
+</script>
